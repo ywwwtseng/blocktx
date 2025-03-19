@@ -17,18 +17,18 @@ export function Avatar({ size = 36 }: AvatarProps) {
   if (user.photo_url) {
     return (
       <Image
+        className="border-primary"
         src={user.photo_url}
         alt={`${user.first_name}'s avatar`}
         width={size}
         height={size}
-        className="rounded-full border border-solid border-white/[.145]"
       />
     );
   }
 
   return (
     <div 
-      className="rounded-full flex items-center justify-center text-white text-sm font-medium border border-solid border-white/[.145]"
+      className="flex items-center justify-center border-primary text-white text-sm font-medium"
       style={{
         width: size,
         height: size,
