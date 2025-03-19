@@ -1,17 +1,21 @@
 "use client";
 
-import { useLaunchParams } from "@/hooks/useLaunchParams";
+import { ClientProvider } from "@/context/ClientContext";
+import { Avatar } from "@/components/Avatar/Avatar";
 
 export default function MiniAppLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const lp = useLaunchParams();
-
-  console.log(lp);
-
   return (
-    <div>{children}</div>
+    <ClientProvider>
+      <main>
+        <nav className="flex items-center justify-end p-2">
+          <Avatar />
+        </nav>
+        {children}
+      </main>
+    </ClientProvider>
   );
 }
