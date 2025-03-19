@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@telegram-apps/sdk": "^3.5.1",
     "express": "^4.21.2",
     "next": "15.2.3",
     "node-telegram-bot-api": "^0.66.0",
