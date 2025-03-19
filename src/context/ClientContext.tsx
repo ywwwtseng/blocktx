@@ -4,15 +4,18 @@ import { createContext, useContext, ReactNode } from "react";
 import { useLaunchParams } from "@/hooks/useLaunchParams";
 import type { User } from "@telegram-apps/sdk";
 
-export type ClientContextType = {
+export interface ClientContextValue {
   user: User | undefined;
-};
+}
 
-const ClientContext = createContext<ClientContextType | undefined>(undefined);
+export interface ClientProviderProps {
+  children: ReactNode;
+}
 
-export function ClientProvider({ children }: { children: ReactNode }) {
+const ClientContext = createContext<ClientContextValue | undefined>(undefined);
+
+export function ClientProvider({ children }: ClientProviderProps) {
   const launchParams = useLaunchParams();
-
   const user = launchParams?.tgWebAppData?.user;
 
   return (

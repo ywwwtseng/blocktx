@@ -3,9 +3,9 @@
 import Image from "next/image";
 import { useClient } from "@/context/ClientContext";
 
-export type AvatarProps = {
+export interface AvatarProps {
   size?: number; // in pixels
-};
+}
 
 export function Avatar({ size = 36 }: AvatarProps) {
   const { user } = useClient();
