@@ -1,11 +1,11 @@
-export const stringify = (params: Record<string, any>) => {
+export const stringify = (params: Record<string, unknown>) => {
   return Object.entries(params)
-    .filter(([_, value]) => value !== null && value !== '' && value !== undefined)
+    .filter(([, value]) => value !== null && value !== '' && value !== undefined)
     .map(([key, value]) => `${key}=${value}`)
     .join('&');
 };
 
 
-export const stringifyUrl = (url: string, params: Record<string, any>) => {
+export const stringifyUrl = (url: string, params: Record<string, unknown>) => {
   return `${url}?${stringify(params)}`;
 };

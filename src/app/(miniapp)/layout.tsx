@@ -1,12 +1,10 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import { useEffect } from "react";
 
-import { ClientProvider } from "@/contexts/ClientContext";
+import { MiniAppProvider } from "@/contexts/MiniAppContext";
 import { useBinanceService } from "@/hooks/useBinanceService";
-
-const Avatar = dynamic(() => import("@/components/Avatar/Avatar"), { ssr: false });
+import Layout from "@/components/common/Layout";
 
 export default function MiniAppLayout({
   children,
@@ -20,13 +18,10 @@ export default function MiniAppLayout({
   }, [init]);
 
   return (
-    <ClientProvider>
-      <main>
-        <nav className="flex items-center justify-end p-2">
-          <Avatar />
-        </nav>
+    <MiniAppProvider>
+      <Layout>
         {children}
-      </main>
-    </ClientProvider>
+      </Layout>
+    </MiniAppProvider>
   );
 }
