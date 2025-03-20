@@ -5,7 +5,8 @@ export interface SocketOptions {
   maxReconnectAttempts?: number;
 }
 
-export interface SocketMessage<T = any> {
-  type: string;
-  payload?: T;
+export interface SocketMessage {
+  method: string;
+  params: string[];
+  id: number;
 }

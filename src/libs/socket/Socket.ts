@@ -20,7 +20,7 @@ import { SocketOptions, SocketMessage } from "./types";
  * });
  * ```
  */
-export class Socket<T = any> {
+export class Socket {
   private readonly options: Required<SocketOptions>;
   private ws: WebSocket | null = null;
   private reconnectAttempts = 0;
@@ -29,6 +29,8 @@ export class Socket<T = any> {
   private visibilityListener = false;
   private isManualClose = false;
   private isAuthError = false;  // 新增授權錯誤標記
+
+  public onOpen: (() => void) | null = null;
 
   /**
    * 建立新的 WebSocket 客戶端實例
@@ -63,6 +65,7 @@ export class Socket<T = any> {
 
     try {
       this.ws = new WebSocket(this.options.url);
+      
       this.bindEvents();
       this.bindNetworkEvents();
       this.bindVisibilityEvents();
@@ -133,6 +136,7 @@ export class Socket<T = any> {
       console.log("WebSocket connected");
       this.reconnectAttempts = 0;
       this.rateLimitDelay = 30000;
+      this.onOpen?.();
     };
 
     this.ws.onclose = (event) => {
@@ -191,7 +195,7 @@ export class Socket<T = any> {
 
     this.ws.onmessage = (event) => {
       try {
-        const message: SocketMessage<T> = JSON.parse(event.data);
+        const message: SocketMessage = JSON.parse(event.data);
         this.handleMessage(message);
       } catch (error) {
         console.error("Failed to parse message:", error);
@@ -281,20 +285,16 @@ export class Socket<T = any> {
    * @param message - 接收到的消息物件
    * @private
    */
-  private handleMessage(message: SocketMessage<T>): void {
+  private handleMessage(message: SocketMessage): void {
     console.log("Received message:", message);
-    switch (message.type) {
-      case "ping":
-        this.send({ type: "pong" });
-        break;
-    }
   }
 
   /**
    * 發送消息到 WebSocket 服務器
    * @param message - 要發送的消息物件
    */
-  send(message: SocketMessage<T>): void {
+  send(message: SocketMessage): void {
+    console.log(message,  this.ws?.readyState)
     if (!this.ws || this.ws.readyState !== WebSocket.OPEN) {
       console.error("WebSocket is not connected");
       return;

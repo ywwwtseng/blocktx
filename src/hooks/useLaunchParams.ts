@@ -2,11 +2,11 @@ import { useMemo } from "react";
 import { mockTelegramEnv, retrieveLaunchParams, isTMA } from "@telegram-apps/sdk";
 
 export function useLaunchParams() {
-  if (typeof window === "undefined") {
-    return undefined;
-  }
-
   return useMemo(() => {
+    if (typeof window === "undefined") {
+      return undefined;
+    }
+
     if (process.env.NODE_ENV !== "production") {
       mockTelegramEnv({
         launchParams: {

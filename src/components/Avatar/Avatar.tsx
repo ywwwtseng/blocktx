@@ -1,13 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { useClient } from "@/context/ClientContext";
+import { useClient } from "@/contexts/ClientContext";
 
 export interface AvatarProps {
   size?: number; // in pixels
 }
 
-export function Avatar({ size = 36 }: AvatarProps) {
+export default function Avatar({ size = 36 }: AvatarProps) {
   const { user } = useClient();
 
   if (!user) {

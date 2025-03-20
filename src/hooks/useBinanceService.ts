@@ -1,0 +1,158 @@
+import { create } from "zustand";
+import { useShallow } from "zustand/react/shallow";
+import { Socket } from '@/libs/socket';
+import * as URLUtils from "@/utils/URLUtils";
+
+export enum TradingPairSymbol {
+  BTCUSDT = "BTCUSDT",
+  TONUSDT = "TONUSDT",
+  SOLUSDT = "SOLUSDT",
+  ETHUSDT = "ETHUSDT",
+  SUIUSDT = "SUIUSDT",
+}
+
+export enum KlineAttributes {
+  Timestamp = "t",
+  Open = "o",
+  High = "h",
+  Low = "l",
+  Close = "c",
+  Volume = "v",
+}
+
+export type RawKline = (string | number)[];
+
+export type Kline = {
+  [KlineAttributes.Timestamp]: number;
+  [KlineAttributes.Open]: number;
+  [KlineAttributes.High]: number;
+  [KlineAttributes.Low]: number;
+  [KlineAttributes.Close]: number;
+  [KlineAttributes.Volume]: number;
+}
+
+export interface Ticker24hr {
+  e: "24hrTicker";      // 事件类型
+  E: number;            // 事件时间
+  s: TradingPairSymbol; // 交易对
+  p: string;            // 24小时价格变化
+  P: string;            // 24小时价格变化（百分比）
+  w: string;            // 平均价格
+  x: string;            // 整整24小时之前，向前数的最后一次成交价格
+  c: string;            // 最新成交价格
+  Q: string;            // 最新成交交易的成交量
+  b: string;            // 目前最高买单价
+  B: string;            // 目前最高买单价的挂单量
+  a: string;            // 目前最低卖单价
+  A: string;            // 目前最低卖单价的挂单量
+  o: string;            // 整整24小时前，向后数的第一次成交价格
+  h: string;            // 24小时内最高成交价
+  l: string;            // 24小时内最低成交加
+  v: string;            // 24小时内成交量
+  q: string;            // 24小时内成交额
+  O: number;            // 统计开始时间
+  C: number;            // 统计结束时间
+  F: number;            // 24小时内第一笔成交交易ID
+  L: number;            // 24小时内最后一笔成交交易ID
+  n: number;            // 24小时内成交数
+}
+
+export enum StreamType {
+  TickerArr = '!ticker@arr',
+}
+
+export interface Stream {
+  stream: StreamType;
+  data: Ticker24hr[];
+}
+
+export const endpoints = {
+  klines: "/v3/uiKlines",
+}
+
+export const events = {
+  miniTicker: "!miniTicker@arr@3000ms",
+  usdtusdt: {
+    aggTrade: "usdtusdt@aggTrade",
+  },
+  btcusdt: {
+    aggTrade: "btcusdt@aggTrade",
+    depth: "btcusdt@depth",
+    kline: {
+      "1s": "btcusdt@kline_1s",
+      "1m": "btcusdt@kline_1m",
+      "5m": "btcusdt@kline_5m",
+      "15m": "btcusdt@kline_15m",
+      "30m": "btcusdt@kline_30m",
+      "1h": "btcusdt@kline_1h",
+      "4h": "btcusdt@kline_4h",
+      "1d": "btcusdt@kline_1d",
+    },
+  }
+}
+
+type BinanceServiceState = {
+  data: {
+    klines: Partial<Record<TradingPairSymbol, Kline[]>>;
+  };
+  socket: Socket | null;
+  klines: {
+    history: (symbol: TradingPairSymbol) => Promise<void>;
+  },
+  init: () => void;
+};
+
+export const useBinanceService = create<BinanceServiceState>((set) => ({
+  data: {
+    klines: {},
+  },
+  socket: null,
+  klines: {
+    history: async (symbol: TradingPairSymbol) => {
+      const endpoint = URLUtils.stringifyUrl(
+        endpoints.klines,
+        {
+          symbol,
+          interval: "1s",
+          limit: 1000,
+        });
+
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BINANCE_API_URL!}${endpoint}`);
+      const data = await response.json();
+  
+      // set({ data: { ...data, [symbol]: data } });
+      // 只更新特定 symbol，不覆蓋整個 data
+      set((state) => ({
+        data: {
+          ...state.data,
+          klines: {
+            ...state.data.klines,
+            [symbol]: data.map((item: RawKline) => ({
+              [KlineAttributes.Timestamp]: Number(item[0]),
+              [KlineAttributes.Open]: Number(item[1]),
+              [KlineAttributes.High]: Number(item[2]),
+              [KlineAttributes.Low]: Number(item[3]),
+              [KlineAttributes.Close]: Number(item[4]),
+              [KlineAttributes.Volume]: Number(item[5]),
+            })),
+          },
+        },
+      }));
+    }
+  },
+  init: () => {
+    const socket = new Socket({
+      url: process.env.NEXT_PUBLIC_BINANCE_WS_URL!,
+    });
+
+    socket.onOpen = () => {
+      set({ socket });
+    };
+
+    socket.connect();
+  },
+}));
+
+export const useBinanceKlineData = (symbol: TradingPairSymbol) => {
+  return useBinanceService(useShallow((state) => state.data.klines[symbol]));
+};
