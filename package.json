@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@telegram-apps/sdk": "^3.5.1",
+    "@tonconnect/ui": "^2.0.12",
     "clsx": "^2.1.1",
     "express": "^4.21.2",
     "next": "15.2.3",

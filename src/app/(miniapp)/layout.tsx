@@ -2,20 +2,26 @@
 
 import { useEffect } from "react";
 
-import { MiniAppProvider } from "@/contexts/MiniAppContext";
 import { useBinanceService } from "@/hooks/useBinanceService";
-import Layout from "@/components/common/Layout";
+import { useIsMounted } from "@/hooks/useIsMounted";
+import { Layout } from "@/components/common/Layout";
+import { MiniAppProvider } from "@/contexts/MiniAppContext";
 
 export default function MiniAppLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
+  const isMounted = useIsMounted();
   const { init } = useBinanceService();
 
   useEffect(() => {
     init();
   }, [init]);
+
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <MiniAppProvider>

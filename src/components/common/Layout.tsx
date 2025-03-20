@@ -1,52 +1,54 @@
 "use client";
 
-import dynamic from "next/dynamic";
-
+import Image from "next/image";
 import { useMiniApp } from "@/contexts/MiniAppContext";
 import {
-  WalletIcon,
   ChartIcon,
+  TradeIcon,
   GameIcon,
   EarnIcon,
   ReferralIcon
 } from "@/components/icons";
 import * as Typography from "@/components/ui/Typography";
 import { TabItem } from "@/components/common/TabItem";
-const Avatar = dynamic(() => import("@/components/common/Avatar").then(mod => mod.Avatar), { ssr: false });
+import { DepositButton } from "@/components/common/DepositButton";
+import { ConnectWalletButton } from "@/components/common/ConnectWalletButton";
+import { Avatar } from "@/components/common/Avatar";
 
-export default function Layout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const { safeArea, platform } = useMiniApp();
-  const translate = platform === "ios" ? -8 : 0;
-
-  if (!safeArea) {
-    return null;
-  }
+export function Layout({ children }: { children: React.ReactNode }) {
+  const { platform, tonConnect } = useMiniApp();
+  const safeAreaBottom = platform === "ios" ? 16 : 8;
 
   return (
-    <main className="flex flex-col w-full h-screen overflow-hidden pt-12" style={{ paddingBottom: safeArea.bottom + 60 + translate }}>
-      <div className="fixed w-full px-4 py-2 flex items-center justify-between left-0 top-0 bg-black/50 backdrop-blur-[160px] z-40">
-        <Typography.Heading>Trade</Typography.Heading>
+    <main className="flex flex-col w-full h-screen overflow-hidden pt-12" style={{ paddingBottom: 60 + safeAreaBottom }}>
+      <div className="fixed w-full px-4 py-2 flex items-center justify-between left-0 top-0 bg-[var(--background)]/50 backdrop-blur-[160px] z-40">
+        <Image className="rounded-md" src="/logo.png" alt="logo" width={28} height={28} />
         <div className="flex items-center gap-2">
-          <WalletIcon className="w-7 h-7" />
+          <div className="py-[3px] px-1 rounded-full border border-white/15 gap-1.5 flex items-center">
+            <div className="flex items-center gap-1">
+              <Image src="/energy.png" alt="energy" width={28} height={28} />
+              <Typography.Text weight={700}>100</Typography.Text>
+              <DepositButton />
+            </div>
+          </div>
+          <ConnectWalletButton />
           <Avatar />
         </div>
       </div>
       <div className="flex-1 overflow-y-auto no-scrollbar px-4">
-        {platform}
+        {JSON.stringify(tonConnect?.connected)}
         {children}
       </div>
-      <div 
-        className="fixed left-0 right-0 w-full z-40 flex justify-center items-center mx-auto"
-        style={{ bottom: translate }}
-      >
+      <div className="fixed left-0 right-0 bottom-0 w-full z-40 flex justify-center items-center mx-auto">
         <div
-          className="flex justify-between w-full border-t px-8 pt-1 border-white/10 bg-black/50 backdrop-blur-[35px]"
-          style={{ paddingBottom: Math.max(safeArea.bottom, 8) }}
+          className="flex justify-between w-full border-t px-4 pt-1 border-white/10 bg-[var(--background)]/50 backdrop-blur-[35px]"
+          style={{ paddingBottom: safeAreaBottom }}
         >
-          <TabItem href="/" icon={{ element: ChartIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="trade" />
-          <TabItem href="/game" icon={{ element: GameIcon, color: { active: "url(#linear-gradient)", default: "#7C7C7C" } }} i18n="game" />
-          <TabItem href="/earn" icon={{ element: EarnIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="earn" />
-          <TabItem href="/invite" icon={{ element: ReferralIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="invite" />
+          <TabItem href="/" icon={{ element: ChartIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="Analysis" />
+          <TabItem href="/tradeai" icon={{ element: TradeIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="Trade AI" />
+          <TabItem href="/game" icon={{ element: GameIcon, color: { active: "url(#linear-gradient)", default: "#7C7C7C" } }} i18n="Game" />
+          <TabItem href="/earn" icon={{ element: EarnIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="Earn" />
+          <TabItem href="/invite" icon={{ element: ReferralIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="Invite" />
         </div>
       </div>
     </main>

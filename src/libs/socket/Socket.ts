@@ -31,7 +31,7 @@ export class Socket {
   private isAuthError = false;  // 新增授權錯誤標記
 
   public onOpen: (() => void) | null = null;
-
+  public onMessage: ((message: SocketMessage) => void) | null = null;
   /**
    * 建立新的 WebSocket 客戶端實例
    * @param options - WebSocket 連接配置選項
@@ -196,7 +196,7 @@ export class Socket {
     this.ws.onmessage = (event) => {
       try {
         const message: SocketMessage = JSON.parse(event.data);
-        this.handleMessage(message);
+        this.onMessage?.(message);
       } catch (error) {
         console.error("Failed to parse message:", error);
       }
@@ -278,15 +278,6 @@ export class Socket {
       this.reconnectAttempts++;
       this.connect();
     }, finalInterval);
-  }
-
-  /**
-   * 處理收到的 WebSocket 消息
-   * @param message - 接收到的消息物件
-   * @private
-   */
-  private handleMessage(message: SocketMessage): void {
-    console.log("Received message:", message);
   }
 
   /**

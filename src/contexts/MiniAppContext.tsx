@@ -1,21 +1,15 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState, ReactNode } from "react";
-import { postEvent, on, User, Platform } from '@telegram-apps/sdk';
-
+import { createContext, useContext, useEffect, ReactNode } from "react";
+import { postEvent, User, Platform } from '@telegram-apps/sdk';
+import { TonConnect, MockTonConnectUI, TonConnectUI } from "@/libs/ton-connect";
 import { useLaunchParams } from "@/hooks/useLaunchParams";
-
-export interface SafeArea {
-  top: number;
-  right: number;
-  bottom: number;
-  left: number;
-}
+import { useForceUpdate } from "@/hooks/useForceUpdate";
 
 export interface MiniAppContextValue {
   user: User | undefined;
   platform: Platform | undefined;
-  safeArea: SafeArea | undefined;
+  tonConnect: TonConnect | undefined;
 }
 
 export interface MiniAppProviderProps {
@@ -25,41 +19,35 @@ export interface MiniAppProviderProps {
 const MiniAppContext = createContext<MiniAppContextValue | undefined>(undefined);
 
 export function MiniAppProvider({ children }: MiniAppProviderProps) {
+  const forceUpdate = useForceUpdate();
   const launchParams = useLaunchParams();
   const user = launchParams?.tgWebAppData?.user;
   const platform = launchParams?.tgWebAppPlatform;
-
-  const [safeArea, setSafeArea] = useState<SafeArea | undefined>(undefined);
+  const tonConnect = TonConnect.getInstance({
+    TonConnectUI: process.env.NODE_ENV === 'development'
+      ? MockTonConnectUI
+      : TonConnectUI,
+    onStatusChange: () => {
+      forceUpdate();
+    }
+  });
 
   useEffect(() => {
     if (process.env.NODE_ENV === "production" && launchParams) {
-      postEvent("web_app_set_header_color", { color: "#000000" });
-      postEvent("web_app_set_bottom_bar_color", { color: "#000000" });
-      postEvent("web_app_set_background_color", { color: "#000000" });
-
-      const safeArea = sessionStorage.getItem("blocktx:safearea");
-      if (safeArea) {
-        setSafeArea(JSON.parse(safeArea));
-      }
-
-      if (["ios", "android"].includes(launchParams.tgWebAppPlatform)) {
-        on("safe_area_changed", (safeArea) => {
-          setSafeArea(safeArea);
-          sessionStorage.setItem("blocktx:safearea", JSON.stringify(safeArea));
-        });
-      } else {
-        setSafeArea({
-          top: 0,
-          right: 0,
-          bottom: 0,
-          left: 0
-        });
-      }
+      postEvent("web_app_set_header_color", { color: "#181A20" });
+      postEvent("web_app_set_bottom_bar_color", { color: "#181A20" });
+      postEvent("web_app_set_background_color", { color: "#181A20" });
     }
   }, [launchParams]);
+  
+  const value: MiniAppContextValue = {
+    user,
+    platform,
+    tonConnect
+  };
 
   return (
-    <MiniAppContext.Provider value={{ user, platform, safeArea }}>
+    <MiniAppContext.Provider value={value}>
       {children}
     </MiniAppContext.Provider>
   );
