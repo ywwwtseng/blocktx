@@ -1,8 +1,5 @@
 import { createElement, PropsWithChildren } from "react";
 
-// import { useTranslateCache } from "@/context/ClientContext";
-// import { useThemeColor } from "@/context/ThemeContext";
-
 const size_config = {
   "12": { fontSize: "8rem", lineHeight: "1" },
   "11": { fontSize: "6rem", lineHeight: "1" },
@@ -19,51 +16,65 @@ const size_config = {
 };
 
 export interface TypographyProps extends PropsWithChildren {
+  variant?: "heading" | "text" | "caption";
   as?: "h1" | "h2" | "h3" | "h4" | "h5" | "span" | "p" | "b";
   color?: "currentColor" | "text.primary" | "text.secondary" | string;
   align?: "left" | "center" | "right" | "justify";
   weight?: number;
-  size?: "12" | "11" | "10" | "9" | "8" | "7" | "6" | "5" | "4" | "3" | "2" | "1";
+  size?: 12 | 11 | 10 | 9 | 8 | 7 | 6 | 5 | 4 | 3 | 2 | 1;
   className?: string;
   ellipsis?: boolean;
   capitalize?: boolean;
   whitespacePreWrap?: boolean;
   noWrap?: boolean;
-  i18n?: string;
-  params?: Record<string, string | number>;
   dangerouslySetInnerHTML?: boolean;
 }
 
+const variant_config = {
+  heading: {
+    as: "h3",
+    weight: 500,
+    size: 3,
+  },
+  text: {
+    as: "p",
+    weight: 400,
+    size: 3,
+  },
+  caption: {
+    as: "p",
+    weight: 400,
+    size: 2,
+  },
+}
+
 export function Typography({
+  variant = "text",
   as = "p",
   color = "currentColor",
   align = "left",
   weight = 400,
-  size = "3",
+  size = 3,
   className,
   ellipsis = false,
   capitalize = false,
   whitespacePreWrap = false,
   noWrap = false,
-  i18n,
-  // params,
   dangerouslySetInnerHTML,
   children,
 }: TypographyProps) {
-  // const themeColor = useThemeColor(color);
-  const themeColor = color;
-  // const text = useTranslateCache(i18n || children, params);
-  const text = i18n || children;
+  const config = variant_config[variant];
+
   return (
     createElement(
-      as,
+      as || config.as,
       {
         className,
         style: {
           textAlign: align,
-          color: themeColor,
-          fontWeight: weight,
-          ...size_config[size],
+          color,
+          fontWeight: weight || config.weight,
+          ...size_config[String(size || config.size) as keyof typeof size_config],
           ...(ellipsis ? { textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap" } : {}),
           ...(capitalize ? { textTransform: "capitalize" } : {}),
           ...(whitespacePreWrap ? { whiteSpace: "pre-wrap" } : {}),
@@ -72,121 +83,13 @@ export function Typography({
         ...(dangerouslySetInnerHTML
             ? {
                 dangerouslySetInnerHTML: {
-                  __html: text,
+                  __html: children,
                 }
               }
-            : { children: text }
+            : { children }
           )
         
       },
     )
-  );
-}
-
-export function Heading({
-  as = "h3",
-  color = "text.primary",
-  align = "left",
-  weight = 700,
-  size = "3",
-  className,
-  ellipsis = false,
-  capitalize = false,
-  whitespacePreWrap = false,
-  noWrap = false,
-  i18n,
-  params,
-  dangerouslySetInnerHTML = false,
-  children,
-}: TypographyProps) {
-  return (
-    <Typography
-      as={as}
-      color={color}
-      align={align}
-      weight={weight}
-      size={size}
-      className={className}
-      ellipsis={ellipsis}
-      capitalize={capitalize}
-      whitespacePreWrap={whitespacePreWrap}
-      noWrap={noWrap}
-      i18n={i18n}
-      params={params}
-      dangerouslySetInnerHTML={dangerouslySetInnerHTML}>
-      {children}
-    </Typography>
-  );
-}
-
-export function Text({
-  as = "p",
-  color = "text.primary",
-  align = "left",
-  weight = 400,
-  size = "3",
-  className,
-  ellipsis = false,
-  capitalize = false,
-  whitespacePreWrap = false,
-  noWrap = false,
-  i18n,
-  params,
-  children,
-  dangerouslySetInnerHTML = false,
-}: TypographyProps) {
-  return (
-    <Typography
-      as={as}
-      color={color}
-      align={align}
-      weight={weight}
-      size={size}
-      className={className}
-      ellipsis={ellipsis}
-      capitalize={capitalize}
-      whitespacePreWrap={whitespacePreWrap}
-      noWrap={noWrap}
-      i18n={i18n}
-      params={params}
-      dangerouslySetInnerHTML={dangerouslySetInnerHTML}>
-      {children}
-    </Typography>
-  );
-}
-
-export function Caption({
-  as = "p",
-  color = "text.secondary",
-  align = "left",
-  weight = 400,
-  size = "2",
-  className,
-  ellipsis = false,
-  capitalize = false,
-  whitespacePreWrap = false,
-  noWrap = false,
-  i18n,
-  params,
-  dangerouslySetInnerHTML = false,
-  children,
-}: TypographyProps) {
-  return (
-    <Typography
-      as={as}
-      color={color}
-      align={align}
-      weight={weight}
-      size={size}
-      className={className}
-      ellipsis={ellipsis}
-      capitalize={capitalize}
-      whitespacePreWrap={whitespacePreWrap}
-      noWrap={noWrap}
-      i18n={i18n}
-      params={params}
-      dangerouslySetInnerHTML={dangerouslySetInnerHTML}>
-      {children}
-    </Typography>
   );
 }
