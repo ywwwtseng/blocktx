@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useMiniApp } from "@/contexts/MiniAppContext";
 import {
   ChartIcon,
-  TradeIcon,
+  SmartToyIcon,
   GameIcon,
   EarnIcon,
   ReferralIcon
@@ -16,8 +16,8 @@ import { ConnectWalletButton } from "@/components/common/ConnectWalletButton";
 import { Avatar } from "@/components/common/Avatar";
 
 export function Layout({ children }: { children: React.ReactNode }) {
-  const { platform, tonConnect } = useMiniApp();
-  const safeAreaBottom = platform === "ios" ? 16 : 8;
+  const { platform } = useMiniApp();
+  const safeAreaBottom = platform === "ios" ? 20 : 12;
 
   return (
     <main className="flex flex-col w-full h-screen overflow-hidden pt-12" style={{ paddingBottom: 60 + safeAreaBottom }}>
@@ -36,7 +36,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
         </div>
       </div>
       <div className="flex-1 overflow-y-auto no-scrollbar px-4">
-        {JSON.stringify(tonConnect?.connected)}
         {children}
       </div>
       <div className="fixed left-0 right-0 bottom-0 w-full z-40 flex justify-center items-center mx-auto">
@@ -45,7 +44,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           style={{ paddingBottom: safeAreaBottom }}
         >
           <TabItem href="/" icon={{ element: ChartIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="Analysis" />
-          <TabItem href="/tradeai" icon={{ element: TradeIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="Trade AI" />
+          <TabItem href="/trade-ai" icon={{ element: SmartToyIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="Trade AI" />
           <TabItem href="/game" icon={{ element: GameIcon, color: { active: "url(#linear-gradient)", default: "#7C7C7C" } }} i18n="Game" />
           <TabItem href="/earn" icon={{ element: EarnIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="Earn" />
           <TabItem href="/invite" icon={{ element: ReferralIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="Invite" />

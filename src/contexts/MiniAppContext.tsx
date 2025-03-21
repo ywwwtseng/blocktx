@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, ReactNode } from "react";
-import { postEvent, User, Platform } from '@telegram-apps/sdk';
+import { postEvent, User, Platform } from "@telegram-apps/sdk";
 import { TonConnect, MockTonConnectUI, TonConnectUI } from "@/libs/ton-connect";
 import { useLaunchParams } from "@/hooks/useLaunchParams";
 import { useForceUpdate } from "@/hooks/useForceUpdate";
@@ -34,9 +34,9 @@ export function MiniAppProvider({ children }: MiniAppProviderProps) {
 
   useEffect(() => {
     if (process.env.NODE_ENV === "production" && launchParams) {
-      postEvent("web_app_set_header_color", { color: "#181A20" });
-      postEvent("web_app_set_bottom_bar_color", { color: "#181A20" });
-      postEvent("web_app_set_background_color", { color: "#181A20" });
+      postEvent("web_app_set_header_color", { color: "#000000" });
+      postEvent("web_app_set_bottom_bar_color", { color: "#000000" });
+      postEvent("web_app_set_background_color", { color: "#000000" });
     }
   }, [launchParams]);
   
