@@ -5,7 +5,7 @@ import { useMiniApp } from "@/contexts/MiniAppContext";
 import {
   ChartIcon,
   SmartToyIcon,
-  GameIcon,
+  // GameIcon,
   EarnIcon,
   ReferralIcon
 } from "@/components/icons";
@@ -46,17 +46,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <Avatar />
         </div>
       </div>
-      <div className="flex-1 overflow-y-auto no-scrollbar px-4">
+      <div className="flex-1 overflow-y-auto no-scrollbar">
         {children}
       </div>
       <div
         className="box-border fixed left-0 right-0 bottom-0 w-full z-40 flex justify-center items-start mx-auto border-t border-white/10 bg-[var(--background)]/50 backdrop-blur-[35px] pt-1"
         style={{ height: tabBarHeight }}
       >
-        <div className="flex items-center justify-between w-full px-4">
+        <div className="flex items-center justify-between w-full px-8">
           <TabItem href="/" icon={{ element: ChartIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="Analysis" />
           <TabItem href="/trade-ai" icon={{ element: SmartToyIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="Trade AI" />
-          <TabItem href="/game" icon={{ element: GameIcon, color: { active: "url(#linear-gradient)", default: "#7C7C7C" } }} i18n="Game" />
+          {/* <TabItem href="/game" icon={{ element: GameIcon, color: { active: "url(#linear-gradient)", default: "#7C7C7C" } }} i18n="Game" /> */}
           <TabItem href="/earn" icon={{ element: EarnIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="Earn" />
           <TabItem href="/invite" icon={{ element: ReferralIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="Invite" />
         </div>

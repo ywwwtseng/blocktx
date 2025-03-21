@@ -4,9 +4,3 @@ export interface SocketOptions {
   reconnectInterval?: number;
   maxReconnectAttempts?: number;
 }
-
-export interface SocketMessage {
-  method: string;
-  params: string[];
-  id: number;
-}

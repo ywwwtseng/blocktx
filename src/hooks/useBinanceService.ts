@@ -18,9 +18,23 @@ export enum KlineAttributes {
   Low = "l",
   Close = "c",
   Volume = "v",
+  End = "x",
 }
 
 export type RawKline = (string | number)[];
+
+export type SocketRawKline = {
+  e: string;
+  k: {
+    [KlineAttributes.Timestamp]: number;
+    [KlineAttributes.Open]: number;
+    [KlineAttributes.High]: number;
+    [KlineAttributes.Low]: number;
+    [KlineAttributes.Close]: number;
+    [KlineAttributes.Volume]: number;
+    [KlineAttributes.End]: boolean;
+  };
+}
 
 export type Kline = {
   [KlineAttributes.Timestamp]: number;
@@ -66,6 +80,17 @@ export interface Stream {
   data: Ticker24hr[];
 }
 
+export interface BinanceSocketMessage {
+  method: string;
+  params: string[];
+  id: number;
+}
+
+export interface BinanceSocketEventMessage {
+  stream: string;
+  data: SocketRawKline;
+}
+
 export const endpoints = {
   klines: "/v3/uiKlines",
 }
@@ -95,14 +120,14 @@ type BinanceServiceState = {
   data: {
     klines: Partial<Record<TradingPairSymbol, Kline[]>>;
   };
-  socket: Socket | null;
+  socket: Socket<BinanceSocketEventMessage> | null;
   klines: {
     history: (symbol: TradingPairSymbol) => Promise<void>;
   },
-  init: () => void;
+  init: () => () => void;
 };
 
-export const useBinanceService = create<BinanceServiceState>((set) => ({
+export const useBinanceService = create<BinanceServiceState>((set, get) => ({
   data: {
     klines: {},
   },
@@ -141,15 +166,56 @@ export const useBinanceService = create<BinanceServiceState>((set) => ({
     }
   },
   init: () => {
-    const socket = new Socket({
+    const socket = new Socket<BinanceSocketEventMessage>({
       url: process.env.NEXT_PUBLIC_BINANCE_WS_URL!,
     });
 
-    socket.onOpen = () => {
+    socket.onOpen = async () => {
       set({ socket });
+
+      await get().klines.history(TradingPairSymbol.BTCUSDT);
+
+      socket.send({
+        method: "SUBSCRIBE",
+        params: [
+          events.miniTicker,
+          events.btcusdt.aggTrade,
+          events.usdtusdt.aggTrade,
+          events.btcusdt.depth,
+          events.btcusdt.kline["1s"],
+        ],
+        id: 1
+      });
+      socket.onMessage = (message: BinanceSocketEventMessage) => {
+        if (message.stream === "btcusdt@kline_1s") {
+          set((state) => ({
+            data: {
+              ...state.data,
+              klines: {
+                ...state.data.klines,
+                [TradingPairSymbol.BTCUSDT]: [
+                  ...(state.data.klines[TradingPairSymbol.BTCUSDT] || []),
+                  {
+                    [KlineAttributes.Timestamp]: message.data.k[KlineAttributes.Timestamp],
+                    [KlineAttributes.Open]: message.data.k[KlineAttributes.Open],
+                    [KlineAttributes.High]: message.data.k[KlineAttributes.High],
+                    [KlineAttributes.Low]: message.data.k[KlineAttributes.Low],
+                    [KlineAttributes.Close]: message.data.k[KlineAttributes.Close],
+                    [KlineAttributes.Volume]: message.data.k[KlineAttributes.Volume],
+                  },
+                ],
+              },
+            },
+          }));
+        }
+      }
     };
 
     socket.connect();
+
+    return () => {
+      socket.disconnect();
+    }
   },
 }));
 

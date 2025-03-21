@@ -1,4 +1,4 @@
-import { SocketOptions, SocketMessage } from "./types";
+import { SocketOptions } from "./types";
 
 /**
  * WebSocket 客戶端封裝類，提供自動重連、錯誤處理和狀態管理功能。
@@ -20,7 +20,7 @@ import { SocketOptions, SocketMessage } from "./types";
  * });
  * ```
  */
-export class Socket {
+export class Socket<T> {
   private readonly options: Required<SocketOptions>;
   private ws: WebSocket | null = null;
   private reconnectAttempts = 0;
@@ -31,7 +31,7 @@ export class Socket {
   private isAuthError = false;  // 新增授權錯誤標記
 
   public onOpen: (() => void) | null = null;
-  public onMessage: ((message: SocketMessage) => void) | null = null;
+  public onMessage: ((message: T) => void) | null = null;
   /**
    * 建立新的 WebSocket 客戶端實例
    * @param options - WebSocket 連接配置選項
@@ -195,7 +195,7 @@ export class Socket {
 
     this.ws.onmessage = (event) => {
       try {
-        const message: SocketMessage = JSON.parse(event.data);
+        const message = JSON.parse(event.data);
         this.onMessage?.(message);
       } catch (error) {
         console.error("Failed to parse message:", error);
@@ -284,7 +284,7 @@ export class Socket {
    * 發送消息到 WebSocket 服務器
    * @param message - 要發送的消息物件
    */
-  send(message: SocketMessage): void {
+  send<T>(message: T): void {
     console.log(message,  this.ws?.readyState)
     if (!this.ws || this.ws.readyState !== WebSocket.OPEN) {
       console.error("WebSocket is not connected");

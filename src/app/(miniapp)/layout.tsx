@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect } from "react";
-
+import dynamic from "next/dynamic";
 import { useBinanceService } from "@/hooks/useBinanceService";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { Layout } from "@/components/common/Layout";
 import { MiniAppProvider } from "@/contexts/MiniAppContext";
+
+const WindowSizeProvider = dynamic(() => import("@/contexts/WindowSizeContext").then(mod => mod.WindowSizeProvider), { ssr: false });
 
 export default function MiniAppLayout({
   children,
@@ -16,7 +18,11 @@ export default function MiniAppLayout({
   const { init } = useBinanceService();
 
   useEffect(() => {
-    init();
+    const destroy = init();
+
+    return () => {
+      destroy();
+    }
   }, [init]);
 
   if (!isMounted) {
@@ -25,9 +31,11 @@ export default function MiniAppLayout({
 
   return (
     <MiniAppProvider>
-      <Layout>
-        {children}
-      </Layout>
+      <WindowSizeProvider>
+        <Layout>
+          {children}
+        </Layout>
+      </WindowSizeProvider>
     </MiniAppProvider>
   );
 }
