@@ -35,7 +35,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Image className="rounded-md" src="/logo.png" alt="logo" width={28} height={28} />
         <div className="flex items-center gap-2">
           <div className="py-[3px] px-1 rounded-full border border-white/15 gap-1.5 flex items-center">
-            <UserEnergy value={100} />
+            <UserEnergy value={1000} />
           </div>
           <ConnectWalletButton />
           <Avatar />

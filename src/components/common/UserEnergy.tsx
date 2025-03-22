@@ -1,7 +1,8 @@
-import { useEffect, useState, useMemo, useRef } from "react";
-import clsx from 'clsx';
+import { useEffect, useState, useRef } from "react";
+import clsx from "clsx";
 import Image from "next/image";
-import CountUp from 'react-countup';
+import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
 import { DepositBottomSheet } from "@/components/common/DepositBottomSheet";
 import { PlusIcon } from "@/components/icons";
 import { BaseButton } from "@/components/ui/BaseButton";
@@ -11,17 +12,25 @@ interface UserEnergyProps {
   duration?: number;
 }
 
-export function UserEnergy({ value: src, duration = 1 }: UserEnergyProps) {
-  const cacheValue =useRef(src ? Math.max(src - 100, 0) : 0);
+export function UserEnergy({ value, duration = 0.4 }: UserEnergyProps) {
+  const countUpRef = useRef<HTMLSpanElement>(null);
   const [isActive, setIsActive] = useState(false);
-  const value = useMemo(() => {
-    const oldValue = cacheValue.current;
-    cacheValue.current = src;
-    return [oldValue, src];
-  }, [src]);
+
+  useGSAP(() => {
+    gsap.to(countUpRef.current, {
+      innerText: value,       // 目標數值
+      duration,               // 動畫時間
+      snap: { innerText: 1 }, // 讓數字變整數
+      ease: "power1.out",     // 平滑動畫效果
+      onUpdate: function () { // 加入千分位
+        const currentValue = Math.round(this.targets()[0].innerText);
+        countUpRef.current!.innerText = currentValue.toLocaleString();
+      },
+    });
+  }, [value]);
 
   useEffect(() => {
-    if (value[0] !== value[1]) {
+    if (value) {
       setTimeout(() => {
         setIsActive(true);
         setTimeout(() => {
@@ -39,14 +48,7 @@ export function UserEnergy({ value: src, duration = 1 }: UserEnergyProps) {
         alt="energy"
         width={28}
         height={28} />
-        {JSON.stringify(value)}
-        <div className="flex flex-col">
-          <CountUp start={value[0]} end={value[1]} duration={duration}>
-            {({ countUpRef }) => (
-              <span className="text-white" ref={countUpRef} />
-            )}
-          </CountUp>
-        </div>
+        <span className="text-white transition-all duration-300" ref={countUpRef} />
         <DepositBottomSheet
           trigger={
             <BaseButton>
