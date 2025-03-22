@@ -9,9 +9,8 @@ import {
   EarnIcon,
   ReferralIcon
 } from "@/components/icons";
-import { Typography } from "@/components/ui/Typography";
 import { TabItem } from "@/components/common/TabItem";
-import { DepositButton } from "@/components/common/DepositButton";
+import { UserEnergy } from "@/components/common/UserEnergy";
 import { ConnectWalletButton } from "@/components/common/ConnectWalletButton";
 import { Avatar } from "@/components/common/Avatar";
 
@@ -36,11 +35,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Image className="rounded-md" src="/logo.png" alt="logo" width={28} height={28} />
         <div className="flex items-center gap-2">
           <div className="py-[3px] px-1 rounded-full border border-white/15 gap-1.5 flex items-center">
-            <div className="flex items-center gap-1">
-              <Image src="/energy.png" alt="energy" width={28} height={28} />
-              <Typography variant="text" weight={700}>100</Typography>
-              <DepositButton />
-            </div>
+            <UserEnergy energy={[100, 200]} />
           </div>
           <ConnectWalletButton />
           <Avatar />
