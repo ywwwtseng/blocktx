@@ -5,7 +5,7 @@ import clsx from "clsx";
 import { postEvent } from "@telegram-apps/sdk";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Typography } from "@/components/ui/Typography";
+import { I18nTypography } from "@/components/common/I18nTypography";
 
 
 interface TabItemProps {
@@ -47,16 +47,14 @@ export function TabItem({ icon, href, i18n }: TabItemProps) {
         href={href}
       >
         {<Icon className={clsx("w-6 h-6 transition-transform origin-center duration-200", isActive && "scale-110")} color={pathname === href ? icon.color.active : icon.color.default} />}
-        <Typography
+        <I18nTypography
           variant="text"
           color={pathname === href ? "white" : "#7C7C7C"}
           noWrap
-          capitalize
           size={2}
           weight={500}
-        >
-          {i18n}
-        </Typography>
+          i18n={i18n}
+        />
       </Link>
     </div>
   );

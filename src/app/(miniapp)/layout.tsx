@@ -1,13 +1,12 @@
 "use client";
 
 import { useEffect } from "react";
-import dynamic from "next/dynamic";
 import { useBinanceService } from "@/hooks/useBinanceService";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { Layout } from "@/components/common/Layout";
 import { MiniAppProvider } from "@/contexts/MiniAppContext";
-
-const WindowSizeProvider = dynamic(() => import("@/contexts/WindowSizeContext").then(mod => mod.WindowSizeProvider), { ssr: false });
+import { I18nProvider } from "@/contexts/I18nContext";
+import { WindowSizeProvider } from "@/contexts/WindowSizeContext/dynamic";
 
 export default function MiniAppLayout({
   children,
@@ -31,11 +30,13 @@ export default function MiniAppLayout({
 
   return (
     <MiniAppProvider>
-      <WindowSizeProvider>
-        <Layout>
-          {children}
-        </Layout>
-      </WindowSizeProvider>
+      <I18nProvider>
+        <WindowSizeProvider>
+          <Layout>
+            {children}
+          </Layout>
+        </WindowSizeProvider>
+      </I18nProvider>
     </MiniAppProvider>
   );
 }

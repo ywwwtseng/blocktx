@@ -22,6 +22,8 @@ export function WindowSizeProvider({ children }: { children: React.ReactNode }) 
   return <WindowSizeContext.Provider value={size}>{children}</WindowSizeContext.Provider>;
 }
 
+
+
 export function useWindowSize() {
   return useContext(WindowSizeContext);
 }

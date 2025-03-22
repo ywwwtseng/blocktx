@@ -35,7 +35,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Image className="rounded-md" src="/logo.png" alt="logo" width={28} height={28} />
         <div className="flex items-center gap-2">
           <div className="py-[3px] px-1 rounded-full border border-white/15 gap-1.5 flex items-center">
-            <UserEnergy energy={[100, 200]} />
+            <UserEnergy value={100} />
           </div>
           <ConnectWalletButton />
           <Avatar />
@@ -49,11 +49,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
         style={{ height: tabBarHeight }}
       >
         <div className="flex items-center justify-between w-full px-8">
-          <TabItem href="/" icon={{ element: ChartIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="Analysis" />
-          <TabItem href="/trade-ai" icon={{ element: SmartToyIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="Trade AI" />
+          <TabItem href="/" icon={{ element: ChartIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="common.analysis" />
+          <TabItem href="/trade-ai" icon={{ element: SmartToyIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="common.tradeai" />
           {/* <TabItem href="/game" icon={{ element: GameIcon, color: { active: "url(#linear-gradient)", default: "#7C7C7C" } }} i18n="Game" /> */}
-          <TabItem href="/earn" icon={{ element: EarnIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="Earn" />
-          <TabItem href="/invite" icon={{ element: ReferralIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="Invite" />
+          <TabItem href="/earn" icon={{ element: EarnIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="common.earn" />
+          <TabItem href="/invite" icon={{ element: ReferralIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="common.invite" />
         </div>
       </div>
     </main>
