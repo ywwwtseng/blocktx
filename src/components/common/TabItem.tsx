@@ -6,6 +6,7 @@ import { postEvent } from "@telegram-apps/sdk";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { I18nTypography } from "@/components/common/I18nTypography";
+import { BaseButton } from "@/components/ui/BaseButton";
 
 
 interface TabItemProps {
@@ -16,14 +17,31 @@ interface TabItemProps {
       default: string;
     };
   };
-  href: string;
+  href?: string;
   i18n: string;
+  onClick?: () => void;
 }
 
-export function TabItem({ icon, href, i18n }: TabItemProps) {
+export function TabItem({ icon, href, i18n, onClick }: TabItemProps) {
   const [isActive, setIsActive] = useState(false);
   const pathname = usePathname();
   const Icon = icon.element;
+
+  const children = (
+    <>
+      <Icon
+        className={clsx("w-6 h-6 transition-transform origin-center duration-200", isActive && "scale-110")}
+        color={pathname === href || isActive ? icon.color.active : icon.color.default}
+      />
+      <I18nTypography
+        variant="text"
+        color={pathname === href || isActive ? "white" : "#7C7C7C"}
+        noWrap size={2}
+        weight={500}
+        i18n={i18n}
+      />
+    </>
+  );
 
   return (
     <div
@@ -42,20 +60,21 @@ export function TabItem({ icon, href, i18n }: TabItemProps) {
         }, 200);
       }}
     >
-      <Link
-        className="w-[40px] flex flex-col items-center gap-0.5 opacity-100 group duration-150"
-        href={href}
-      >
-        {<Icon className={clsx("w-6 h-6 transition-transform origin-center duration-200", isActive && "scale-110")} color={pathname === href ? icon.color.active : icon.color.default} />}
-        <I18nTypography
-          variant="text"
-          color={pathname === href ? "white" : "#7C7C7C"}
-          noWrap
-          size={2}
-          weight={500}
-          i18n={i18n}
-        />
-      </Link>
+      {href ? (
+        <Link
+          className="w-[40px] flex flex-col items-center gap-0.5 opacity-100 group duration-150"
+          href={href}
+        >
+          {children}
+        </Link>
+      ) : (
+        <BaseButton
+          className="w-[40px] flex flex-col items-center gap-0.5 opacity-100 group duration-150"
+          onClick={onClick}
+        >
+          {children}
+        </BaseButton>
+      )}
     </div>
   );
 }

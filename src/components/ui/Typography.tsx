@@ -33,7 +33,7 @@ export interface TypographyProps extends PropsWithChildren {
 const variant_config = {
   heading: {
     as: "h3",
-    weight: 500,
+    weight: 700,
     size: 3,
   },
   text: {
@@ -50,11 +50,11 @@ const variant_config = {
 
 export function Typography({
   variant = "text",
-  as = "p",
+  as,
   color = "currentColor",
   align = "left",
-  weight = 400,
-  size = 3,
+  weight,
+  size,
   className,
   ellipsis = false,
   capitalize = false,

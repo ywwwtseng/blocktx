@@ -2,7 +2,9 @@ import { useEffect, useState, useMemo, useRef } from "react";
 import clsx from 'clsx';
 import Image from "next/image";
 import CountUp from 'react-countup';
-import { DepositButton } from "@/components/common/DepositButton";
+import { DepositBottomSheet } from "@/components/common/DepositBottomSheet";
+import { PlusIcon } from "@/components/icons";
+import { BaseButton } from "@/components/ui/BaseButton";
 
 interface UserEnergyProps {
   value: number;
@@ -20,12 +22,14 @@ export function UserEnergy({ value: src, duration = 1 }: UserEnergyProps) {
 
   useEffect(() => {
     if (value[0] !== value[1]) {
-      setIsActive(true);
       setTimeout(() => {
-        setIsActive(false);
-      }, 200);
+        setIsActive(true);
+        setTimeout(() => {
+          setIsActive(false);
+        }, 200);
+      }, duration * 1000);
     }
-  }, [value]);
+  }, [value, duration]);
 
   return (
     <div className="flex items-center gap-1">
@@ -35,15 +39,21 @@ export function UserEnergy({ value: src, duration = 1 }: UserEnergyProps) {
         alt="energy"
         width={28}
         height={28} />
+        {JSON.stringify(value)}
         <div className="flex flex-col">
-          <div className="h-[0px] overflow-hidden">{src}</div>
           <CountUp start={value[0]} end={value[1]} duration={duration}>
             {({ countUpRef }) => (
               <span className="text-white" ref={countUpRef} />
             )}
           </CountUp>
         </div>
-      <DepositButton />
+        <DepositBottomSheet
+          trigger={
+            <BaseButton>
+              <PlusIcon className="w-5 h-5 -translate-y-[1px]" />
+            </BaseButton>
+          }
+        />
     </div>
   );
 }
