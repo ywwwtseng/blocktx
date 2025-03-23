@@ -1,10 +1,6 @@
-import { BottomSheet } from "@/components/ui/BottomSheet";
+import { BottomSheet, BottomSheetTriggerTypeProps } from "@/components/ui/BottomSheet";
 
-interface InviteFriendBottomSheetProps {
-  trigger: React.ReactNode;
-}
-
-export function InviteFriendBottomSheet({ trigger }: InviteFriendBottomSheetProps) {
+export function InviteFriendBottomSheet({ trigger }: BottomSheetTriggerTypeProps) {
   return (
     <BottomSheet
       trigger={trigger}

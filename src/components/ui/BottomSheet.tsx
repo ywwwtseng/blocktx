@@ -3,10 +3,13 @@
 import { Drawer, DialogProps } from "vaul";
 import { I18nTypography } from "@/components/common/I18nTypography";
 
-export type BottomSheetProps = DialogProps & {
+export interface BottomSheetTriggerTypeProps {
   trigger?: React.ReactNode;
-  children: React.ReactNode;
+}
+
+export type BottomSheetProps = DialogProps & BottomSheetTriggerTypeProps & {
   title: string;
+  children: React.ReactNode;
 }
 
 export function BottomSheet({ trigger, title, children, ...props }: BottomSheetProps) {

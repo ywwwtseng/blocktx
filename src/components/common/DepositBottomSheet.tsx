@@ -1,10 +1,6 @@
-import { BottomSheet } from "@/components/ui/BottomSheet";
+import { BottomSheet, BottomSheetTriggerTypeProps } from "@/components/ui/BottomSheet";
 
-interface DepositBottomSheetProps {
-  trigger: React.ReactNode;
-}
-
-export function DepositBottomSheet({ trigger }: DepositBottomSheetProps) {
+export function DepositBottomSheet({ trigger }: BottomSheetTriggerTypeProps) {
   return (
     <BottomSheet
       trigger={trigger}
