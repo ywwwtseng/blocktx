@@ -14,6 +14,7 @@ import { ConnectWalletButton } from "@/components/common/ConnectWalletButton";
 import { Avatar } from "@/components/common/Avatar";
 import { TabItem } from "@/components/common/TabItem";
 import { InviteFriendBottomSheet } from "@/components/common/InviteFriendBottomSheet";
+
 export function Layout({ children }: { children: React.ReactNode }) {
   const { platform } = useMiniApp();
   const headerHeight = 52;

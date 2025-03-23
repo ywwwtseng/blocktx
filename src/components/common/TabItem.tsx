@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import clsx from "clsx";
 import { postEvent } from "@telegram-apps/sdk";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -30,7 +29,7 @@ export function TabItem({ icon, href, i18n, onClick }: TabItemProps) {
   const children = (
     <>
       <Icon
-        className={clsx("w-6 h-6 transition-transform origin-center duration-200", isActive && "scale-110")}
+        className="w-6 h-6 transition-transform origin-center duration-200"
         color={pathname === href || isActive ? icon.color.active : icon.color.default}
       />
       <I18nTypography
