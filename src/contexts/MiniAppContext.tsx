@@ -1,30 +1,31 @@
 "use client";
 
 import { createContext, useContext, useEffect, ReactNode } from "react";
-import { postEvent, User, Platform } from "@telegram-apps/sdk";
+import { postEvent, User, Platform } from "@telegram-apps/sdk-react";
 import { TonConnect, MockTonConnectUI, TonConnectUI } from "@/libs/ton-connect";
-import { useLaunchParams } from "@/hooks/useLaunchParams";
+import { useTMA } from "@/hooks/useTMA";
 import { useForceUpdate } from "@/hooks/useForceUpdate";
 
-export interface MiniAppContextValue {
+export interface MiniAppContextState {
   user: User | undefined;
   platform: Platform | undefined;
   tonConnect: TonConnect | undefined;
+  initDataRaw: string | null | undefined;
 }
 
 export interface MiniAppProviderProps {
   children: ReactNode;
 }
 
-const MiniAppContext = createContext<MiniAppContextValue | undefined>(undefined);
+const MiniAppContext = createContext<MiniAppContextState | undefined>(undefined);
 
 export function MiniAppProvider({ children }: MiniAppProviderProps) {
   const forceUpdate = useForceUpdate();
-  const launchParams = useLaunchParams();
+  const { launchParams, initDataRaw } = useTMA();
   const user = launchParams?.tgWebAppData?.user;
   const platform = launchParams?.tgWebAppPlatform;
   const tonConnect = TonConnect.getInstance({
-    TonConnectUI: process.env.NODE_ENV === 'development'
+    TonConnectUI: process.env.NODE_ENV === "development"
       ? MockTonConnectUI
       : TonConnectUI,
     onStatusChange: () => {
@@ -40,10 +41,11 @@ export function MiniAppProvider({ children }: MiniAppProviderProps) {
     }
   }, [launchParams]);
   
-  const value: MiniAppContextValue = {
+  const value: MiniAppContextState = {
     user,
     platform,
-    tonConnect
+    tonConnect,
+    initDataRaw,
   };
 
   return (

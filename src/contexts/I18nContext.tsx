@@ -1,30 +1,21 @@
-import { createContext, ReactNode, useState, useEffect, useContext } from "react";
-import { translation, LanguageCode } from "@/i18n";
-import { useMiniApp } from "@/contexts/MiniAppContext";
+import { createContext, ReactNode, useContext } from "react";
+import { translation } from "@/i18n";
+import { useClient } from "@/contexts/ClientContext";
 
-interface I18nContextValue {
-  languageCode: LanguageCode;
+interface I18nContextState {
   t: (key: string, params?: Record<string, string | number>) => string;
-  setLanguageCode: (languageCode: LanguageCode) => void;
 }
 
-const I18nContext = createContext<I18nContextValue>({
-  languageCode: "en",
+const I18nContext = createContext<I18nContextState>({
   t: translation("en"),
-  setLanguageCode: () => {},
 });
 
 export const I18nProvider = ({ children }: { children: ReactNode }) => {
-  const { user } = useMiniApp();
-  const [languageCode, setLanguageCode] = useState<LanguageCode>(user?.language_code || "en");
+  const { languageCode } = useClient();
 
   const t = translation(languageCode);
 
-  useEffect(() => {
-    setLanguageCode(user?.language_code || "en");
-  }, [user]);
-
-  return <I18nContext.Provider value={{ languageCode, t, setLanguageCode }}>{children}</I18nContext.Provider>;
+  return <I18nContext.Provider value={{ t }}>{children}</I18nContext.Provider>;
 };
 
 export const useI18n = () => {

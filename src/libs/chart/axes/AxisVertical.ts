@@ -1,4 +1,4 @@
-import * as CanvasUtils from "../utils/CanvasUtils";
+import { CanvasUtils} from "../utils/CanvasUtils";
 import { Chart } from "../Chart";
 import { Bounds, Tick } from "../types";
 import { Axis, AxisSettings } from "./Axis";

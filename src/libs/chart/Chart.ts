@@ -1,4 +1,4 @@
-import * as ArrayUtils from "../../utils/ArrayUtils";
+import { ArrayUtils } from "./utils/ArrayUtils";
 import { AxisBottom, AxisBottomSettings } from "./axes/AxisBottom";
 import { AxisRight, AxisRightSettings } from "./axes/AxisRight";
 import { AxisLeft, AxisLeftSettings } from "./axes/AxisLeft";

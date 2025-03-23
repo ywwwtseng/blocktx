@@ -1,5 +1,5 @@
-import * as TimeUtils from "../utils/TimeUtils";
-import * as CanvasUtils from "../utils/CanvasUtils";
+import { TimeUtils} from "../utils/TimeUtils";
+import { CanvasUtils } from "../utils/CanvasUtils";
 
 import { Chart } from "../Chart";
 import { Axis, AxisSettings } from "./Axis";

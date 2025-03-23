@@ -1,4 +1,4 @@
-import * as TimeUtils from "../utils/TimeUtils";
+import { TimeUtils } from "../utils/TimeUtils";
 import { Chart } from "../Chart";
 
 

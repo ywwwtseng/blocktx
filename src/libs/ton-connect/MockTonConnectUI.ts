@@ -1,5 +1,5 @@
 import { ConnectedWallet, CHAIN } from "@tonconnect/ui";
-import * as JsonUtils from "@/utils/JsonUtils";
+import { JsonUtils } from "@/utils/JsonUtils";
 
 export class MockTonConnectUI {
   public wallet: ConnectedWallet | null = JsonUtils.parse(sessionStorage.getItem("mock-tonconnect-wallet")!) || null;

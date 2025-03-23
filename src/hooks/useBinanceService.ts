@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { useShallow } from "zustand/react/shallow";
 import { Socket } from '@/libs/socket';
-import * as URLUtils from "@/utils/URLUtils";
+import { URLUtils } from "@/utils/URLUtils";
 
 export enum TradingPairSymbol {
   BTCUSDT = "BTCUSDT",

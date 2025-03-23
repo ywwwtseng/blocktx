@@ -1,12 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { postEvent } from "@telegram-apps/sdk";
+import { postEvent } from "@telegram-apps/sdk-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { I18nTypography } from "@/components/common/I18nTypography";
 import { BaseButton } from "@/components/ui/BaseButton";
-
 
 interface TabItemProps {
   icon: {

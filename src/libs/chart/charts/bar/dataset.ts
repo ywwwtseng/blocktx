@@ -1,5 +1,5 @@
 import { Chart } from "../../Chart";
-import * as TimeUtils from "../../utils/TimeUtils";
+import { TimeUtils} from "../../utils/TimeUtils";
 
 export const dataset = (chart: Chart, key: string, transform: { x: (value: number) => number; y: (value: number) => number }) => {
   const data = chart.data;
