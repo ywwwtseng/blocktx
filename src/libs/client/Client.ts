@@ -59,7 +59,7 @@ export class Client {
     return this.request<T>(url, options);
   }
 
-  post<T, U>(url: string, body?: U, options?: RequestInit): Promise<T> {
+  post<T, U = unknown>(url: string, body?: U, options?: RequestInit): Promise<T> {
     return this.request<T>(url, {
       method: "POST",
       body: body instanceof FormData ? body : JSON.stringify(body || {}),
@@ -67,7 +67,7 @@ export class Client {
     });
   }
 
-  put<T, U>(url: string, body?: U, options?: RequestInit): Promise<T> {
+  put<T, U = unknown>(url: string, body?: U, options?: RequestInit): Promise<T> {
     return this.request<T>(url, {
       method: "PUT",
       body: JSON.stringify(body || {}),
@@ -75,7 +75,7 @@ export class Client {
     });
   }
 
-  delete<T, U>(url: string, body?: U, options?: RequestInit): Promise<T> {
+  delete<T, U = unknown>(url: string, body?: U, options?: RequestInit): Promise<T> {
     return this.request<T>(url, {
       method: "DELETE",
       body: JSON.stringify(body || {}),

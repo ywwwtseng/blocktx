@@ -1,0 +1,93 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url  	    = env("DATABASE_URL")
+}
+
+model User {
+  user_id           String    @id @default(uuid())
+  telegram_id       String    @unique @db.VarChar(50)
+  nickname          String    @db.VarChar(100)
+  avatar_url        String?   @db.VarChar(255)
+  timezone          String?   @db.VarChar(20)
+  language_code     String    @default("en") @db.VarChar(10)
+  ton_wallet        String?   @db.VarChar(100)
+  premium_ends_at   DateTime?
+
+  created_at        DateTime  @default(now())
+  updated_at        DateTime  @updatedAt
+
+  invite_code       Int       @unique @default(autoincrement())
+  // 新增: 被誰邀請的欄位 (自引用關聯)
+  invited_by        User?     @relation("UserInvitations", fields: [invited_by_id], references: [user_id])
+  invited_by_id     String?   // 關聯被邀請者的 user_id
+  // 反向關聯: 我邀請了哪些人
+  invited_users     User[]    @relation("UserInvitations")
+
+  last_login_log    LoginLog?
+  energy            Energy?
+
+  transactions      Transaction[]
+}
+
+model LoginLog {
+  id         Int      @id @default(autoincrement())
+  user_id    String   @unique
+  user       User     @relation(fields: [user_id], references: [user_id])
+  ip         String   @db.VarChar(50)
+  country    String   @db.VarChar(50)
+  city       String   @db.VarChar(50)
+  timezone   String   @db.VarChar(50)
+  user_agent String   @db.VarChar(255)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Energy {
+  id         Int      @id @default(autoincrement())
+  user_id    String   @unique
+  user       User     @relation(fields: [user_id], references: [user_id])
+  current    Int
+  max        Int
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+enum TransactionType {
+  premium
+  energy
+}
+
+enum TransactionStatus {
+  await     // 待處理, 未開始執行
+  pending   // 處理中, 等待 Ton 確認
+  succeeded // 成功, 已確認
+  failed    // 失敗
+}
+
+model Transaction {
+  id            String              @id
+  ton_wallet    String              @db.VarChar(100)
+  type          TransactionType
+  status        TransactionStatus
+  amount        Decimal             @db.Decimal(20,10)
+  gas_fee       Decimal?            @db.Decimal(20,10)
+  tx_hash       String?             @db.VarChar(255)                        
+  payload       Json?                                
+  created_at    DateTime            @default(now())        
+  updated_at    DateTime            @updatedAt     
+
+  user_id       String        
+  user          User                @relation(fields: [user_id], references: [user_id]) 
+}

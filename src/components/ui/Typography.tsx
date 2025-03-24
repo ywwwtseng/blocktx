@@ -44,7 +44,7 @@ const variant_config = {
   caption: {
     as: "p",
     weight: 400,
-    size: 2,
+    size: 1,
   },
 }
 

@@ -1,43 +1,30 @@
-import { useEffect, useRef, useState } from "react";
-import { useFadeIn } from "@/hooks/useFadeIn";
+import { useEffect, useState } from "react";
 import { useClient } from "@/contexts/ClientContext";
 import { LogoIcon } from "@/components/icons";
 import { Typography } from "@/components/ui/Typography";
 
-interface LaunchScreenProps {
-  minDuration?: number;
-}
-
-export function LaunchScreen({ minDuration = 1000 }: LaunchScreenProps) {
+  export function LaunchScreen() {
   const { authorized } = useClient();
   const [hide, setHide] = useState(false);
-  const createdAt = useRef(Date.now());
-
-  useFadeIn("#launch-screen");
 
   useEffect(() => {
     if (!authorized) {
       return;
     }
 
-    const timer = setTimeout(() => {
-      setHide(true);
-    }, Math.max(minDuration, Date.now() - createdAt.current));
+    setHide(true);
 
-    return () => clearTimeout(timer);
-  }, [minDuration, authorized]);
+  }, [authorized]);
 
   return (
     <div
-      className="fixed left-0 right-0 bottom-0 top-0 flex items-center justify-center transition-opacity duration-300"
+      className="bg-black fixed left-0 right-0 bottom-0 top-0 flex items-center justify-center transition-opacity duration-300"
       style={{
-        backgroundColor: "#000000",
         opacity: hide ? 0 : 1,
         pointerEvents: hide ? "none" : "auto",
       }}>
       <div
-        id="launch-screen"
-        className="flex flex-col items-center gap-2"
+        className="animate-fade-in flex flex-col items-center gap-2"
         style={{
           transform: "translateY(-27px)",
         }}

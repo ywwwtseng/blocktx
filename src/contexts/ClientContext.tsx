@@ -1,4 +1,5 @@
 import { createContext, useMemo, useState, useEffect, useCallback, ReactNode, useContext } from "react";
+import { User } from "@prisma/client";
 import { useMiniApp } from "@/contexts/MiniAppContext";
 import { Client } from '@/libs/client/Client';
 
@@ -11,14 +12,16 @@ interface ClientContextState {
   };
   authorized: boolean;
   languageCode: string;
+  user: User | undefined;
 }
 
 const ClientContext = createContext<ClientContextState | undefined>(undefined);
 
 export const ClientProvider = ({ children }: { children: ReactNode }) => {
-  const { initDataRaw, user } = useMiniApp();
+  const { initDataRaw } = useMiniApp();
   const [authorized, setAuthorized] = useState(false);
   const [languageCode, setLanguageCode] = useState<string>("en");
+  const [user, setUser] = useState<User | undefined>(undefined);
   const client = useMemo(() => {
     const headers: Record<string, string> = {};
 
@@ -33,14 +36,17 @@ export const ClientProvider = ({ children }: { children: ReactNode }) => {
     setAuthorized(false);
     
     client
-      .post<{ data: { telegram_id: string; language_code: string; } }, { language_code: string; }>("/api/auth", {
-        language_code: user?.language_code || "en",
-      })
+      .post<{ data: User }>("/api/auth")
       .then((res) => {
+        setUser(res.data);
         setLanguageCode(res.data.language_code);
         setAuthorized(true);
+      })
+      .catch((err) => {
+        console.error(err);
+        setAuthorized(false);
       });
-  }, [client, user]);
+  }, [client]);
 
   useEffect(() => {
     auth();
@@ -56,6 +62,7 @@ export const ClientProvider = ({ children }: { children: ReactNode }) => {
     },
     authorized,
     languageCode,
+    user,
   };
   return <ClientContext.Provider value={value}>{children}</ClientContext.Provider>;
 };

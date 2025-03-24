@@ -29,11 +29,13 @@ export class TMAUtils {
       }
 
       return {
-        telegram_id: user.id,
+        telegram_id: String(user.id),
         nickname: user.nickname || "",
         first_name: user.first_name || "",
         last_name: user.last_name || "",
         photo_url: user.photo_url || null,
+        language_code: user.language_code || null,
+        start_param: initData.get("start_param") || null,
       };
     } catch {
       throw new AppError(ErrorCodes.INVALID_CREDENTIALS, process.env.TELEGRAM_BOT_TOKEN!);

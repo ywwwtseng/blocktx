@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import { useMiniApp } from "@/contexts/MiniAppContext";
 import {
@@ -18,6 +19,7 @@ import { LaunchScreen } from "@/components/common/LaunchScreen";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const { platform } = useMiniApp();
+  const [openInviteFriendsBottomSheet, setOpenInviteFriendsBottomSheet] = useState(false);
   const headerHeight = 52;
   const safeAreaBottom = platform === "ios" ? 20 : 12;
   const tabBarHeight = 60 + safeAreaBottom;
@@ -51,13 +53,23 @@ export function Layout({ children }: { children: React.ReactNode }) {
         style={{ height: tabBarHeight }}
       >
         <div className="flex items-center justify-between w-full px-8">
-          <TabItem href="/" icon={{ element: ChartIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="common.analysis" />
+          <TabItem href="/" icon={{ element: ChartIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="common.analytics" />
           <TabItem href="/trade-ai" icon={{ element: SmartToyIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="common.tradeai" />
           {/* <TabItem href="/game" icon={{ element: GameIcon, color: { active: "url(#linear-gradient)", default: "#7C7C7C" } }} i18n="Game" /> */}
           <TabItem href="/earn" icon={{ element: EarnIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="common.earn" />
-          <InviteFriendsBottomSheet trigger={
-            <TabItem onClick={() => {}} icon={{ element: ReferralIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="common.invite" />
-          } />
+          <TabItem
+            onClick={() => {
+              setOpenInviteFriendsBottomSheet(true);
+            }}
+            icon={{ element: ReferralIcon, color: { active: "#fff", default: "#7C7C7C" } }}
+            i18n="common.invite"
+          />
+          <InviteFriendsBottomSheet
+            open={openInviteFriendsBottomSheet}
+            onClose={() => {
+              setOpenInviteFriendsBottomSheet(false);
+            }}
+          />
         </div>
       </div>
       <LaunchScreen />

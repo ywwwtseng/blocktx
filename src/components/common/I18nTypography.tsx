@@ -1,7 +1,7 @@
 import { Typography, TypographyProps } from "@/components/ui/Typography";
 import { useI18n } from "@/contexts/I18nContext";
 
-interface I18nTypographyProps extends TypographyProps {
+export interface I18nTypographyProps extends TypographyProps {
   i18n: string;
   params?: Record<string, string | number>;
 }

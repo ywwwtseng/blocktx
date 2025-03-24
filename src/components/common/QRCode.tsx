@@ -24,14 +24,14 @@ export function QRCodeCanvas({ url }: QRCodeProps) {
     };
 
     const drawAppleStyleQR = async (text: string, canvasId: string) => {
-      const scale = 0.35;
+      const scale = 0.3;
       const canvas = document.getElementById(canvasId) as HTMLCanvasElement;
       const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
     
       // 生成 QR Code 但不直接繪製
       const qrData = QRCode.create(text, {
         errorCorrectionLevel: "H",
-        version: 3,
+        version: 6,
       });
       const cellSize = 20; // 每個單元格的大小
       const qrSize = qrData.modules.size;
@@ -55,7 +55,7 @@ export function QRCodeCanvas({ url }: QRCodeProps) {
       for (let r = 0; r < qrSize; r++) {
         for (let c = 0; c < qrSize; c++) {
           if (qrData.modules.data[r * qrSize + c]) {
-            drawRoundedRect(ctx, c * cellSize + margin, r * cellSize + margin, cellSize, cellSize, 12);
+            drawRoundedRect(ctx, c * cellSize + margin, r * cellSize + margin, cellSize, cellSize, 15);
           }
         }
       }
