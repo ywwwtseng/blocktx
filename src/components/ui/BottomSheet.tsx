@@ -29,11 +29,11 @@ export function BottomSheet({ trigger, title, children, ...props }: BottomSheetP
           style={{ backgroundColor: "#000" }}>
           <div className="p-4 rounded-t-[10px] flex-1">
             <div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-zinc-300 mb-2" />
-            <div className="max-w-md mx-auto flex flex-col items-center gap-1">
+            <div className="max-w-md mx-auto flex flex-col items-center gap-2">
               <Drawer.Title className="hidden">
                 {title}
               </Drawer.Title>
-              <I18nTypography variant="heading" i18n={title} />
+              <I18nTypography variant="heading" size={4} i18n={title} />
               <Drawer.Description className="hidden" />
               <div className="gap-2">
                 {children}

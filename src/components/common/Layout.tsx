@@ -13,7 +13,7 @@ import { UserEnergy } from "@/components/common/UserEnergy";
 import { ConnectWalletButton } from "@/components/common/ConnectWalletButton";
 import { Avatar } from "@/components/common/Avatar";
 import { TabItem } from "@/components/common/TabItem";
-import { InviteFriendBottomSheet } from "@/components/common/InviteFriendBottomSheet";
+import { InviteFriendsBottomSheet } from "@/components/common/InviteFriendsBottomSheet";
 import { LaunchScreen } from "@/components/common/LaunchScreen";
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -55,7 +55,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <TabItem href="/trade-ai" icon={{ element: SmartToyIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="common.tradeai" />
           {/* <TabItem href="/game" icon={{ element: GameIcon, color: { active: "url(#linear-gradient)", default: "#7C7C7C" } }} i18n="Game" /> */}
           <TabItem href="/earn" icon={{ element: EarnIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="common.earn" />
-          <InviteFriendBottomSheet trigger={
+          <InviteFriendsBottomSheet trigger={
             <TabItem onClick={() => {}} icon={{ element: ReferralIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="common.invite" />
           } />
         </div>
