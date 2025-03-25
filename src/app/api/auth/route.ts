@@ -2,7 +2,8 @@ import { NextRequest } from "next/server";
 import { prisma } from "@/libs/prisma";
 import { RequestUtils } from "@/utils/RequestUtils";
 import { ResponseUtils, ErrorInput } from "@/utils/ResponseUtils";
-import { TMAUtils } from "@/utils/TMAUtils";
+import { StartParamType } from "@/utils/TMAUtils";
+import { validate } from "@/actions/tma";
 
 export async function POST(request: NextRequest) {
   try {
@@ -13,7 +14,7 @@ export async function POST(request: NextRequest) {
       photo_url,
       language_code,
       start_param,
-    } = TMAUtils.validate(request);
+    } = await validate(request);
 
     const user = await prisma.user.upsert({
       where: {
@@ -55,13 +56,12 @@ export async function POST(request: NextRequest) {
     });
 
     if (
-      start_param
-      && start_param.startsWith("r_")
+      start_param.type === StartParamType.REFERRAL
       && !user.invited_by_id
     ) {
-      const invite_code = Number(start_param.replace("r_", ""));
+      const invite_code = start_param.value as number;
 
-      if (invite_code !== user.invite_code) {
+      if (invite_code && invite_code !== user.invite_code) {
         const invited_by = await prisma.user.findUnique({
           where: {
             invite_code,

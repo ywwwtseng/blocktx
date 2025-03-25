@@ -6,7 +6,11 @@ export class URLUtils {
       .join('&');
   }
 
-  static stringifyUrl(url: string, params: Record<string, unknown>) {
+  static stringifyUrl(url: string, params?: Record<string, unknown>) {
+    if (!params) {
+      return url;
+    }
+
     return `${url}?${this.stringify(params)}`;
   }
 }
