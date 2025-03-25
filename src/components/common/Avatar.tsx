@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { HStack } from "@/components/ui/Stack";
 import { useMiniApp } from "@/contexts/MiniAppContext";
 
 export interface AvatarProps {
@@ -23,15 +24,16 @@ export function Avatar({ size = 36 }: AvatarProps) {
   }
 
   return (
-    <div 
-      className="text-white text-sm font-medium flex items-center justify-center border-primary"
-      style={{
-        width: size,
-        height: size,
-        fontSize: Math.floor(size * 0.4)
-      }}
+    <HStack 
+      className="border-primary"
+      width={size}
+      height={size}
     >
-      {user?.first_name?.charAt(0).toUpperCase() ?? "?"}
-    </div>
+      <span
+        className="text-white text-sm font-medium"
+        style={{ fontSize: Math.floor(size * 0.4) }}>
+        {user?.first_name?.charAt(0).toUpperCase() ?? "?"}
+      </span>
+    </HStack>
   );
 }

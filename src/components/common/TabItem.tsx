@@ -6,6 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { I18nTypography } from "@/components/common/I18nTypography";
 import { BaseButton } from "@/components/ui/BaseButton";
+import { HStack } from "@/components/ui/Stack";
 
 interface TabItemProps {
   icon: {
@@ -42,8 +43,8 @@ export function TabItem({ icon, href, i18n, onClick }: TabItemProps) {
   );
 
   return (
-    <div
-      className="flex items-center justify-center w-[52px] h-[52px] rounded-[4px]"
+    <HStack
+      className="w-[52px] h-[52px] rounded-[4px]"
       onClick={() => {
         if (pathname === href) return;
 
@@ -73,6 +74,6 @@ export function TabItem({ icon, href, i18n, onClick }: TabItemProps) {
           {children}
         </BaseButton>
       )}
-    </div>
+    </HStack>
   );
 }

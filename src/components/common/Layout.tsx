@@ -18,6 +18,7 @@ import { Avatar } from "@/components/common/Avatar";
 import { TabItem } from "@/components/common/TabItem";
 import { InviteFriendsBottomSheet } from "@/components/common/InviteFriendsBottomSheet";
 import { LaunchScreen } from "@/components/common/LaunchScreen";
+import { HStack } from "@/components/ui/Stack";
 
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -39,27 +40,29 @@ export function Layout({ children }: { children: React.ReactNode }) {
         paddingBottom: tabBarHeight,
       }}
     >
-      <div
-        className="fixed w-full px-4 flex items-center justify-between left-0 top-0 bg-[var(--background)]/50 backdrop-blur-[160px]"
-        style={{ height: headerHeight }}
+      <HStack
+        className="fixed px-4 left-0 top-0 bg-[var(--background)]/50 backdrop-blur-[160px]"
+        justify="between"
+        height={headerHeight}
       >
         <Image className="rounded-md" src="/logo.png" alt="logo" width={28} height={28} />
-        <div className="flex items-center gap-2">
+        <HStack width="auto" gap={1}>
           <div className="py-[3px] px-1 rounded-full border border-white/15 gap-1.5 flex items-center">
             <UserEnergy value={energy?.current || 0} />
           </div>
           <ConnectWalletButton />
           <Avatar />
-        </div>
-      </div>
+        </HStack>
+      </HStack>
       <div className="flex-1 overflow-y-auto no-scrollbar">
         {children}
       </div>
-      <div
-        className="box-border fixed left-0 right-0 bottom-0 w-full flex justify-center items-start mx-auto border-t border-white/10 bg-[var(--background)]/50 backdrop-blur-[35px] pt-1"
-        style={{ height: tabBarHeight }}
+      <HStack
+        items="start"
+        height={tabBarHeight}
+        className="box-border fixed left-0 right-0 bottom-0 mx-auto pt-1 border-t border-white/10 bg-[var(--background)]/50 backdrop-blur-[35px]"
       >
-        <div className="flex items-center justify-between w-full px-8">
+        <HStack justify="between" className="px-8">
           <TabItem href="/" icon={{ element: ChartIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="common.analytics" />
           <TabItem href="/trade-ai" icon={{ element: SmartToyIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="common.tradeai" />
           {/* <TabItem href="/game" icon={{ element: GameIcon, color: { active: "url(#linear-gradient)", default: "#7C7C7C" } }} i18n="Game" /> */}
@@ -77,8 +80,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
               setOpenInviteFriendsBottomSheet(false);
             }}
           />
-        </div>
-      </div>
+        </HStack>
+      </HStack>
       <LaunchScreen />
     </main>
   );

@@ -7,6 +7,7 @@ import { useMiniApp } from "@/contexts/MiniAppContext";
 import { PremiumTierBottomSheet } from "@/components/common/PremiumTierBottomSheet";
 import { PlusIcon } from "@/components/icons";
 import { BaseButton } from "@/components/ui/BaseButton";
+import { HStack } from "@/components/ui/Stack";
 
 interface UserEnergyProps {
   value: number;
@@ -44,7 +45,7 @@ export function UserEnergy({ value, duration = 0.4 }: UserEnergyProps) {
   }, [value, duration]);
 
   return (
-    <div className="flex items-center gap-1">
+    <HStack>
       <Image
         className={clsx("w-6 h-6 transition-transform origin-center duration-200", isActive && "scale-130")}
         src="/energy.png"
@@ -52,7 +53,7 @@ export function UserEnergy({ value, duration = 0.4 }: UserEnergyProps) {
         width={28}
         height={28} />
         <span className="text-white transition-all duration-300" ref={countUpRef} />
-        <BaseButton onClick={() => {
+        <BaseButton className="ml-1" onClick={() => {
           if (!tonConnect?.connected) {
             tonConnect?.connect();
           } else {
@@ -65,6 +66,6 @@ export function UserEnergy({ value, duration = 0.4 }: UserEnergyProps) {
           open={open}
           onClose={() => setOpen(false)}
         />
-    </div>
+    </HStack>
   );
 }

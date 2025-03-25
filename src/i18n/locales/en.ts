@@ -33,8 +33,8 @@ const en = {
     benefit_3: "Real-time price analysis & alerts",
     benefit_4: "100% daily energy refill",
     benefit_5: "Play Hash Game & earn BTC",
-    yearly_hint: "Get 50% off",
-    monthly_hint: "Start monthly",
+    yearly_hint: "Get 50% Off",
+    monthly_hint: "Start Monthly",
   },
 
   

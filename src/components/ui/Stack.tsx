@@ -1,37 +1,57 @@
 import { PropsWithChildren } from "react";
-import clsx from "clsx";
 
+const justifyMap = {
+  center: "center",
+  start: "flex-start",
+  end: "flex-end",
+  between: "space-between",
+  around: "space-around",
+  evenly: "space-evenly",
+}
 
-export interface StackProps extends PropsWithChildren {
+const itemsMap = {
+  center: "center",
+  start: "flex-start",
+  end: "flex-end",
+}
+
+export interface StackProps extends PropsWithChildren, React.HTMLAttributes<HTMLDivElement> {
   className?: string;
   direction?: "row" | "column";
   items?: "center" | "start" | "end";
   justify?: "center" | "start" | "end" | "between" | "around" | "evenly";
-  border?: boolean | string;
-  rounded?: boolean;
-  fullWidth?: boolean;
-  width?: string;
-  gap?: number | string;
+  width?: string | number;
+  height?: string | number;
+  gap?: number;
+  style?: React.CSSProperties;
 }
 
-export function Stack({ children, direction = "row", className, border, rounded, fullWidth = true, gap = 0, items = "center", justify = "center", width }: StackProps) {
+export function Stack({
+  children, 
+  direction = "row", 
+  className, 
+  gap = 0, 
+  items = "center", 
+  justify = "center", 
+  width = "100%",
+  height = "auto",
+  style,
+  ...props
+}: StackProps) {
   return (
     <div 
-      className={clsx(
-        `flex items-${items} justify-${justify}`,
-        direction === "row" ? "flex-row" : "flex-col",
-        className,
-        border === true ? "border" : null,
-        typeof border === "string" ? border : null,
-        {
-          "border-white/20": Boolean(border),
-          "rounded-full": rounded,
-          "w-full": fullWidth && !width,
-          [gap]: typeof gap === "string",
-          [`gap-${gap}`]: typeof gap === "number",
-        }
-      )}
-      style={width ? { width } : undefined}
+      className={className}
+      style={{
+        display: "flex",
+        flexDirection: direction,
+        alignItems: itemsMap[items],
+        justifyContent: justifyMap[justify],
+        width,
+        height,
+        gap: gap * 4,
+        ...style,
+      }}
+      {...props}
     >
       {children}
     </div>
