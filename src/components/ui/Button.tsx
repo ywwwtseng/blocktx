@@ -25,6 +25,7 @@ export function Button({
   height = 38,
   icon,
   borderRadius = "9999px",
+  gradient = true,
   disabled = false,
   text,
   ...props
@@ -40,7 +41,7 @@ export function Button({
         width,
         maxWidth,
         borderRadius,
-        background: "var(--gradient-background)",
+        background: gradient ? "var(--gradient-background)" : "var(--background)",
       }}
       {...props}
     >

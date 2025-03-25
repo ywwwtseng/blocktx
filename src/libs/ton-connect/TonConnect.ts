@@ -4,6 +4,7 @@ import { ConnectedWallet, TonConnectUI } from "@tonconnect/ui";
 
 import { MockTonConnectUI } from "./MockTonConnectUI";
 import { TransactionMessage } from "./types";
+
 interface TonConnectParameters {
   TonConnectUI: typeof TonConnectUI | typeof MockTonConnectUI;
   onStatusChange: (wallet?: ConnectedWallet | null) => void;
@@ -15,6 +16,7 @@ const DEFAULT_TON_CONNECT_PARAMETERS = {
 };
 
 export { MockTonConnectUI, TonConnectUI };
+export type { ConnectedWallet };
 
 export class TonConnect {
   private static _instance: TonConnect;

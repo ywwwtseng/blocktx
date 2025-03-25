@@ -175,17 +175,17 @@ export const useBinanceService = create<BinanceServiceState>((set, get) => ({
 
       await get().klines.history(TradingPairSymbol.BTCUSDT);
 
-      // socket.send({
-      //   method: "SUBSCRIBE",
-      //   params: [
-      //     events.miniTicker,
-      //     events.btcusdt.aggTrade,
-      //     events.usdtusdt.aggTrade,
-      //     events.btcusdt.depth,
-      //     events.btcusdt.kline["1s"],
-      //   ],
-      //   id: 1
-      // });
+      socket.send({
+        method: "SUBSCRIBE",
+        params: [
+          events.miniTicker,
+          events.btcusdt.aggTrade,
+          events.usdtusdt.aggTrade,
+          events.btcusdt.depth,
+          events.btcusdt.kline["1s"],
+        ],
+        id: 1
+      });
       socket.onMessage = (message: BinanceSocketEventMessage) => {
         if (message.stream === "btcusdt@kline_1s") {
           set((state) => ({

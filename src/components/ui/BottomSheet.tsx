@@ -25,7 +25,7 @@ export function BottomSheet({ trigger, title, description = "", children, ...pro
         <Drawer.Content
           className="flex flex-col rounded-t-[10px] mt-24 fixed bottom-0 left-0 right-0 z-30"
           style={{ backgroundColor: "#000" }}>
-          <div className="pt-4 px-4 pb-8 rounded-t-[10px] flex-1">
+          <div className="pt-4 px-4 pb-12 rounded-t-[10px] flex-1">
             <div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-zinc-300 mb-2" />
             <div className="max-w-md mx-auto flex flex-col items-center gap-2">
               <Drawer.Title className="hidden">

@@ -1,10 +1,18 @@
 "use client";
 
-import { createContext, useContext, useEffect, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  ReactNode
+} from "react";
 import { init, postEvent, User, Platform } from "@telegram-apps/sdk-react";
-import { TonConnect, MockTonConnectUI, TonConnectUI } from "@/libs/ton-connect";
+import { TonConnect, MockTonConnectUI, TonConnectUI, ConnectedWallet } from "@/libs/ton-connect";
 import { useTMA } from "@/hooks/useTMA";
 import { useForceUpdate } from "@/hooks/useForceUpdate";
+
+type OnConnect = ((wallet: ConnectedWallet) => void) | null;
 
 export interface MiniAppContextState {
   user: User | undefined;
@@ -20,17 +28,22 @@ export interface MiniAppProviderProps {
 const MiniAppContext = createContext<MiniAppContextState | undefined>(undefined);
 
 export function MiniAppProvider({ children }: MiniAppProviderProps) {
+  const onConnectRef = useRef<OnConnect>(null);
   const forceUpdate = useForceUpdate();
   const { launchParams, initDataRaw } = useTMA();
   const user = launchParams?.tgWebAppData?.user;
   const platform = launchParams?.tgWebAppPlatform;
+
   const tonConnect = TonConnect.getInstance({
     TonConnectUI: process.env.NODE_ENV === "development"
       ? MockTonConnectUI
       : TonConnectUI,
-    onStatusChange: () => {
+    onStatusChange: (wallet) => {
       forceUpdate();
-    }
+      if (wallet) {
+        onConnectRef.current?.(wallet);
+      }
+    },
   });
 
   useEffect(() => {

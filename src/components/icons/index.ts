@@ -10,3 +10,4 @@ export * from "./LoadingIcon";
 export * from "./LogoIcon";
 export * from "./ProgressCircleIcon";
 export * from "./CopyIcon";
+export * from "./CheckIcon";

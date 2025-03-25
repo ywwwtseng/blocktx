@@ -3,7 +3,8 @@ import clsx from "clsx";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
-import { DepositBottomSheet } from "@/components/common/DepositBottomSheet";
+import { useMiniApp } from "@/contexts/MiniAppContext";
+import { PremiumTierBottomSheet } from "@/components/common/PremiumTierBottomSheet";
 import { PlusIcon } from "@/components/icons";
 import { BaseButton } from "@/components/ui/BaseButton";
 
@@ -13,6 +14,8 @@ interface UserEnergyProps {
 }
 
 export function UserEnergy({ value, duration = 0.4 }: UserEnergyProps) {
+  const [open, setOpen] = useState(false);
+  const { tonConnect } = useMiniApp();
   const countUpRef = useRef<HTMLSpanElement>(null);
   const [isActive, setIsActive] = useState(false);
 
@@ -49,12 +52,18 @@ export function UserEnergy({ value, duration = 0.4 }: UserEnergyProps) {
         width={28}
         height={28} />
         <span className="text-white transition-all duration-300" ref={countUpRef} />
-        <DepositBottomSheet
-          trigger={
-            <BaseButton>
-              <PlusIcon className="w-5 h-5 -translate-y-[1px]" />
-            </BaseButton>
+        <BaseButton onClick={() => {
+          if (!tonConnect?.connected) {
+            tonConnect?.connect();
+          } else {
+            setOpen(true);
           }
+        }}>
+          <PlusIcon className="w-5 h-5 -translate-y-[1px]" />
+        </BaseButton>
+        <PremiumTierBottomSheet
+          open={open}
+          onClose={() => setOpen(false)}
         />
     </div>
   );

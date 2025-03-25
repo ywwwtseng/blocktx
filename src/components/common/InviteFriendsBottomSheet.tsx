@@ -22,9 +22,9 @@ export function InviteFriendsBottomSheet({ open, onClose }: InviteFriendsBottomS
       <div className="flex flex-col items-center gap-2">  
         <QRCodeCanvas url={url} />
         <I18nTypography className="landscape:hidden" variant="text" size={2} i18n="invite_friends_bottom_sheet.description" />
-        <div className="flex items-center gap-2 p-4 landscape:hidden">
+        <div className="flex items-center gap-3 pt-4 landscape:hidden">
           <Button
-            text={{ i18n: "invite_friends_bottom_sheet.action" }}
+            text={{ i18n: "action.invite_friend" }}
             onClick={() => {
               onClose?.();
               share();
