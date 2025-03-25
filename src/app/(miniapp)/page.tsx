@@ -1,14 +1,25 @@
 "use client";
 
-import { useBinanceKlineData, TradingPairSymbol } from "@/hooks/useBinanceService";
-import { KlineChart } from "@/components/common/KlineChart";
+import { usePageManagment } from "@/contexts/PageManagment";
+import { useBinanceService } from "@/hooks/useBinanceService";
+import { useClientOnce } from "@/hooks/useClientOnce";
+import Analytics from "../_pages/Analytics";
+import Earn from "../_pages/Earn";
+import TradeAI from "../_pages/TradeAI";
 
-export default function Home() {
-  const data = useBinanceKlineData(TradingPairSymbol.BTCUSDT);
+export default function MiniApp() {
+  const { pathname } = usePageManagment();
+  const { init } = useBinanceService();
+
+  useClientOnce(() => {
+    init();
+  });
 
   return (
     <div className="flex flex-col items-center justify-center py-4">
-      <KlineChart data={data} />
+      {pathname === "/" && <Analytics />}
+      {pathname === "/earn" && <Earn />}
+      {pathname === "/trade-ai" && <TradeAI />}
     </div>
   );
 }

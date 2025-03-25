@@ -62,7 +62,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         height={tabBarHeight}
         className="box-border fixed left-0 right-0 bottom-0 mx-auto pt-1 border-t border-white/10 bg-[var(--background)]/50 backdrop-blur-[35px]"
       >
-        <HStack justify="between" className="px-8">
+        <HStack justify="between" className="px-4">
           <TabItem href="/" icon={{ element: ChartIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="common.analytics" />
           <TabItem href="/trade-ai" icon={{ element: SmartToyIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="common.tradeai" />
           {/* <TabItem href="/game" icon={{ element: GameIcon, color: { active: "url(#linear-gradient)", default: "#7C7C7C" } }} i18n="Game" /> */}

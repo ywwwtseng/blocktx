@@ -1,6 +1,9 @@
-import { ButtonHTMLAttributes, DetailedHTMLProps, ReactNode } from "react";
+import {
+  ButtonHTMLAttributes,
+  DetailedHTMLProps,
+  ReactNode,
+} from "react";
 import clsx from "clsx";
-
 import { I18nTypography, I18nTypographyProps } from "@/components/common/I18nTypography";
 import { ProgressCircleIcon } from "@/components/icons";
 
@@ -9,25 +12,24 @@ export interface ButtonProps extends DetailedHTMLProps<ButtonHTMLAttributes<HTML
   className?: string;
   loading?: boolean;
   gradient?: boolean;
-  maxWidth?: string;
   width?: string;
   height?: number;
   icon?: ReactNode;
-  borderRadius?: string;
+  borderRadius?: number;
   text?: I18nTypographyProps;
 }
 
 export function Button({
   className,
   loading,
-  maxWidth = "292px",
   width,
   height = 38,
   icon,
-  borderRadius = "9999px",
+  borderRadius = 9999,
   gradient = true,
   disabled = false,
   text,
+  style,
   ...props
 }: ButtonProps) {
   return (
@@ -38,10 +40,11 @@ export function Button({
       }
       disabled={loading || disabled}
       style={{
-        width,
-        maxWidth,
-        borderRadius,
         background: gradient ? "var(--gradient-background)" : "var(--background)",
+        maxWidth: 292,
+        borderRadius,
+        width,
+        ...style,
       }}
       {...props}
     >

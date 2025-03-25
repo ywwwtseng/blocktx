@@ -194,7 +194,7 @@ export const useBinanceService = create<BinanceServiceState>((set, get) => ({
               klines: {
                 ...state.data.klines,
                 [TradingPairSymbol.BTCUSDT]: [
-                  ...(state.data.klines[TradingPairSymbol.BTCUSDT] || []),
+                  ...(state.data.klines[TradingPairSymbol.BTCUSDT] || []).slice(-500),
                   {
                     [KlineAttributes.Timestamp]: message.data.k[KlineAttributes.Timestamp],
                     [KlineAttributes.Open]: message.data.k[KlineAttributes.Open],
@@ -214,7 +214,22 @@ export const useBinanceService = create<BinanceServiceState>((set, get) => ({
     socket.connect();
 
     return () => {
-      socket.disconnect();
+      // if (socket.isConnected) {
+      //   socket.send({
+      //     method: "UNSUBSCRIBE",
+      //     params: [
+      //     events.miniTicker,
+      //     events.btcusdt.aggTrade,
+      //     events.usdtusdt.aggTrade,
+      //     events.btcusdt.depth,
+      //     events.btcusdt.kline["1s"],
+      //   ],
+      //   id: 1
+      //   });
+      // }
+      // socket.disconnect();
+
+      // set({ socket: null });
     }
   },
 }));

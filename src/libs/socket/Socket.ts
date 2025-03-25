@@ -53,11 +53,19 @@ export class Socket<T> {
   }
 
   /**
+   * 檢查 WebSocket 是否處於已連接狀態
+   * @returns 如果 WebSocket 已連接並處於開啟狀態則返回 true
+   */
+  get isConnected(): boolean {
+    return this.ws?.readyState === WebSocket.OPEN;
+  }
+
+  /**
    * 建立 WebSocket 連接
    * 如果已經連接或之前發生授權錯誤，則不會重新連接
    */
   connect(): void {
-    if (this.isConnected()) return;
+    if (this.isConnected) return;
     
     // 重置狀態
     this.isManualClose = false;
@@ -95,7 +103,7 @@ export class Socket<T> {
 
     window.addEventListener("offline", () => {
       console.log("🔌 Network is offline");
-      this.disconnect();
+      this._disconnect();
     });
 
     this.networkListener = true;
@@ -112,7 +120,7 @@ export class Socket<T> {
     document.addEventListener("visibilitychange", () => {
       if (document.visibilityState === "visible" && this.canReconnect) {
         console.log("👁 App is visible, checking connection...");
-        if (!this.isConnected()) {
+        if (!this.isConnected) {
           this.reconnectAttempts = 0;
           this.connect();
         }
@@ -301,12 +309,12 @@ export class Socket<T> {
   /**
    * 斷開 WebSocket 連接並清理相關資源
    */
-  disconnect(): void {
+  _disconnect(): void {
     if (!this.ws) return;
     
     if (this.networkListener) {
       window.removeEventListener("online", this.connect);
-      window.removeEventListener("offline", this.disconnect);
+      window.removeEventListener("offline", this._disconnect);
       this.networkListener = false;
     }
 
@@ -320,21 +328,13 @@ export class Socket<T> {
   }
 
   /**
-   * 檢查 WebSocket 是否處於已連接狀態
-   * @returns 如果 WebSocket 已連接並處於開啟狀態則返回 true
-   */
-  isConnected(): boolean {
-    return this.ws?.readyState === WebSocket.OPEN;
-  }
-
-  /**
    * 手動斷開 WebSocket 連接
    * 不會觸發自動重連機制
    */
-  manualDisconnect(): void {
+  disconnect(): void {
     console.log("🔴 Manual disconnect requested");
     this.isManualClose = true;
-    this.disconnect();
+    this._disconnect();
   }
 
   /**

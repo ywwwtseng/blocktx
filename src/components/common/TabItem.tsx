@@ -2,12 +2,10 @@
 
 import { useState } from "react";
 import { postEvent } from "@telegram-apps/sdk-react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePageManagment } from "@/contexts/PageManagment";
 import { I18nTypography } from "@/components/common/I18nTypography";
 import { BaseButton } from "@/components/ui/BaseButton";
 import { HStack } from "@/components/ui/Stack";
-
 interface TabItemProps {
   icon: {
     element: React.ElementType;
@@ -23,24 +21,8 @@ interface TabItemProps {
 
 export function TabItem({ icon, href, i18n, onClick }: TabItemProps) {
   const [isActive, setIsActive] = useState(false);
-  const pathname = usePathname();
+  const { pathname, push } = usePageManagment();
   const Icon = icon.element;
-
-  const children = (
-    <>
-      <Icon
-        className="w-6 h-6 transition-transform origin-center duration-200"
-        color={pathname === href || isActive ? icon.color.active : icon.color.default}
-      />
-      <I18nTypography
-        variant="text"
-        color={pathname === href || isActive ? "white" : "#7C7C7C"}
-        noWrap size={2}
-        weight={500}
-        i18n={i18n}
-      />
-    </>
-  );
 
   return (
     <HStack
@@ -59,21 +41,30 @@ export function TabItem({ icon, href, i18n, onClick }: TabItemProps) {
         }, 200);
       }}
     >
-      {href ? (
-        <Link
-          className="w-[40px] flex flex-col items-center gap-0.5 opacity-100 group duration-150"
-          href={href}
-        >
-          {children}
-        </Link>
-      ) : (
-        <BaseButton
-          className="w-[40px] flex flex-col items-center gap-0.5 opacity-100 group duration-150"
-          onClick={onClick}
-        >
-          {children}
-        </BaseButton>
-      )}
+      <BaseButton
+        className="w-[40px] flex flex-col items-center gap-0.5 opacity-100 group duration-150"
+        onClick={() => {
+          if (pathname === href) return;
+
+          if (href) {
+            push(href);
+          } else {
+            onClick?.();
+          }
+        }}
+      >
+        <Icon
+          className="w-6 h-6 transition-transform origin-center duration-200"
+          color={pathname === href || isActive ? icon.color.active : icon.color.default}
+        />
+        <I18nTypography
+          variant="text"
+          color={pathname === href || isActive ? "white" : "#7C7C7C"}
+          noWrap size={2}
+          weight={500}
+          i18n={i18n}
+        />
+      </BaseButton>
     </HStack>
   );
 }

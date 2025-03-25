@@ -14,7 +14,7 @@
 }
 
 @theme {
-  --animate-fade-in: fade-in 0.3s ease-in;
+  --animate-fade-in: fade-in 0.25s ease-in;
 
   @keyframes fade-in {
     from {
