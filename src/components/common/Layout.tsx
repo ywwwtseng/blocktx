@@ -15,7 +15,7 @@ import {
 import { UserEnergy } from "@/components/common/UserEnergy";
 import { ConnectWalletButton } from "@/components/common/ConnectWalletButton";
 import { Avatar } from "@/components/common/Avatar";
-import { TabItem } from "@/components/common/TabItem";
+import { Tab } from "@/components/common/Tab";
 import { InviteFriendsBottomSheet } from "@/components/common/InviteFriendsBottomSheet";
 import { LaunchScreen } from "@/components/common/LaunchScreen";
 import { HStack } from "@/components/ui/Stack";
@@ -63,11 +63,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
         className="box-border fixed left-0 right-0 bottom-0 mx-auto pt-1 border-t border-white/10 bg-[var(--background)]/50 backdrop-blur-[35px]"
       >
         <HStack justify="between" className="px-4">
-          <TabItem href="/" icon={{ element: ChartIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="common.analytics" />
-          <TabItem href="/trade-ai" icon={{ element: SmartToyIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="common.tradeai" />
-          {/* <TabItem href="/game" icon={{ element: GameIcon, color: { active: "url(#linear-gradient)", default: "#7C7C7C" } }} i18n="Game" /> */}
-          <TabItem href="/earn" icon={{ element: EarnIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="common.earn" />
-          <TabItem
+          <Tab href="/" icon={{ element: ChartIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="common.analytics" />
+          <Tab href="/trade-ai" icon={{ element: SmartToyIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="common.tradeai" />
+          {/* <Tab href="/game" icon={{ element: GameIcon, color: { active: "url(#linear-gradient)", default: "#7C7C7C" } }} i18n="Game" /> */}
+          <Tab href="/earn" icon={{ element: EarnIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="common.earn" />
+          <Tab
             onClick={() => {
               setOpenInviteFriendsBottomSheet(true);
             }}
