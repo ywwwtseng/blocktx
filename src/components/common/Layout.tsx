@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { Energy } from "@prisma/client";
 import { useMiniApp } from "@/contexts/MiniAppContext";
+import { useQuery } from "@/hooks/useQuery";
 import {
   ChartIcon,
   SmartToyIcon,
@@ -17,12 +19,17 @@ import { TabItem } from "@/components/common/TabItem";
 import { InviteFriendsBottomSheet } from "@/components/common/InviteFriendsBottomSheet";
 import { LaunchScreen } from "@/components/common/LaunchScreen";
 
+
 export function Layout({ children }: { children: React.ReactNode }) {
   const { platform } = useMiniApp();
+  const { data: energy } = useQuery<Partial<Energy>>("/api/energy", {
+    needAuthorized: true,
+  });
   const [openInviteFriendsBottomSheet, setOpenInviteFriendsBottomSheet] = useState(false);
   const headerHeight = 52;
   const safeAreaBottom = platform === "ios" ? 20 : 12;
   const tabBarHeight = 60 + safeAreaBottom;
+
 
   return (
     <main
@@ -39,7 +46,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Image className="rounded-md" src="/logo.png" alt="logo" width={28} height={28} />
         <div className="flex items-center gap-2">
           <div className="py-[3px] px-1 rounded-full border border-white/15 gap-1.5 flex items-center">
-            <UserEnergy value={1000} />
+            <UserEnergy value={energy?.current || 0} />
           </div>
           <ConnectWalletButton />
           <Avatar />
