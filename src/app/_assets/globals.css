@@ -3,6 +3,8 @@
 :root {
   --background: #000000;
   --foreground: #ededed;
+  --text-primary: #ededed;
+  --text-secondary: #848E9C;
   --gradient-background: linear-gradient(125deg, #2e68ff, #2d5bff, #02c5ff, #10fbb8, #ffc500, #eb1c00);
   --shadow: 0 0 5px #ff0, 0 0 10px #ff0;
   --shadow-1: 0 0 7px #ff0, 0 0 15px #ff0;
@@ -12,7 +14,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-orbitron: var(--font-orbitron);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
   --font-rajdhani: var(--font-rajdhani);
 }
 

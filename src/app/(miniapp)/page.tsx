@@ -16,7 +16,7 @@ export default function MiniApp() {
   });
 
   return (
-    <div className="h-full flex flex-col items-center justify-center py-4">
+    <div className="flex flex-col items-center justify-center py-4 h-full">
       {pathname === "/" && <Analytics />}
       {pathname === "/earn" && <Earn />}
       {pathname === "/trade-ai" && <TradeAI />}

@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { Energy } from "@prisma/client";
 import { useMiniApp } from "@/contexts/MiniAppContext";
 import { useQuery } from "@/hooks/useQuery";
 import {

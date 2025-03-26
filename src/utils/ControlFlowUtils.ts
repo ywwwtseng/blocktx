@@ -1,7 +1,7 @@
 interface RetrySettings<T> {
   retries: number;
   delay_ms?: number;
-  condition?: (result?: T) => boolean;
+  condition?: (result: T) => boolean;
 }
 
 export class ControlFlowUtils {

@@ -1,3 +1,5 @@
+export type Maybe<T> = T | null | undefined;
+
 export enum PremiumTier {
   YEARLY = "yearly",
   MONTHLY = "monthly",

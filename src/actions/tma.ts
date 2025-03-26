@@ -1,3 +1,5 @@
+"use server";
+
 import { NextRequest } from "next/server";
 
 import * as InitDataNode from "@telegram-apps/init-data-node";

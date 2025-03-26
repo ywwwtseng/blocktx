@@ -1,7 +1,7 @@
 import { createContext, useMemo, useState, useEffect, useCallback, ReactNode, useContext } from "react";
-import { User } from "@prisma/client";
 import { useMiniApp } from "@/contexts/MiniAppContext";
 import { Client } from '@/libs/client/Client';
+import { User } from "@prisma/client";
 
 interface ClientContextState {
   request: {

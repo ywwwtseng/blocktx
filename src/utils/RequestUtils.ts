@@ -32,7 +32,7 @@ export class RequestUtils {
     return request.headers.get("x-real-ip") || "127.0.0.1";
   }
 
-  static async ipinfo(request: NextRequest): Promise<IpInfo | null> {
+  static async ipinfo(request: NextRequest): Promise<IpInfo> {
     const ip = RequestUtils.ip(request).replace("::ffff:", "");
 
     const data = await ControlFlowUtils.retry<IpInfoRaw>({
@@ -40,24 +40,22 @@ export class RequestUtils {
       delay_ms: 1000,
     })(() => fetch(`https://ipinfo.io/${ip}/json`).then((res) => res.json()));
 
-    if (!data) {
-      return null;
-    }
-
-    if (data.bogon || data.ip === "::1") {
-      return null;
-    }
-
-    if (!data.ip || !data.country || !data.loc || !data.timezone || !data.city) {
-      return null;
+    if (!data || data.bogon || data.ip === "::1") {
+      return {
+        ip: "unknown",
+        country: "unknown",
+        city: "unknown",
+        loc: "unknown",
+        timezone: "unknown",
+      };
     }
 
     return {
-      ip: data.ip,
-      country: data.country,
-      city: data.city,
-      loc: data.loc,
-      timezone: data.timezone,
+      ip: data.ip || "unknown",
+      country: data.country || "unknown",
+      city: data.city || "unknown",
+      loc: data.loc || "unknown",
+      timezone: data.timezone || "unknown",
     };
   }
 }

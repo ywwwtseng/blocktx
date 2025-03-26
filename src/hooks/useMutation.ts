@@ -9,29 +9,37 @@ import { toast } from "react-toastify";
 
 import { getQueryKey } from "./useQuery";
 
+interface WithUpdates {
+  updates?: {
+    endpoint: string;
+    updater: unknown;
+  }[];
+}
+
 export type MutationOptions<TVariables, TData> = Omit<
   UseMutationOptions<TData, unknown, TVariables | undefined>,
   "mutationFn" | "onSuccess"
 > & {
   onSuccess?: (
-    data: TData, 
+    data: TData & WithUpdates, 
     variables: TVariables | undefined, 
     context: unknown
   ) => string | Promise<string> | void;
   exact?: boolean;
   invalidate?: string[];
+  autoInvalidate?: boolean;
 };
 
 export function useMutation<TVariables = void, TData = unknown>(
-  endpoint: string, 
+  endpoint: string,
   customOptions?: MutationOptions<TVariables, TData>
 ): UseMutationResult<TData, unknown, TVariables | undefined> {
-  const { exact = false, invalidate, ...options } = customOptions || { exact: false };
+  const { exact = false, invalidate, autoInvalidate = false, ...options } = customOptions || { exact: false, autoInvalidate: false };
   const client = useClient();
   const queryClient = useQueryClient();
   
   return useTanstackMutation({
-    mutationFn: async (variables?: TVariables): Promise<TData> => {
+    mutationFn: async (variables?: TVariables): Promise<TData & WithUpdates> => {
       const response = await client.request.post(endpoint, variables, {
         headers: {
           "Content-Type": variables instanceof FormData 
@@ -39,11 +47,11 @@ export function useMutation<TVariables = void, TData = unknown>(
             : "application/json; charset=utf-8",
         },
       });
-      return response as TData;
+      return response as TData & WithUpdates;
     },
     ...options,
     onSuccess: async (
-      data: TData, 
+      data: TData & WithUpdates, 
       variables: TVariables | undefined, 
       context: unknown
     ) => {
@@ -52,17 +60,23 @@ export function useMutation<TVariables = void, TData = unknown>(
       if (message) {
         toast(message);
       }
-      
-      let queryKey = getQueryKey(endpoint);
 
-      if (!exact) {
-        queryKey = [queryKey[0]];
-      }
-      
-      if (data) {
+      if (autoInvalidate) {
+        let queryKey = getQueryKey(endpoint);
+
+        if (!exact) {
+          queryKey = [queryKey[0]];
+        }
+
         queryClient.invalidateQueries({
           queryKey,
           refetchType: "all",
+        });
+      }
+
+      if (data?.updates) {
+        data.updates.forEach((update) => {
+          queryClient.setQueryData(getQueryKey(update.endpoint), update.updater);
         });
       }
 

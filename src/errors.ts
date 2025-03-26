@@ -3,7 +3,7 @@ export const ErrorCodes = {
   INVALID_PARAMS: 40001,
   REWARD_NOT_AVAILABLE: 40002,
   REWARD_NOT_QUALIFIED: 40003,
-
+  NOT_ENOUGH_ENERGY: 40004,
   // 401xx - Authentication Errors
   SESSION_MISMATCH: 40101,
   SESSION_EXPIRED: 40102,
@@ -47,6 +47,7 @@ export const ErrorMessages = {
   [ErrorCodes.INVALID_PARAMS]: 'Invalid parameters',
   [ErrorCodes.REWARD_NOT_AVAILABLE]: 'Reward not available',
   [ErrorCodes.REWARD_NOT_QUALIFIED]: 'Reward not qualified',
+  [ErrorCodes.NOT_ENOUGH_ENERGY]: 'Not enough energy',
 
   // 401xx - Authentication Errors
   [ErrorCodes.SESSION_MISMATCH]: 'Session ID does not match',

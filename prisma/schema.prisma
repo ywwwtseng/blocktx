@@ -34,8 +34,8 @@ model User {
   invited_users     User[]    @relation("UserInvitations")
 
   last_login_log    LoginLog?
+  hash_challenge    HashChallenge?
   energy            Energy?
-
   transactions      Transaction[]
 }
 
@@ -51,6 +51,18 @@ model LoginLog {
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+}
+
+model HashChallenge {
+  id                  Int      @id @default(autoincrement())
+  user_id             String   @unique
+  user                User     @relation(fields: [user_id], references: [user_id])
+
+  hash                String   @db.VarChar(255)
+  hash_numeric_part   Decimal  @db.Decimal(45,0)
+
+  created_at          DateTime @default(now())
+  updated_at          DateTime @updatedAt
 }
 
 model Energy {

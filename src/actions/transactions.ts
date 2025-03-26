@@ -1,3 +1,5 @@
+"use server";
+
 import { FetchTransactionsParams, Transaction } from "@/types";
 
 export const getTransactions = async (params?: FetchTransactionsParams) => {

@@ -4,10 +4,12 @@ import { RequestUtils } from "@/utils/RequestUtils";
 import { ResponseUtils, ErrorInput } from "@/utils/ResponseUtils";
 import { StartParamType } from "@/utils/TMAUtils";
 import { validate } from "@/actions/tma";
+import { getRestoreEnergy } from "@/actions/energy";
 
 export async function POST(request: NextRequest) {
   try {
     const ipinfo = await RequestUtils.ipinfo(request);
+
     const {
       telegram_id,
       nickname,
@@ -16,6 +18,8 @@ export async function POST(request: NextRequest) {
       start_param,
     } = await validate(request);
 
+    const restoreEnergy = await getRestoreEnergy(telegram_id);
+
     const user = await prisma.user.upsert({
       where: {
         telegram_id,
@@ -23,6 +27,7 @@ export async function POST(request: NextRequest) {
       create: {
         telegram_id,
         nickname,
+        timezone: ipinfo.timezone,
         avatar_url: photo_url || null,
         language_code: language_code || "en",
         energy: {
@@ -33,25 +38,33 @@ export async function POST(request: NextRequest) {
         },
         last_login_log: {
           create: {
-            ip: ipinfo?.ip || "unknown",
-            country: ipinfo?.country || "unknown",
-            city: ipinfo?.city || "unknown",
-            timezone: ipinfo?.timezone || "unknown",
+            ip: ipinfo.ip,
+            country: ipinfo.country,
+            city: ipinfo.city,
+            timezone: ipinfo.timezone,
             user_agent: request.headers.get("user-agent") || "unknown",
           },
         },
       },
       update: {
         nickname,
+        timezone: ipinfo.timezone,
         last_login_log: {
           update: {
-            ip: ipinfo?.ip || "unknown",
-            country: ipinfo?.country || "unknown",
-            city: ipinfo?.city || "unknown",
-            timezone: ipinfo?.timezone || "unknown",
+            ip: ipinfo.ip,
+            country: ipinfo.country,
+            city: ipinfo.city,
+            timezone: ipinfo.timezone,
             user_agent: request.headers.get("user-agent") || "unknown",
           },
         },
+        ...(restoreEnergy.enabled && {
+          energy: {
+            update: {
+              current: restoreEnergy.value,
+            },
+          },
+        }),
       },
     });
 
@@ -85,6 +98,7 @@ export async function POST(request: NextRequest) {
       data: user,
     });
   } catch (error) {
+    console.error(error);
     return ResponseUtils.error(error as ErrorInput);
   }
 }

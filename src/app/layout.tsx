@@ -1,12 +1,7 @@
 import { Metadata } from "next";
-import { Orbitron, Rajdhani } from "next/font/google";
+import { Rajdhani } from "next/font/google";
 
 import "./_assets/globals.css";
-
-const orbitron = Orbitron({
-  variable: "--font-orbitron",
-  subsets: ["latin"],
-});
 
 const rajdhani = Rajdhani({
   variable: "--font-rajdhani",
@@ -27,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${orbitron.variable} ${rajdhani.variable} antialiased select-none`}
+        className={`${rajdhani.variable} antialiased select-none`}
       >
         {children}
       </body>

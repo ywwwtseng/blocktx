@@ -15,7 +15,6 @@ app.prepare().then(() => {
 
 
   server.post("/api/bot", (req, res) => {
-    console.log(req.body);
     bot.processUpdate(req.body);
     res.sendStatus(200);
   });
