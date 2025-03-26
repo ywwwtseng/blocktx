@@ -8,13 +8,12 @@ export async function GET(request: NextRequest) {
       energy: {
         select: {
           current: true,
-          max: true,
         },
       },
     });
 
     return ResponseUtils.json({
-      data: user.energy,
+      data: user.energy!.current,
     });
   } catch (error) {
     return ResponseUtils.error(error as ErrorInput);

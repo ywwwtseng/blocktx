@@ -1,5 +1,7 @@
 import clsx from "clsx";
+import { useQuery } from "@/hooks/useQuery";
 import { useMutation } from "@/hooks/useMutation";
+import { useUpdateQueryData } from "@/hooks/useUpdateQueryData";
 import { I18nTypography } from "@/components/common/I18nTypography";
 import { VStack, HStack } from "@/components/ui/Stack";
 import { BaseButton } from "@/components/ui/BaseButton";
@@ -7,6 +9,11 @@ import { TonIcon, EnergyIcon } from "@/components/icons";
 
 export default function Earn() {
   const { mutate: bet, isPending } = useMutation("/hash-challenge/bet");
+  const updateQueryData = useUpdateQueryData();
+  const { data: energy } = useQuery<number>("/energy", {
+    needAuthorized: true,
+  });
+
   return (
     <VStack justify="between" className="flex-1 animate-fade-in">
       <I18nTypography
@@ -99,7 +106,17 @@ export default function Earn() {
           <BaseButton
             className={clsx("mt-auto flex flex-row items-center justify-center border-2 border-white rounded-full h-24 w-24 :active:scale-120", isPending && "animate-glow-shadow")}
             disabled={isPending}
-            onClick={() => bet()}
+            onClick={() => {
+              if (energy && energy < 35) {
+                return;
+              }
+
+              updateQueryData<number>(
+                "/energy",
+                (prev: number) => prev - 35
+              );
+              bet();
+            }}
           >
             <EnergyIcon
               className="w-8 h-8"

@@ -23,7 +23,7 @@ import { HStack } from "@/components/ui/Stack";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const { platform } = useMiniApp();
-  const { data: energy } = useQuery<Partial<Energy>>("/energy", {
+  const { data: energy } = useQuery<number>("/energy", {
     needAuthorized: true,
   });
   const [openInviteFriendsBottomSheet, setOpenInviteFriendsBottomSheet] = useState(false);
@@ -48,7 +48,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Image className="rounded-md" src="/logo.png" alt="logo" width={28} height={28} />
         <HStack width="auto" gap={1}>
           <div className="py-[3px] px-1 rounded-full border border-white/15 gap-1.5 flex items-center">
-            <UserEnergy value={energy?.current || 0} />
+            <UserEnergy value={energy ?? 0} />
           </div>
           <ConnectWalletButton />
           <Avatar />
