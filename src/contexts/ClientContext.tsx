@@ -29,14 +29,17 @@ export const ClientProvider = ({ children }: { children: ReactNode }) => {
       headers["Authorization"] = `tma ${initDataRaw}`;
     }
 
-    return new Client({ headers });
+    return new Client({
+      baseUrl: "/api",
+      headers,
+    });
   }, [initDataRaw]);
 
   const auth = useCallback(async () => {
     setAuthorized(false);
     
     client
-      .post<{ data: User }>("/api/auth")
+      .post<{ data: User }>("/auth")
       .then((res) => {
         setUser(res.data);
         setLanguageCode(res.data.language_code);

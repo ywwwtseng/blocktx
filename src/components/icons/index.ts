@@ -12,3 +12,5 @@ export * from "./ProgressCircleIcon";
 export * from "./CopyIcon";
 export * from "./CheckIcon";
 export * from "./BtcIcon";
+export * from "./EnergyIcon";
+export * from "./TonIcon";

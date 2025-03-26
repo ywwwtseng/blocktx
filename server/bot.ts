@@ -12,7 +12,7 @@ bot.onText(/\/start/, (msg) => {
   const chatId = msg.chat.id;
 
   bot.sendPhoto(chatId, "https://blocktx.vercel.app/photo.jpg", {
-    caption: "🚀 Free to join & trade!\n📊 Crypto insights for better decisions!\n💰 Log in daily to restore energy & win BTC!",
+    caption: "🚀 Free to join & trade!\n📊 Crypto insights for better decisions!\n💰 Log in daily to restore energy & win TON!",
     reply_markup: {
       inline_keyboard: [
         [

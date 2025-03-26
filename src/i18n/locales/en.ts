@@ -1,6 +1,6 @@
 const en = {
   messages: {
-    share_text: "#ShareLink\n🚀 Free to join & trade!\n📊 Crypto insights for better decisions!\n💰 Log in daily to restore energy & win BTC!",
+    share_text: "#ShareLink\n🚀 Free to join & trade!\n📊 Crypto insights for better decisions!\n💰 Log in daily to restore energy & win TON!",
     invite_link_copied_to_clipboard: "Invite link copied to clipboard",
     copy_invite_link_failed: "Failed to copy invite link",
   },
@@ -12,6 +12,19 @@ const en = {
     invite: "Invite",
     copied_description: "Copied to clipboard",
     copied: "Copied",
+  },
+
+  earn: {
+    title: "Hash Challenge",
+    label_current_highest: "CURRENT HIGHEST",
+    label_prize_pool: "PRIZE POOL",
+    label_game_rules: "Game Rules",
+    label_how_to_play_description_1: "1. Get the latest TON transaction hash",
+    label_how_to_play_description_2: "2. Extract the numeric part from the hash",
+    label_how_to_play_description_3: "3. The player with the highest extracted number wins",
+    label_how_to_play_description_4: "4. The game lasts for 7 days",
+    label_how_to_play_description_5: "5. The final ranking is determined every Sunday at 00:00 UTC",
+    label_your_hash: "Your Hash {hash}",
   },
 
   action: {
@@ -32,7 +45,7 @@ const en = {
     benefit_2: "Access advanced market analysis",
     benefit_3: "Real-time price analysis & alerts",
     benefit_4: "100% daily energy refill",
-    benefit_5: "Play Hash Game & earn BTC",
+    benefit_5: "Play Hash Game & earn TON",
     yearly_hint: "Get 50% Off",
     monthly_hint: "Start Monthly",
   },

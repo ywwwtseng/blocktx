@@ -15,7 +15,7 @@ const size_config = {
   "1": { fontSize: "0.75rem", lineHeight: "1rem" },
 };
 
-export interface TypographyProps extends PropsWithChildren {
+export interface TypographyProps extends PropsWithChildren, React.CSSProperties {
   variant?: "heading" | "text" | "caption";
   as?: "h1" | "h2" | "h3" | "h4" | "h5" | "span" | "p" | "b";
   color?: "currentColor" | "text.primary" | "text.secondary" | string;
@@ -28,6 +28,7 @@ export interface TypographyProps extends PropsWithChildren {
   whitespacePreWrap?: boolean;
   noWrap?: boolean;
   dangerouslySetInnerHTML?: boolean;
+  fontFamily?: string;
 }
 
 const variant_config = {
@@ -62,6 +63,7 @@ export function Typography({
   noWrap = false,
   dangerouslySetInnerHTML,
   children,
+  ...props
 }: TypographyProps) {
   const config = variant_config[variant];
 
@@ -78,7 +80,8 @@ export function Typography({
           ...(ellipsis ? { textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap" } : {}),
           ...(capitalize ? { textTransform: "capitalize" } : {}),
           ...(whitespacePreWrap ? { whiteSpace: "pre-wrap" } : {}),
-          ...(noWrap ? { whiteSpace: "nowrap" } : {})
+          ...(noWrap ? { whiteSpace: "nowrap" } : {}),
+          ...props,
         },
         ...(dangerouslySetInnerHTML
             ? {

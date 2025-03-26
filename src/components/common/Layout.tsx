@@ -23,7 +23,7 @@ import { HStack } from "@/components/ui/Stack";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const { platform } = useMiniApp();
-  const { data: energy } = useQuery<Partial<Energy>>("/api/energy", {
+  const { data: energy } = useQuery<Partial<Energy>>("/energy", {
     needAuthorized: true,
   });
   const [openInviteFriendsBottomSheet, setOpenInviteFriendsBottomSheet] = useState(false);

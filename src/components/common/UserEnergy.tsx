@@ -1,11 +1,10 @@
 import { useEffect, useState, useRef } from "react";
 import clsx from "clsx";
-import Image from "next/image";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { useMiniApp } from "@/contexts/MiniAppContext";
 import { PremiumTierBottomSheet } from "@/components/common/PremiumTierBottomSheet";
-import { PlusIcon } from "@/components/icons";
+import { PlusIcon, EnergyIcon } from "@/components/icons";
 import { BaseButton } from "@/components/ui/BaseButton";
 import { HStack } from "@/components/ui/Stack";
 
@@ -46,26 +45,21 @@ export function UserEnergy({ value, duration = 0.4 }: UserEnergyProps) {
 
   return (
     <HStack>
-      <Image
-        className={clsx("w-6 h-6 transition-transform origin-center duration-200", isActive && "scale-130")}
-        src="/energy.png"
-        alt="energy"
-        width={28}
-        height={28} />
-        <span className="text-white transition-all duration-300" ref={countUpRef} />
-        <BaseButton className="ml-1" onClick={() => {
-          if (!tonConnect?.connected) {
-            tonConnect?.connect();
-          } else {
-            setOpen(true);
-          }
-        }}>
-          <PlusIcon className="w-5 h-5 -translate-y-[1px]" />
-        </BaseButton>
-        <PremiumTierBottomSheet
-          open={open}
-          onClose={() => setOpen(false)}
-        />
+      <EnergyIcon className={clsx("w-6 h-6 transition-transform origin-center duration-200", isActive && "scale-130")} />
+      <span className="text-white transition-all duration-300" ref={countUpRef} />
+      <BaseButton className="ml-1" onClick={() => {
+        if (!tonConnect?.connected) {
+          tonConnect?.connect();
+        } else {
+          setOpen(true);
+        }
+      }}>
+        <PlusIcon className="w-5 h-5 -translate-y-[1px]" />
+      </BaseButton>
+      <PremiumTierBottomSheet
+        open={open}
+        onClose={() => setOpen(false)}
+      />
     </HStack>
   );
 }
