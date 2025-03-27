@@ -12,6 +12,21 @@ const en = {
     invite: "Invite",
     copied_description: "Copied to clipboard",
     copied: "Copied",
+    ai_agent: "AI Agent",
+    copy: "Copy",
+    invite_friend: "Invite a friend",
+    join_premium_tier: "Join Premium Tier",
+  },
+
+  trade_ai: {
+    label_5x_to_20x_leverage: "5x to 20x leverage",
+    label_90_days_pnl: "90 Days PNL",
+    label_90_days_mdd: "90 Days MDD",
+    label_sharpe_ratio: "Sharpe Ratio",
+    solid_growth: "Solid Growth",
+    label_aum: "AUM",
+    label_total_pnl: "Total PNL",
+    unavailable: "The trading model is currently being trained and is temporarily unavailable.",
   },
 
   earn: {
@@ -25,12 +40,6 @@ const en = {
     label_how_to_play_description_4: "4. The game lasts for 7 days, and the final ranking is determined every Sunday at 00:00 UTC",
     label_how_to_play_description_5: "5. In case of identical numbers, the prize pool will be equally divided among the tied players",
     label_your_highest_hash: "Your Highest Hash",
-  },
-
-  action: {
-    invite: "Invite",
-    invite_friend: "Invite a friend",
-    join_premium_tier: "Join Premium Tier",
   },
 
   invite_friends_bottom_sheet: {

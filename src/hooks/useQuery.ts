@@ -66,8 +66,8 @@ export function useQuery<T>(endpoint: string, options?: UseQueryOptions<T>): Use
         throw error;
       }
     },
-    refetchOnMount: true,
-    refetchOnWindowFocus: true,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
     refetchOnReconnect: true,
     ...options,
     enabled,

@@ -24,7 +24,7 @@ export function InviteFriendsBottomSheet({ open, onClose }: InviteFriendsBottomS
         <I18nTypography className="landscape:hidden" variant="text" size={2} i18n="invite_friends_bottom_sheet.description" />
         <HStack gap={3} className="pt-4 landscape:hidden">
           <Button
-            text={{ i18n: "action.invite_friend" }}
+            text={{ i18n: "common.invite_friend" }}
             onClick={() => {
               onClose?.();
               share();

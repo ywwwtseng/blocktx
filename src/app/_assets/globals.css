@@ -5,6 +5,10 @@
   --foreground: #ededed;
   --text-primary: #ededed;
   --text-secondary: #848E9C;
+  --text-warning: #f0b90b;
+  --text-buy: #2EBD85;
+  --bg-1: #202630;
+  --bg-warning: #2D2A20;
   --gradient-background: linear-gradient(125deg, #2e68ff, #2d5bff, #02c5ff, #10fbb8, #ffc500, #eb1c00);
   --shadow: 0 0 5px #ff0, 0 0 10px #ff0;
   --shadow-1: 0 0 7px #ff0, 0 0 15px #ff0;
@@ -16,6 +20,10 @@
   --color-foreground: var(--foreground);
   --color-text-primary: var(--text-primary);
   --color-text-secondary: var(--text-secondary);
+  --color-text-warning: var(--text-warning);
+  --color-text-buy: var(--text-buy);
+  --color-bg-1: var(--bg-1);
+  --color-bg-warning: var(--bg-warning);
   --font-rajdhani: var(--font-rajdhani);
 }
 

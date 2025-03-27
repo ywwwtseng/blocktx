@@ -31,13 +31,14 @@ export function PremiumTierBottomSheet({ open, onClose }: PremiumTierBottomSheet
       <I18nTypography
         variant="text"
         align="center"
+        color="var(--text-secondary)"
         size={2}
         i18n="premium_tier_bottom_sheet.description"
       />
       <VStack gap={1}>
         <VStack items="start" width="280px" gap={0.25} className="pt-4 pb-2">
           <HStack width="auto" gap={2}>
-            <CheckIcon className="w-6 h-6" />
+            <CheckIcon className="w-6 h-6"  />
             <I18nTypography
               variant="text"
               align="center"
@@ -97,6 +98,7 @@ export function PremiumTierBottomSheet({ open, onClose }: PremiumTierBottomSheet
             variant="text"
             align="center"
             size={1}
+            color="var(--text-secondary)"
             i18n={`premium_tier_bottom_sheet.${selectedType}_hint`}
           />
         </VStack>
@@ -104,7 +106,7 @@ export function PremiumTierBottomSheet({ open, onClose }: PremiumTierBottomSheet
       <HStack className="mt-4">
         <Button
           width="100%"
-          text={{ i18n: "action.join_premium_tier" }}
+          text={{ i18n: "common.join_premium_tier" }}
           onClick={() => {
             joinPremiumTier();
           }}

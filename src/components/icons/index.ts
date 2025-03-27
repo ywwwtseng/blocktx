@@ -14,3 +14,4 @@ export * from "./CheckIcon";
 export * from "./BtcIcon";
 export * from "./EnergyIcon";
 export * from "./TonIcon";
+export * from "./PeopleIcon";

@@ -44,7 +44,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
         justify="between"
         height={headerHeight}
       >
-        <Image className="rounded-md" src="/logo.png" alt="logo" width={28} height={28} />
+        <Image
+          id="logo"
+          className="rounded-md"
+          src="/logo.png"
+          alt="logo"
+          width={28}
+          height={28}
+        />
         <HStack width="auto" gap={1}>
           <div className="py-[3px] px-1 rounded-full border border-white/15 gap-1.5 flex items-center">
             <UserEnergy value={energy ?? 0} />
