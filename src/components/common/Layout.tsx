@@ -11,12 +11,11 @@ import {
   ProfileIcon,
 } from "@/components/icons";
 import { ConnectWalletButton } from "@/components/common/ConnectWalletButton";
-import { Avatar } from "@/components/common/Avatar";
+import { Avatar } from "@/components/common/Avatar/Avatar";
 import { Tab } from "@/components/common/Tab";
 import { InviteFriendsBottomSheet } from "@/components/common/InviteFriendsBottomSheet";
 import { LaunchScreen } from "@/components/common/LaunchScreen";
 import { HStack } from "@/components/ui/Stack";
-
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const { platform } = useMiniApp();

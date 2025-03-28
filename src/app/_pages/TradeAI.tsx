@@ -1,13 +1,15 @@
 import { HStack, VStack } from "@/components/ui/Stack";
 import { I18nTypography } from "@/components/common/I18nTypography";
-import { PeopleIcon, LogoIcon } from "@/components/icons";
+import { PeopleIcon, AIAgentIcon } from "@/components/icons";
 import { Button } from "@/components/ui/Button";
 
 export default function TradeAI() {
   return (
-    <div className="w-full px-4 flex-1 flex flex-col animate-fade-in gap-2">
+    <VStack className="animate-fade-in px-4 flex-1" gap={2}>
       <HStack justify="between" gap={2}>
-        <LogoIcon className="rounded-lg" width={48} height={48} />
+        <HStack width={48} height={48}>
+          <AIAgentIcon className="w-8 h-8" />
+        </HStack>
         <VStack justify="start" items="start">
           <I18nTypography
             size={4}
@@ -114,6 +116,6 @@ export default function TradeAI() {
           }}
         />
       </VStack>
-    </div>
+    </VStack>
   );
 }

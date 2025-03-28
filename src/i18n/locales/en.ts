@@ -43,6 +43,11 @@ const en = {
     label_your_highest_hash: "Your Highest Hash",
   },
 
+  profile: {
+    connected_wallet: "Connected Wallet",
+    username: "Username",
+  },
+
   invite_friends_bottom_sheet: {
     title: "Invite Friends",
   },

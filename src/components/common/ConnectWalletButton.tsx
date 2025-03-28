@@ -1,10 +1,12 @@
 import clsx from "clsx";
+import { usePageManagement } from "@/contexts/PageManagementContext";
 import { useMiniApp } from "@/contexts/MiniAppContext";
 import { BaseButton } from "@/components/ui/BaseButton";
 import { WalletIcon } from "@/components/icons";
 
 export function ConnectWalletButton() {
   const { tonConnect } = useMiniApp();
+  const { push } = usePageManagement();
 
   if (!tonConnect) {
     return null;
@@ -20,7 +22,7 @@ export function ConnectWalletButton() {
         if (!tonConnect.connected) {
           tonConnect.connect();
         } else {
-          tonConnect.disconnect();
+          push("/profile");
         }
       }}
     >

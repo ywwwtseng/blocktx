@@ -6,7 +6,8 @@ import { useClientOnce } from "@/hooks/useClientOnce";
 import Analysis from "../_pages/Analysis";
 import TradeAI from "../_pages/TradeAI";
 import News from "../_pages/News";
-import Account from "../_pages/Account";
+import Profile from "../_pages/Profile";
+
 export default function MiniApp() {
   const { pathname } = usePageManagement();
   const { init } = useBinanceService();
@@ -20,7 +21,7 @@ export default function MiniApp() {
       {pathname === "/" && <Analysis />}
       {pathname === "/news" && <News />}
       {pathname === "/trade-ai" && <TradeAI />}
-      {pathname === "/account" && <Account />}
+      {pathname === "/profile" && <Profile />}
     </div>
   );
 }

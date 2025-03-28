@@ -1,31 +1,27 @@
 "use client";
 
-import Image from "next/image";
-import { HStack } from "@/components/ui/Stack";
+import clsx from "clsx";
 import { useMiniApp } from "@/contexts/MiniAppContext";
+import { HStack } from "@/components/ui/Stack";
+import { AvatarCanvas } from "./AvatarCanvas";
 
 export interface AvatarProps {
   size?: number; // in pixels
+  border?: boolean;
 }
 
-export function Avatar({ size = 24 }: AvatarProps) {
-  const { user } = useMiniApp();
+export function Avatar({ size = 24, border = true }: AvatarProps) {
+  const { user, avatar } = useMiniApp();
 
-  if (user?.photo_url) {
+  if (avatar) {
     return (
-      <Image
-        className="border-primary"
-        src={user.photo_url}
-        alt={`${user.first_name}'s avatar`}
-        width={size}
-        height={size}
-      />
+      <AvatarCanvas size={size} image={avatar} border={border} />
     );
   }
 
   return (
-    <HStack 
-      className="border-primary"
+    <HStack
+      className={clsx(border && "border-primary")}
       width={size}
       height={size}
     >

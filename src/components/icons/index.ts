@@ -13,3 +13,5 @@ export * from "./TonIcon";
 export * from "./PeopleIcon";
 export * from "./NewsIcon";
 export * from "./ProfileIcon";
+export * from "./StarIcon";
+export * from "./AIAgentIcon";

@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  useState,
   createContext,
   useContext,
   useEffect,
@@ -19,6 +20,7 @@ export interface MiniAppContextState {
   platform: Platform | undefined;
   tonConnect: TonConnect | undefined;
   initDataRaw: string | null | undefined;
+  avatar: HTMLImageElement | null;
 }
 
 export interface MiniAppProviderProps {
@@ -29,6 +31,7 @@ const MiniAppContext = createContext<MiniAppContextState | undefined>(undefined)
 
 export function MiniAppProvider({ children }: MiniAppProviderProps) {
   const onConnectRef = useRef<OnConnect>(null);
+  const [avatar, setAvatar] = useState<HTMLImageElement | null>(null);
   const forceUpdate = useForceUpdate();
   const { launchParams, initDataRaw } = useTMA();
   const user = launchParams?.tgWebAppData?.user;
@@ -54,12 +57,24 @@ export function MiniAppProvider({ children }: MiniAppProviderProps) {
       postEvent("web_app_set_background_color", { color: "#000000" });
     }
   }, [launchParams]);
+
+  useEffect(() => {
+    if (user?.photo_url) {
+      const image = new Image();
+      
+      image.onload = () => {
+        setAvatar(image);
+      };
+      image.src = user.photo_url;
+    }
+  }, [user]);
   
   const value: MiniAppContextState = {
     user,
     platform,
     tonConnect,
     initDataRaw,
+    avatar,
   };
 
   return (
