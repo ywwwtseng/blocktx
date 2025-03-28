@@ -8,7 +8,7 @@ export interface AvatarProps {
   size?: number; // in pixels
 }
 
-export function Avatar({ size = 36 }: AvatarProps) {
+export function Avatar({ size = 24 }: AvatarProps) {
   const { user } = useMiniApp();
 
   if (user?.photo_url) {

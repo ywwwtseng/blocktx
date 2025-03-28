@@ -16,17 +16,16 @@ export interface ButtonProps extends DetailedHTMLProps<ButtonHTMLAttributes<HTML
   height?: number;
   icon?: ReactNode;
   borderRadius?: number;
-  text?: I18nTypographyProps;
+  text?: I18nTypographyProps | string;
 }
 
 export function Button({
   className,
   loading,
   width,
-  height = 38,
+  height = 40,
   icon,
-  borderRadius = 9999,
-  gradient = true,
+  borderRadius = 4,
   disabled = false,
   text,
   style,
@@ -36,31 +35,23 @@ export function Button({
     <button 
       className={
         clsx(
-          "p-[1px] disabled:opacity-40", className)
+          "flex items-center justify-center px-4 gap-2 disabled:opacity-40 bg-[var(--bg-button)] text-[var(--text-on-yellow)]", className)
       }
       disabled={loading || disabled}
       style={{
-        background: gradient ? "var(--gradient-background)" : "var(--background)",
         maxWidth: 292,
         borderRadius,
         width,
+        height,
         ...style,
       }}
       {...props}
     >
-      <div
-        className="bg-black flex items-center justify-center px-4 gap-2"
-        style={{
-          height: `${height - 2}px`,
-          borderRadius
-        }}
-      >
-        {loading && (<ProgressCircleIcon />)}
-        {Boolean(icon && !loading) && icon}
-        {text && (
-          <I18nTypography noWrap weight={700} {...text}></I18nTypography>
-        )}
-      </div>
+      {loading && (<ProgressCircleIcon />)}
+      {Boolean(icon && !loading) && icon}
+      {text && (
+        <I18nTypography noWrap weight={700} {...(typeof text === "string" ? { i18n: text } : text)}></I18nTypography>
+      )}
     </button>
   );
 }

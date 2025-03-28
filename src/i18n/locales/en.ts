@@ -9,8 +9,8 @@ const en = {
     analysis: "Analysis",
     tradeai: "Trade AI",
     news: "News",
-    earn: "Earn",
     invite: "Invite",
+    profile: "Profile",
     copied_description: "Copied to clipboard",
     copied: "Copied",
     ai_agent: "AI Agent",
@@ -45,7 +45,6 @@ const en = {
 
   invite_friends_bottom_sheet: {
     title: "Invite Friends",
-    description: "Invite friends to earn rewards",
   },
 
   premium_tier_bottom_sheet: {

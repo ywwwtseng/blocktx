@@ -3,15 +3,13 @@
 import { useState } from "react";
 import Image from "next/image";
 import { useMiniApp } from "@/contexts/MiniAppContext";
-import { useQuery } from "@/hooks/useQuery";
 import {
   ChartIcon,
   SmartToyIcon,
   NewsIcon,
-  EarnIcon,
-  ReferralIcon
+  ReferralIcon,
+  ProfileIcon,
 } from "@/components/icons";
-import { UserEnergy } from "@/components/common/UserEnergy";
 import { ConnectWalletButton } from "@/components/common/ConnectWalletButton";
 import { Avatar } from "@/components/common/Avatar";
 import { Tab } from "@/components/common/Tab";
@@ -22,14 +20,10 @@ import { HStack } from "@/components/ui/Stack";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const { platform } = useMiniApp();
-  const { data: energy } = useQuery<number>("/energy", {
-    needAuthorized: true,
-  });
   const [openInviteFriendsBottomSheet, setOpenInviteFriendsBottomSheet] = useState(false);
   const headerHeight = 52;
   const safeAreaBottom = platform === "ios" ? 20 : 12;
   const tabBarHeight = 60 + safeAreaBottom;
-
 
   return (
     <main
@@ -49,15 +43,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
           className="rounded-md"
           src="/logo.png"
           alt="logo"
-          width={28}
-          height={28}
+          width={32}
+          height={32}
         />
-        <HStack width="auto" gap={1}>
-          <div className="py-[3px] px-1 rounded-full border border-white/15 gap-1.5 flex items-center">
-            <UserEnergy value={energy ?? 0} />
-          </div>
+        <HStack width="auto" gap={2}>
           <ConnectWalletButton />
-          <Avatar />
+          <Avatar size={36} />
         </HStack>
       </HStack>
       <div className="flex-1 overflow-y-auto no-scrollbar">
@@ -68,11 +59,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
         height={tabBarHeight}
         className="box-border fixed left-0 right-0 bottom-0 mx-auto pt-1 border-t border-white/10 bg-[var(--background)]/50 backdrop-blur-[35px]"
       >
-        <HStack justify="between" className="px-4">
+        <HStack justify="between" className="px-5">
           <Tab href="/" icon={{ element: ChartIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="common.analysis" />
           <Tab href="/trade-ai" icon={{ element: SmartToyIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="common.tradeai" />
-          <Tab href="/news" icon={{ element: NewsIcon, color: { active: "url(#linear-gradient)", default: "#7C7C7C" } }} i18n="common.news" />
-          <Tab href="/earn" icon={{ element: EarnIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="common.earn" />
+          <Tab href="/news" icon={{ element: NewsIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="common.news" />
           <Tab
             onClick={() => {
               setOpenInviteFriendsBottomSheet(true);
@@ -80,15 +70,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
             icon={{ element: ReferralIcon, color: { active: "#fff", default: "#7C7C7C" } }}
             i18n="common.invite"
           />
-          <InviteFriendsBottomSheet
-            open={openInviteFriendsBottomSheet}
-            onClose={() => {
-              setOpenInviteFriendsBottomSheet(false);
-            }}
-          />
+          <Tab href="/profile" icon={{ element: ProfileIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="common.profile" />
         </HStack>
       </HStack>
       <LaunchScreen />
+      <InviteFriendsBottomSheet
+        open={openInviteFriendsBottomSheet}
+        onClose={() => {
+          setOpenInviteFriendsBottomSheet(false);
+        }}
+      />
     </main>
   );
 }

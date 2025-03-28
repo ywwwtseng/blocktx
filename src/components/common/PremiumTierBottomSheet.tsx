@@ -106,7 +106,7 @@ export function PremiumTierBottomSheet({ open, onClose }: PremiumTierBottomSheet
       <HStack className="mt-4">
         <Button
           width="100%"
-          text={{ i18n: "common.join_premium_tier" }}
+          text="common.join_premium_tier"
           onClick={() => {
             joinPremiumTier();
           }}

@@ -24,7 +24,7 @@ export function QRCodeCanvas({ url }: QRCodeProps) {
     };
 
     const drawAppleStyleQR = async (text: string, canvasId: string) => {
-      const scale = 0.3;
+      const scale = 0.35;
       const canvas = document.getElementById(canvasId) as HTMLCanvasElement;
       const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
     

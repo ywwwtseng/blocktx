@@ -4,7 +4,6 @@ import { RequestUtils } from "@/utils/RequestUtils";
 import { ResponseUtils, ErrorInput } from "@/utils/ResponseUtils";
 import { StartParamType } from "@/utils/TMAUtils";
 import { validate } from "@/actions/tma";
-import { getRestoreEnergy } from "@/actions/energy";
 
 export async function POST(request: NextRequest) {
   try {
@@ -18,8 +17,6 @@ export async function POST(request: NextRequest) {
       start_param,
     } = await validate(request);
 
-    const restoreEnergy = await getRestoreEnergy(telegram_id);
-
     const user = await prisma.user.upsert({
       where: {
         telegram_id,
@@ -30,21 +27,6 @@ export async function POST(request: NextRequest) {
         timezone: ipinfo.timezone,
         avatar_url: photo_url || null,
         language_code: language_code || "en",
-        energy: {
-          create: {
-            current: 100,
-            max: 100,
-          },
-        },
-        last_login_log: {
-          create: {
-            ip: ipinfo.ip,
-            country: ipinfo.country,
-            city: ipinfo.city,
-            timezone: ipinfo.timezone,
-            user_agent: request.headers.get("user-agent") || "unknown",
-          },
-        },
       },
       update: {
         nickname,
@@ -58,13 +40,6 @@ export async function POST(request: NextRequest) {
             user_agent: request.headers.get("user-agent") || "unknown",
           },
         },
-        ...(restoreEnergy.enabled && {
-          energy: {
-            update: {
-              current: restoreEnergy.value,
-            },
-          },
-        }),
       },
     });
 

@@ -24,7 +24,7 @@ export default function TradeAI() {
           </HStack>
         </VStack>
       </HStack>
-      <HStack justify="start" gap={2}>
+      <HStack justify="start" gap={1}>
         <HStack width="auto" justify="start" gap={1} className="bg-[var(--bg-warning)] rounded-xs px-1">
           <I18nTypography
             size={1}
@@ -97,7 +97,7 @@ export default function TradeAI() {
         </VStack>
       </HStack>
       <VStack justify="between" className="flex-1">
-        <HStack className="flex-1">
+        <HStack className="flex-1 p-2">
           <I18nTypography
             size={1}
             align="center"
@@ -109,7 +109,7 @@ export default function TradeAI() {
         <Button
           width="100%"
           disabled
-          text={{ i18n: "common.copy" }}
+          text="common.copy"
           onClick={() => {
           }}
         />
