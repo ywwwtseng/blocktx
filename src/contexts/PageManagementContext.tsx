@@ -1,17 +1,17 @@
 "use client";
 import { createContext, useState, useContext } from "react";
 
-interface PageManagmentContext {
+interface PageManagementContext {
   pathname: string;
   push: (pathname: string) => void;
 }
 
-export const PageManagment = createContext<PageManagmentContext>({
+export const PageManagement = createContext<PageManagementContext>({
   pathname: "",
   push: () => {},
 });
 
-export const PageManagmentProvider = ({ children }: { children: React.ReactNode }) => {
+export const PageManagementProvider = ({ children }: { children: React.ReactNode }) => {
   const [pathname, setPathname] = useState(sessionStorage.getItem("pathname") || "/");
 
   const push = (pathname: string) => {
@@ -19,11 +19,11 @@ export const PageManagmentProvider = ({ children }: { children: React.ReactNode 
     sessionStorage.setItem("pathname", pathname);
   };
 
-  return <PageManagment.Provider value={{ pathname, push }}>{children}</PageManagment.Provider>;
+  return <PageManagement.Provider value={{ pathname, push }}>{children}</PageManagement.Provider>;
 };
 
-export const usePageManagment = () => {
-  const context = useContext(PageManagment);
+export const usePageManagement = () => {
+  const context = useContext(PageManagement);
 
   if (!context) {
     throw new Error("usePageManagment must be used within a PageManagmentProvider");
@@ -33,7 +33,7 @@ export const usePageManagment = () => {
 };
 
 export const usePagename = () => {
-  const { pathname } = usePageManagment();
+  const { pathname } = usePageManagement();
 
   return pathname;
 };

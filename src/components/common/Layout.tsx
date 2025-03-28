@@ -7,7 +7,7 @@ import { useQuery } from "@/hooks/useQuery";
 import {
   ChartIcon,
   SmartToyIcon,
-  // GameIcon,
+  NewsIcon,
   EarnIcon,
   ReferralIcon
 } from "@/components/icons";
@@ -69,9 +69,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
         className="box-border fixed left-0 right-0 bottom-0 mx-auto pt-1 border-t border-white/10 bg-[var(--background)]/50 backdrop-blur-[35px]"
       >
         <HStack justify="between" className="px-4">
-          <Tab href="/" icon={{ element: ChartIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="common.analytics" />
+          <Tab href="/" icon={{ element: ChartIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="common.analysis" />
           <Tab href="/trade-ai" icon={{ element: SmartToyIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="common.tradeai" />
-          {/* <Tab href="/game" icon={{ element: GameIcon, color: { active: "url(#linear-gradient)", default: "#7C7C7C" } }} i18n="Game" /> */}
+          <Tab href="/news" icon={{ element: NewsIcon, color: { active: "url(#linear-gradient)", default: "#7C7C7C" } }} i18n="common.news" />
           <Tab href="/earn" icon={{ element: EarnIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="common.earn" />
           <Tab
             onClick={() => {

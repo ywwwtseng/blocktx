@@ -8,7 +8,7 @@ import { MiniAppProvider } from "@/contexts/MiniAppContext";
 import { I18nProvider } from "@/contexts/I18nContext";
 import { WindowSizeProvider } from "@/contexts/WindowSizeContext/dynamic";
 import { ClientProvider } from "@/contexts/ClientContext";
-import { PageManagmentProvider } from "@/contexts/PageManagment";
+import { PageManagementProvider } from "@/contexts/PageManagementContext";
 import { Layout } from "@/components/common/Layout";
 
 import "react-toastify/dist/ReactToastify.css";
@@ -28,7 +28,7 @@ export default function MiniAppLayout({
 
   return (
     <MiniAppProvider>
-      <PageManagmentProvider>
+      <PageManagementProvider>
         <QueryClientProvider client={queryClient}>
           <ClientProvider>
             <I18nProvider>
@@ -62,7 +62,7 @@ export default function MiniAppLayout({
           </I18nProvider>
           </ClientProvider>
         </QueryClientProvider>
-      </PageManagmentProvider>
+      </PageManagementProvider>
     </MiniAppProvider>
   );
 }

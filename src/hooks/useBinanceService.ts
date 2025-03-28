@@ -71,13 +71,16 @@ export interface Ticker24hr {
   n: number;            // 24小时内成交数
 }
 
-export enum StreamType {
-  TickerArr = '!ticker@arr',
-}
-
-export interface Stream {
-  stream: StreamType;
-  data: Ticker24hr[];
+export interface MiniTicker24hr {
+  e: "24hrMiniTicker";  // 事件类型
+  E: number;            // 事件时间
+  s: TradingPairSymbol; // 交易对
+  c: string;            // 最新成交价格
+  h: string;            // 24小时内最高成交价
+  l: string;            // 24小时内最低成交加
+  o: string;            // 整整24小时前，向后数的第一次成交价格
+  q: string;            // 24小时内成交额
+  v: string;            // 24小时内成交量
 }
 
 export interface BinanceSocketMessage {
@@ -88,11 +91,7 @@ export interface BinanceSocketMessage {
 
 export interface BinanceSocketEventMessage {
   stream: string;
-  data: SocketRawKline;
-}
-
-export const endpoints = {
-  klines: "/v3/uiKlines",
+  data: SocketRawKline | Ticker24hr[] | MiniTicker24hr[];
 }
 
 export const events = {
@@ -118,31 +117,48 @@ export const events = {
 
 type BinanceServiceState = {
   data: {
+    miniTicker: Partial<Record<TradingPairSymbol, MiniTicker24hr>>;
     klines: Partial<Record<TradingPairSymbol, Kline[]>>;
   };
   socket: Socket<BinanceSocketEventMessage> | null;
   klines: {
     history: (symbol: TradingPairSymbol) => Promise<void>;
   },
+  products: {
+    receive: () => Promise<void>;
+  },
   init: () => () => void;
 };
 
 export const useBinanceService = create<BinanceServiceState>((set, get) => ({
   data: {
+    miniTicker: {},
     klines: {},
   },
   socket: null,
+  products: {
+    receive: async () => {
+      const response = await fetch("https://www.binance.com/bapi/asset/v2/public/asset-service/product/get-products");
+      const data = await response.json();
+
+      console.log(data, 'data')
+
+      return data;
+    },
+  },
   klines: {
     history: async (symbol: TradingPairSymbol) => {
-      const endpoint = URLUtils.stringifyUrl(
-        endpoints.klines,
-        {
-          symbol,
-          interval: "1s",
-          limit: 1000,
-        });
+      const response = await fetch(
+        URLUtils.stringifyUrl(
+          "https://www.binance.com/api/v3/uiKlines",
+          {
+            symbol,
+            interval: "1s",
+            limit: 1000,
+          }
+        )
+      );
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BINANCE_API_URL!}${endpoint}`);
       const data = await response.json();
   
       // set({ data: { ...data, [symbol]: data } });
@@ -167,8 +183,10 @@ export const useBinanceService = create<BinanceServiceState>((set, get) => ({
   },
   init: () => {
     const socket = new Socket<BinanceSocketEventMessage>({
-      url: process.env.NEXT_PUBLIC_BINANCE_WS_URL!,
+      url: "wss://stream.binance.com/stream",
     });
+
+    get().products.receive();
 
     socket.onOpen = async () => {
       set({ socket });
@@ -186,8 +204,11 @@ export const useBinanceService = create<BinanceServiceState>((set, get) => ({
         ],
         id: 1
       });
+
       socket.onMessage = (message: BinanceSocketEventMessage) => {
-        if (message.stream === "btcusdt@kline_1s") {
+        if (message.stream === events.btcusdt.kline["1s"]) {
+          const data = message.data as SocketRawKline;
+
           set((state) => ({
             data: {
               ...state.data,
@@ -196,14 +217,32 @@ export const useBinanceService = create<BinanceServiceState>((set, get) => ({
                 [TradingPairSymbol.BTCUSDT]: [
                   ...(state.data.klines[TradingPairSymbol.BTCUSDT] || []).slice(-500),
                   {
-                    [KlineAttributes.Timestamp]: message.data.k[KlineAttributes.Timestamp],
-                    [KlineAttributes.Open]: message.data.k[KlineAttributes.Open],
-                    [KlineAttributes.High]: message.data.k[KlineAttributes.High],
-                    [KlineAttributes.Low]: message.data.k[KlineAttributes.Low],
-                    [KlineAttributes.Close]: message.data.k[KlineAttributes.Close],
-                    [KlineAttributes.Volume]: message.data.k[KlineAttributes.Volume],
+                    [KlineAttributes.Timestamp]: data.k[KlineAttributes.Timestamp],
+                    [KlineAttributes.Open]: data.k[KlineAttributes.Open],
+                    [KlineAttributes.High]: data.k[KlineAttributes.High],
+                    [KlineAttributes.Low]: data.k[KlineAttributes.Low],
+                    [KlineAttributes.Close]: data.k[KlineAttributes.Close],
+                    [KlineAttributes.Volume]: data.k[KlineAttributes.Volume],
                   },
                 ],
+              },
+            },
+          }));
+        } else if (message.stream === events.miniTicker) {
+          const data = message.data as MiniTicker24hr[];
+
+          set((state) => ({
+            data: {
+              ...state.data,
+              miniTicker: {
+                ...state.data.miniTicker,
+                ...Object.values(TradingPairSymbol).reduce((acc, symbol) => ({
+                  ...acc,
+                  [symbol]: {
+                    ...state.data.miniTicker[symbol],
+                    ...data.find((item) => item.s === symbol),
+                  },
+                }), {}),
               },
             },
           }));
@@ -234,6 +273,10 @@ export const useBinanceService = create<BinanceServiceState>((set, get) => ({
   },
 }));
 
-export const useBinanceKlineData = (symbol: TradingPairSymbol) => {
+export const useBinanceKline = (symbol: TradingPairSymbol) => {
   return useBinanceService(useShallow((state) => state.data.klines[symbol]));
+};
+
+export const useBinanceMiniTicker = () => {
+  return useBinanceService(useShallow((state) => state.data.miniTicker));
 };

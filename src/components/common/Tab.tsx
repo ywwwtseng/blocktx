@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { postEvent } from "@telegram-apps/sdk-react";
-import { usePageManagment } from "@/contexts/PageManagment";
+import { usePageManagement } from "@/contexts/PageManagementContext";
 import { I18nTypography } from "@/components/common/I18nTypography";
 import { BaseButton } from "@/components/ui/BaseButton";
 
@@ -21,7 +21,7 @@ interface TabProps {
 
 export function Tab({ icon, i18n, href, onClick }: TabProps) {
   const [isActive, setIsActive] = useState(false);
-  const { pathname, push } = usePageManagment();
+  const { pathname, push } = usePageManagement();
   const Icon = icon.element;
 
   return (

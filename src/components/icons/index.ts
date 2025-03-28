@@ -15,3 +15,4 @@ export * from "./BtcIcon";
 export * from "./EnergyIcon";
 export * from "./TonIcon";
 export * from "./PeopleIcon";
+export * from "./NewsIcon";

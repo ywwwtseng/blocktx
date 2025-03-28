@@ -6,8 +6,9 @@ const en = {
   },
 
   common: {
-    analytics: "Analytics",
+    analysis: "Analysis",
     tradeai: "Trade AI",
+    news: "News",
     earn: "Earn",
     invite: "Invite",
     copied_description: "Copied to clipboard",

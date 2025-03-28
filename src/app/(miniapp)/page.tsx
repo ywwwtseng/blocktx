@@ -1,14 +1,14 @@
 "use client";
 
-import { usePageManagment } from "@/contexts/PageManagment";
+import { usePageManagement } from "@/contexts/PageManagementContext";
 import { useBinanceService } from "@/hooks/useBinanceService";
 import { useClientOnce } from "@/hooks/useClientOnce";
-import Analytics from "../_pages/Analytics";
+import Analysis from "../_pages/Analysis";
 import Earn from "../_pages/Earn";
 import TradeAI from "../_pages/TradeAI";
-
+import News from "../_pages/News";
 export default function MiniApp() {
-  const { pathname } = usePageManagment();
+  const { pathname } = usePageManagement();
   const { init } = useBinanceService();
 
   useClientOnce(() => {
@@ -17,8 +17,9 @@ export default function MiniApp() {
 
   return (
     <div className="flex flex-col items-center justify-center py-4 h-full">
-      {pathname === "/" && <Analytics />}
+      {pathname === "/" && <Analysis />}
       {pathname === "/earn" && <Earn />}
+      {pathname === "/news" && <News />}
       {pathname === "/trade-ai" && <TradeAI />}
     </div>
   );
