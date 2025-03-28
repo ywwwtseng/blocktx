@@ -132,6 +132,12 @@ export interface Transaction {
   prev_trans_hash: string;
   prev_trans_lt: number;
   total_fees: number;
-  trace_id: null | string;
-  
+  trace_id: null | string; 
+}
+
+export interface Article {
+  image: string;
+  title: string;
+  link: string;
+  created_at: string;
 }

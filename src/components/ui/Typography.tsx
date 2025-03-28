@@ -24,6 +24,7 @@ export interface TypographyProps extends PropsWithChildren, React.CSSProperties 
   size?: 12 | 11 | 10 | 9 | 8 | 7 | 6 | 5 | 4 | 3 | 2 | 1;
   className?: string;
   ellipsis?: boolean;
+  lineClamp?: number;
   capitalize?: boolean;
   whitespacePreWrap?: boolean;
   noWrap?: boolean;
@@ -58,6 +59,7 @@ export function Typography({
   size,
   className,
   ellipsis = false,
+  lineClamp,
   capitalize = false,
   whitespacePreWrap = false,
   noWrap = false,
@@ -78,6 +80,7 @@ export function Typography({
           fontWeight: weight || config.weight,
           ...size_config[String(size || config.size) as keyof typeof size_config],
           ...(ellipsis ? { textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap" } : {}),
+          ...(lineClamp ? { WebkitLineClamp: lineClamp, display: "-webkit-box", WebkitBoxOrient: "vertical",  overflow: "hidden" } : {}),
           ...(capitalize ? { textTransform: "capitalize" } : {}),
           ...(whitespacePreWrap ? { whiteSpace: "pre-wrap" } : {}),
           ...(noWrap ? { whiteSpace: "nowrap" } : {}),

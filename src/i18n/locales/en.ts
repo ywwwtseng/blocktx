@@ -30,19 +30,6 @@ const en = {
     unavailable: "The trading model is currently being trained and is temporarily unavailable.",
   },
 
-  earn: {
-    title: "Hash Challenge",
-    label_current_highest: "CURRENT HIGHEST",
-    label_prize_pool: "PRIZE POOL",
-    label_game_rules: "Game Rules",
-    label_how_to_play_description_1: "1. Get the latest TON transaction hash",
-    label_how_to_play_description_2: "2. Extract the numeric part from the hash",
-    label_how_to_play_description_3: "3. The player with the highest extracted number wins",
-    label_how_to_play_description_4: "4. The game lasts for 7 days, and the final ranking is determined every Sunday at 00:00 UTC",
-    label_how_to_play_description_5: "5. In case of identical numbers, the prize pool will be equally divided among the tied players",
-    label_your_highest_hash: "Your Highest Hash",
-  },
-
   profile: {
     connected_wallet: "Connected Wallet",
     username: "Username",

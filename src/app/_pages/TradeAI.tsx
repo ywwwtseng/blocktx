@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/Button";
 
 export default function TradeAI() {
   return (
-    <VStack className="animate-fade-in px-4 flex-1" gap={2}>
+    <VStack className="animate-fade-in px-4 py-2 flex-1" gap={2}>
       <HStack justify="between" gap={2}>
         <HStack width={48} height={48}>
           <AIAgentIcon className="w-8 h-8" />
@@ -98,7 +98,7 @@ export default function TradeAI() {
           />
         </VStack>
       </HStack>
-      <VStack justify="between" className="flex-1">
+      <VStack justify="between" className="flex-1 py-4">
         <HStack className="flex-1 p-2">
           <I18nTypography
             size={1}

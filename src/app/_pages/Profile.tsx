@@ -22,7 +22,7 @@ export default function Profile() {
   }, [address]);
   
   return (
-    <VStack justify="start" className="animate-fade-in px-4 flex-1" gap={4}>
+    <VStack justify="start" className="animate-fade-in px-4 py-2 flex-1" gap={4}>
       <VStack>
         <Avatar size={80} border={false} />
         <I18nTypography

@@ -20,6 +20,7 @@
     "@telegram-apps/sdk": "^3.5.1",
     "@telegram-apps/sdk-react": "^3.1.5",
     "@tonconnect/ui": "^2.0.12",
+    "cheerio": "^1.0.0",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.13",
     "dlv": "^1.1.3",
