@@ -1,0 +1,3 @@
+name: blocktx-infra
+runtime: nodejs
+description: BlockTx deployed to AWS Asia (Singapore).

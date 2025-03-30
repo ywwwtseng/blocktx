@@ -1,0 +1,9 @@
+config:
+  aws:region: ap-southeast-1
+  aws:accessKey:
+    secure: AAABALfozjLInIeUR73th6BbQ98xqaDLAWt5W8kgK6y2bs1gcc0ibLy/cykjNquk/+dmog==
+  aws:secretKey:
+    secure: AAABAHpmY6xdp7QWmMkES0TqkduAxR+s1gkX9v+R2aK2dPWqK43gi9jO6S6506zD4b8JmGD/BglrtdSPplKiXQUUiKPAgxJT
+  blocktx-infra:name: blocktx
+  blocktx-infra:ssh:
+    secure: AAABANNUvwJlzDB9OmvZXcwEpH5xKLRjHa97Kf+ZLHK5SQIzni2abLVfPGgDEHgDor/ESAxVAOxpIuFIkgeyGlxJVVvX/M0yHqtQiOcVm0Gs04KYoI4hwxTIJsShSYHPNT6MjtDAXl65SyMPjBqSEMQcKglK4oA6sgyINT+97CGh1o+9EOU8o5oJ+4tQ9LxVluK1U3tViiXa8OeIoBqPB6Z+YfQmRd51wbh8ttEAtpKY5rcsdSlY1BZVxE0WwfSEm0x36EMuEBqKM2fgHkm5qPsyS+QhMewgxi/x/IlM+WLkfbHC73avNdfWL36cmzcIg5FbUDQE7osOBkog4oAmQBc1B086zmv7iqZULKWu17HKml7oTxK370l+KGoIsEjnIPpoBCrNutrI6hI/XrbHnZWpnTscn+bpjRJG7NWDIPtIyrG7b9uKfsDEksRTUZ2wq17Y36epUSVV34NZ4Lmu2PG1kBaRFhc3pY8TvM0DrpZRdN59Hw4qigKT1ssEpCQ898Ko2eg1FLmwxVd0Jg6TPCN2S+vzRQhUars+P+IV5H0fRImKEgMv7kRLerK7hW4D5tVTAPY=

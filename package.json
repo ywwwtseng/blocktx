@@ -38,6 +38,8 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@pulumi/aws": "^6.74.0",
+    "@pulumi/pulumi": "^3.159.0",
     "@tailwindcss/postcss": "^4",
     "@types/bun": "^1.2.5",
     "@types/dlv": "^1.1.5",
