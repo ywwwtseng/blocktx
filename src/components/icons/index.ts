@@ -19,3 +19,4 @@ export * from "./EthIcon";
 export * from "./SolIcon";
 export * from "./SuiIcon";
 export * from "./CaretIcon";
+export * from "./ChevronLeftIcon";

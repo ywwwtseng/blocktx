@@ -10,7 +10,7 @@ export function TickerTape() {
   const miniTicker = useBinanceMiniTicker();
 
   const renderItems = (type: "original" | "cloned") => (
-    <HStack gap={10} className="px-5">
+    <HStack gap={8} className="px-4">
       {Object.values(miniTicker).map((item) => {
         const ticker = MiniTickerUtils.format(item);
 
@@ -19,16 +19,19 @@ export function TickerTape() {
         }
 
         return (
-          <HStack width="auto" gap={2} key={`${ticker.symbol}-${type}`}>
+          <HStack gap={2} key={`${ticker.symbol}-${type}`}>
             <CryptoIcon symbol={ticker.symbol} />
             <VStack items="start">
               <Typography size={1} color="var(--text-secondary)">{ticker.symbol}</Typography>
-              <HStack gap={2}>
+              <HStack justify="start" gap={2}>
                 <Typography size={1} weight={700}>${ticker.price}</Typography>
-                <HStack gap={1}>
-                  <CaretIcon className={clsx("w-1.5 h-2", {
-                    "rotate-180": ticker.percentage < 0,
-                  })} fill={ticker.color} />
+                <HStack justify="start" gap={1}>
+                  <CaretIcon
+                    className={clsx("w-1.5 h-2", {
+                      "rotate-180": ticker.percentage < 0,
+                    })}
+                    fill={ticker.color}
+                  />
                   <Typography size={1} weight={700} color={ticker.color}>{ticker.label}</Typography>
                 </HStack>
               </HStack>

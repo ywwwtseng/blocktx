@@ -26,7 +26,7 @@ export default function News() {
           <Link href={item.link} key={index} className="py-2 border-b border-b-border-1 border-[#333] last:border-b-0">
             <HStack gap={2}>
               <Image
-                className="animate-fade-in w-[135px] h-[75px]"
+                className="animate-fade-in min-w-[135px] w-[135px] h-[75px]"
                 src={item.image}
                 alt={item.title}
                 width={135}
@@ -37,8 +37,8 @@ export default function News() {
                 <I18nTypography
                 color="var(--text-secondary)"
                 i18n={item.created_at} size={1} weight={400} />
-            </VStack>
-          </HStack>
+              </VStack>
+            </HStack>
           </Link>
           
         ))}
