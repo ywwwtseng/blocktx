@@ -15,3 +15,7 @@ export * from "./NewsIcon";
 export * from "./ProfileIcon";
 export * from "./StarIcon";
 export * from "./AIAgentIcon";
+export * from "./EthIcon";
+export * from "./SolIcon";
+export * from "./SuiIcon";
+export * from "./CaretIcon";
