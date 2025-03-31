@@ -1,6 +1,7 @@
-import { createContext, useMemo, useState, useEffect, useCallback, ReactNode, useContext } from "react";
+import { createContext, useMemo, useState, useCallback, ReactNode, useContext } from "react";
 import { useMiniApp } from "@/contexts/MiniAppContext";
-import { Client } from '@/libs/client/Client';
+import { useClientOnce } from "@/hooks/useClientOnce";
+import { Client } from "@/libs/client/Client";
 import { User } from "@prisma/client";
 
 interface ClientContextState {
@@ -43,7 +44,7 @@ export const ClientProvider = ({ children }: { children: ReactNode }) => {
       .post<{ data: User }>("/auth")
       .then((res) => {
         setUser(res.data);
-        setLanguageCode(res.data.language_code);
+        setLanguageCode(res.data.language_code || "en");
         setAuthorized(true);
       })
       .catch((err) => {
@@ -52,10 +53,9 @@ export const ClientProvider = ({ children }: { children: ReactNode }) => {
       });
   }, [client]);
 
-  useEffect(() => {
+  useClientOnce(() => {
     auth();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  });
 
   const value: ClientContextState = {
     request: {

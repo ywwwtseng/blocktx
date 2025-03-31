@@ -26,7 +26,16 @@ export async function POST(request: NextRequest) {
         nickname,
         timezone: ipinfo.timezone,
         avatar_url: photo_url || null,
-        language_code: language_code || "en",
+        language_code: language_code || null,
+        last_login_log: {
+          create: {
+            ip: ipinfo.ip,
+            country: ipinfo.country,
+            city: ipinfo.city,
+            timezone: ipinfo.timezone,
+            user_agent: request.headers.get("user-agent") || "unknown",
+          },
+        },
       },
       update: {
         nickname,

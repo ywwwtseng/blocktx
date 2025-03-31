@@ -19,7 +19,7 @@ model User {
   nickname          String    @db.VarChar(100)
   avatar_url        String?   @db.VarChar(255)
   timezone          String?   @db.VarChar(20)
-  language_code     String    @default("en") @db.VarChar(10)
+  language_code     String?   @db.VarChar(10)
   ton_wallet        String?   @db.VarChar(100)
   premium_ends_at   DateTime?
 
