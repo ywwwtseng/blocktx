@@ -1,6 +1,6 @@
 const en = {
   messages: {
-    share_text: "#ShareLink\n🚀 Free to join & trade!\n📊 Crypto insights for better decisions!\n💰 Log in daily to restore energy & win TON!",
+    share_text: "#ShareLink\n🚀  Free to join & Crypto insights!\n📊 Stay ahead with market trends & on-chain data!\n💰 Master technical analysis, track news & optimize strategies!",
     invite_link_copied_to_clipboard: "Invite link copied to clipboard",
     copy_invite_link_failed: "Failed to copy invite link",
   },

@@ -34,7 +34,7 @@ export const validate = async (request: NextRequest) => {
         first_name: user.first_name || "",
         last_name: user.last_name || "",
         photo_url: user.photo_url || null,
-        language_code: user.language_code || null,
+        language_code: user.language_code?.toLowerCase()?.slice(0, 2) || null,
         start_param: TMAUtils.parseStartParam(initData.get("start_param")),
       };
     } catch {

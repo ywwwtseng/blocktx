@@ -56,6 +56,7 @@ export function TickerTape() {
             min-height: 38px;
             overflow: hidden;
             position: relative;
+            z-index: -1;
             
           }
 

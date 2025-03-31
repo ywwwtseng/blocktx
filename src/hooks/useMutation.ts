@@ -47,7 +47,9 @@ export function useMutation<TVariables = void, TData = unknown>(
             : "application/json; charset=utf-8",
         },
       });
-      return response as TData & WithUpdates;
+      const data = response as { data: TData & WithUpdates };
+
+      return data.data;
     },
     ...options,
     onSuccess: async (

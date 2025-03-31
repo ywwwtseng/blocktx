@@ -1,5 +1,6 @@
 import delve from "dlv";
 import en from "./locales/en";
+import zh from "./locales/zh";
 
 export type Locale = Record<string, Record<string, string>>;
 
@@ -7,14 +8,10 @@ export type Locales = Record<string, Locale>;
 
 export const locales: Locales = {
   en,
+  zh,
 };
 
 export type LanguageCode = keyof typeof locales;
-
-export const languages = [
-  { key: "en", label: "English" },
-  // { key: "zh", label: "中文(简体)" },
-];
 
 export const translation = (lang_code: string) => (key: string, params?: Record<string, string | number>) => {
   const locale = locales[lang_code] || locales["en"];

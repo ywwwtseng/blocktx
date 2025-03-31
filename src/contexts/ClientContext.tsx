@@ -12,6 +12,7 @@ interface ClientContextState {
   };
   authorized: boolean;
   languageCode: string;
+  setLanguageCode: (languageCode: string) => void;
   user: User | undefined;
 }
 
@@ -65,6 +66,7 @@ export const ClientProvider = ({ children }: { children: ReactNode }) => {
     },
     authorized,
     languageCode,
+    setLanguageCode,
     user,
   };
   return <ClientContext.Provider value={value}>{children}</ClientContext.Provider>;
