@@ -7,4 +7,3 @@ if (!process.env.TELEGRAM_BOT_TOKEN) {
 const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN);
 
 bot.setWebHook("https://blocktx.vercel.app/api/bot");
-

@@ -20,6 +20,7 @@ const en = {
     cancel: "Cancel",
     confirm: "Confirm",
     ok: "OK",
+    start_now: "START NOW 💎",
   },
 
   trade_ai: {

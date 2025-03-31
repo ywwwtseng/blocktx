@@ -20,6 +20,7 @@ const zh = {
     cancel: "取消",
     confirm: "確認",
     ok: "確定",
+    start_now: "立即開始 💎",
   },
 
   trade_ai: {
