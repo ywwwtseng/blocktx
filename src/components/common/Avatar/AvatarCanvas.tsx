@@ -25,7 +25,7 @@ export function AvatarCanvas({ image, size = 24, border = true }: AvatarProps) {
         }
       }
     }
-  }, [image]);
+  }, [image, size]);
 
   return (
     <canvas

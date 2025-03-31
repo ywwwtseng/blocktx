@@ -26,17 +26,6 @@ const ec2 = new aws.ec2.Instance(`${name}-ec2`, {
   instanceType: "t3.micro",
   keyName: keyPair.keyName,
   vpcSecurityGroupIds: [securityGroup.id],
-  userData: `#!/bin/bash
-     # 更新软件包
-    sudo yum update -y
-    
-    # 安装 Docker
-    sudo yum install -y docker
-    
-    # 启动 Docker 服务
-    sudo systemctl start docker
-    sudo systemctl enable docker
-  `,
   tags: { Name: `${name}-ec2` },
 });
 
