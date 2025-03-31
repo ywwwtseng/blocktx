@@ -11,6 +11,8 @@ import {
   NewsIcon,
   ReferralIcon,
   ChevronLeftIcon,
+  EnIcon,
+  // TwIcon,
 } from "@/components/icons";
 import { ConnectWalletButton } from "@/components/common/ConnectWalletButton";
 import { Avatar } from "@/components/common/Avatar/Avatar";
@@ -21,7 +23,7 @@ import { HStack } from "@/components/ui/Stack";
 import { BaseButton } from '@/components/ui/BaseButton';
 
 export function Layout({ children }: { children: React.ReactNode }) {
-  const { platform } = useMiniApp();
+  const { platform, tonConnect } = useMiniApp();
   const { push, pathname } = usePageManagement();
   const [openInviteFriendsBottomSheet, setOpenInviteFriendsBottomSheet] = useState(false);
   const headerHeight = 52;
@@ -60,10 +62,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <ChevronLeftIcon className="w-6 h-6" />
         </BaseButton>
         <HStack width="auto" gap={2}>
-          <ConnectWalletButton />
-          <BaseButton onClick={() => push("/profile")}>
-            <Avatar size={36} />
+          <BaseButton className="border-primary">
+            <EnIcon className="w-[34px] h-[34px]" />
           </BaseButton>
+          {tonConnect?.connected ? (
+            <BaseButton onClick={() => push("/profile")}>
+              <Avatar size={36} />
+            </BaseButton>
+          ) : (
+            <ConnectWalletButton />
+          )}
         </HStack>
       </HStack>
       <div className="flex-1 overflow-y-auto no-scrollbar">

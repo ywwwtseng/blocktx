@@ -20,3 +20,6 @@ export * from "./SolIcon";
 export * from "./SuiIcon";
 export * from "./CaretIcon";
 export * from "./ChevronLeftIcon";
+export * from "./ChevronRightIcon";
+export * from "./EnIcon";
+export * from "./TwIcon";

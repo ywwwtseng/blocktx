@@ -17,6 +17,9 @@ const en = {
     copy: "Copy",
     invite_friend: "Invite a friend",
     join_premium_tier: "Join Premium Tier",
+    cancel: "Cancel",
+    confirm: "Confirm",
+    ok: "OK",
   },
 
   trade_ai: {
@@ -51,6 +54,12 @@ const en = {
     monthly_hint: "Start Monthly",
   },
 
+  disconnect_wallet: {
+    title: "You're Connected Wallet",
+    description: "Are you sure you want to disconnect?",
+    cancel: "Cancel",
+    confirm: "Confirm",
+  },
   
 };
 

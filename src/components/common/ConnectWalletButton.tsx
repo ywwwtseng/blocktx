@@ -14,7 +14,7 @@ export function ConnectWalletButton() {
 
   return (
     <BaseButton
-      className={clsx("p-[5px] rounded-full flex items-center justify-center transition-all duration-300 rounded-full border border-white/15", {
+      className={clsx("p-[6px] rounded-full flex items-center justify-center transition-all duration-300 rounded-full border border-white/15", {
         "bg-[#31A6F5]": !tonConnect.connected,
         "bg-transparent": tonConnect.connected
       })}
