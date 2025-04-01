@@ -102,8 +102,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 key: "zh",
               },
             ]}
-            onSelect={(key) => {
-              updateMe({ language_code: key });
+            onSelect={(languageCode) => {
+              updateMe({ language_code: languageCode });
+              setLanguageCode(languageCode);
             }}
           />
           {tonConnect?.connected ? (

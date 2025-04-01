@@ -50,6 +50,7 @@ export default function Profile() {
           description={maskAddress}
           cancelTextColor="#3390EC"
           confirmTextColor="#E53935"
+          confirmLabel="common.disconnect"
           onConfirm={() => tonConnect?.disconnect()}
         >
           <HStack className="p-2.5 pr-0" justify="between" width="100%">

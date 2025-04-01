@@ -19,6 +19,7 @@ const zh = {
     join_premium_tier: "加入高級會員",
     cancel: "取消",
     confirm: "確認",
+    disconnect: "斷開",
     ok: "確定",
     start_now: "立即開始 💎",
   },

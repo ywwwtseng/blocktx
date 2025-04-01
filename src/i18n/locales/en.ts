@@ -19,6 +19,7 @@ const en = {
     join_premium_tier: "Join Premium Tier",
     cancel: "Cancel",
     confirm: "Confirm",
+    disconnect: "Disconnect",
     ok: "OK",
     start_now: "START NOW 💎",
   },
