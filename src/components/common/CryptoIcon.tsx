@@ -1,6 +1,6 @@
 import { SVGProps } from "react";
-import { TradingPairSymbol } from "@/hooks/useBinanceService";
 import { BtcIcon, TonIcon, EthIcon, SolIcon, SuiIcon } from "@/components/icons";
+import { TradingPairSymbol } from "@/types";
 
 const icons = {
   [TradingPairSymbol.BTCUSDT]: BtcIcon,

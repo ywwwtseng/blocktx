@@ -35,7 +35,7 @@ export function Button({
     <button 
       className={
         clsx(
-          "flex items-center justify-center px-4 gap-2 disabled:opacity-40 bg-[var(--bg-button)] text-[var(--text-on-yellow)]", className)
+          "flex items-center justify-center px-4 gap-2 disabled:opacity-40 bg-[var(--bg-button)] border-1 border-[#fff]", className)
       }
       disabled={loading || disabled}
       style={{

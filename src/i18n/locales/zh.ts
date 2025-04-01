@@ -7,7 +7,7 @@ const zh = {
 
   common: {
     analysis: "分析",
-    tradeai: "Trade AI",
+    tradeai: "交易 AI",
     news: "新聞",
     invite: "邀請",
     profile: "個人",
@@ -22,6 +22,7 @@ const zh = {
     disconnect: "斷開",
     ok: "確定",
     start_now: "立即開始 💎",
+    read_more: "閱讀更多",
   },
 
   trade_ai: {

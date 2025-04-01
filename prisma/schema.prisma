@@ -38,7 +38,7 @@ model User {
 }
 
 model LoginLog {
-  id         Int      @id @default(autoincrement())
+  id         String   @id @default(uuid())
   user_id    String   @unique
   user       User     @relation(fields: [user_id], references: [user_id])
   ip         String   @db.VarChar(50)
@@ -64,7 +64,7 @@ enum TransactionStatus {
 }
 
 model Transaction {
-  id            String              @id
+  id            String              @id @default(uuid())
   ton_wallet    String              @db.VarChar(100)
   type          TransactionType
   status        TransactionStatus
@@ -77,4 +77,18 @@ model Transaction {
 
   user_id       String        
   user          User                @relation(fields: [user_id], references: [user_id]) 
+}
+
+model Article {
+  id            String              @id @default(uuid())
+  title         String              @db.VarChar(255)
+  description   String              @db.VarChar(4096)
+  link          String              @unique @db.VarChar(255)
+  image         String              @db.VarChar(255)
+  created_at    DateTime            @default(now())
+  updated_at    DateTime            @updatedAt
+  trading_pairs String[]            @db.VarChar(255) @default([])
+
+  locale        String              @db.VarChar(10)
+  sentiment     Int?                @db.Integer
 }

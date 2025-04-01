@@ -1,4 +1,4 @@
-import { ResponseUtils, ErrorInput } from "@/utils/ResponseUtils";
+import { ResponseUtils, TError } from "@/utils/ResponseUtils";
 import { locales } from "@/i18n";
 
 export async function POST(req: Request) {
@@ -16,7 +16,7 @@ export async function POST(req: Request) {
         },
         body: JSON.stringify({
           chat_id:  body.message.chat.id,
-          photo: "https://blocktx.vercel.app/photo.jpg",
+          photo: "https://blocktx.vercel.app/photo.png",
           caption: locale.messages.share_text.replace("#ShareLink\n", ""),
           parse_mode: "Markdown",
           reply_markup: {
@@ -38,6 +38,6 @@ export async function POST(req: Request) {
     });
   } catch (error) {
     console.error(error);
-    return ResponseUtils.error(error as ErrorInput);
+    return ResponseUtils.error(error as TError);
   }
 }

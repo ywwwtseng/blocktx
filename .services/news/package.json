@@ -1,0 +1,12 @@
+{
+  "name": "news",
+  "type": "module",
+  "dependencies": {
+    "node-fetch": "^3.3.2",
+    "puppeteer": "^24.5.0"
+  },
+  "scripts": {
+    "build": "bun build ./index.js --outfile ./build/news.mjs --target node --minify",
+    "deploy": "scp -r ./build/news.mjs blocktx-ec2:~/app/news.mjs"
+  }
+}

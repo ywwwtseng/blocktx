@@ -4,7 +4,6 @@ export * from "./ReferralIcon";
 export * from "./PlusIcon";
 export * from "./SmartToyIcon";
 export * from "./LoadingIcon";
-export * from "./LogoIcon";
 export * from "./ProgressCircleIcon";
 export * from "./CheckIcon";
 export * from "./BtcIcon";

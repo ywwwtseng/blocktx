@@ -61,8 +61,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
           })}
           src="/logo.png"
           alt="logo"
-          width={32}
-          height={32}
+          width={42}
+          height={42}
         />
         <BaseButton
           className={clsx({

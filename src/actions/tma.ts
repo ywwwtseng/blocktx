@@ -40,5 +40,4 @@ export const validate = async (request: NextRequest) => {
     } catch {
       throw new AppError(ErrorCodes.INVALID_CREDENTIALS, process.env.TELEGRAM_BOT_TOKEN!);
     }
-  
 };

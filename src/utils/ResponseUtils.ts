@@ -4,7 +4,7 @@ import { AppError } from "@/errors";
 
 import npmPackage from "../../package.json";
 
-export type ErrorInput = string | Error | AppError;
+export type TError = string | Error | AppError;
 
 export const no_cache = {
   headers: {
@@ -53,7 +53,7 @@ export class ResponseUtils {
     });
   }
 
-  static error(input: ErrorInput) {
+  static error(input: TError) {
     let status = 500;
     let code: number | undefined;
 

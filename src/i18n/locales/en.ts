@@ -22,6 +22,7 @@ const en = {
     disconnect: "Disconnect",
     ok: "OK",
     start_now: "START NOW 💎",
+    read_more: "Read More",
   },
 
   trade_ai: {

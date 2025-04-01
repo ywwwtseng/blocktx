@@ -7,11 +7,10 @@
   --text-secondary: #EBEBF599;
   --text-warning: #f0b90b;
   --text-buy: #2EBD85;
-  --text-on-yellow: #202630;
   --bg-1: #202630;
   --bg-2:  #2525258C;
   --bg-warning: #2D2A20;
-  --bg-button: #fcd535;
+  --bg-button: transparent;
   --gradient-background: linear-gradient(125deg, #2e68ff, #2d5bff, #02c5ff, #10fbb8, #ffc500, #eb1c00);
   --shadow: 0 0 5px #ff0, 0 0 10px #ff0;
   --shadow-1: 0 0 7px #ff0, 0 0 15px #ff0;

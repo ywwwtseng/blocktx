@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { useClient } from "@/contexts/ClientContext";
-import { LogoIcon } from "@/components/icons";
 import { Typography } from "@/components/ui/Typography";
 import { HStack, VStack } from "@/components/ui/Stack";
 
-  export function LaunchScreen() {
+export function LaunchScreen() {
   const { authorized } = useClient();
   const [hide, setHide] = useState(false);
 
@@ -31,7 +31,14 @@ import { HStack, VStack } from "@/components/ui/Stack";
           transform: "translateY(-27px)",
         }}
       >
-        <LogoIcon className="rounded-md" width={78} height={78} />
+        <Image
+          id="logo"
+          className="rounded-md"
+          src="/logo.png"
+          alt="logo"
+          width={78}
+          height={78}
+        />
         <Typography variant="heading" size={5}>BlockTx</Typography>
       </VStack>
     </HStack>

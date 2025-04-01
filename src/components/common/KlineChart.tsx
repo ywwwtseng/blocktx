@@ -1,8 +1,8 @@
 import { useRef, useEffect } from "react";
 import dayjs from "dayjs";
 import { useWindowSize } from "@/contexts/WindowSizeContext";
-import { Kline, KlineAttributes } from "@/hooks/useBinanceService";
 import { Chart, line } from "@/libs/chart";
+import { Kline, KlineAttributes } from "@/types";
 
 interface KlineChartProps {
   data: Kline[] | undefined;

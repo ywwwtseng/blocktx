@@ -24,7 +24,7 @@ CREATE TABLE "User" (
 
 -- CreateTable
 CREATE TABLE "LoginLog" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "user_id" TEXT NOT NULL,
     "ip" VARCHAR(50) NOT NULL,
     "country" VARCHAR(50) NOT NULL,
@@ -54,6 +54,22 @@ CREATE TABLE "Transaction" (
     CONSTRAINT "Transaction_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "Article" (
+    "id" TEXT NOT NULL,
+    "title" VARCHAR(255) NOT NULL,
+    "description" VARCHAR(4096) NOT NULL,
+    "link" VARCHAR(255) NOT NULL,
+    "image" VARCHAR(255) NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+    "trading_pairs" VARCHAR(255)[] DEFAULT ARRAY[]::VARCHAR(255)[],
+    "locale" VARCHAR(10) NOT NULL,
+    "sentiment" INTEGER,
+
+    CONSTRAINT "Article_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_telegram_id_key" ON "User"("telegram_id");
 
@@ -62,6 +78,9 @@ CREATE UNIQUE INDEX "User_invite_code_key" ON "User"("invite_code");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "LoginLog_user_id_key" ON "LoginLog"("user_id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Article_link_key" ON "Article"("link");
 
 -- AddForeignKey
 ALTER TABLE "User" ADD CONSTRAINT "User_invited_by_id_fkey" FOREIGN KEY ("invited_by_id") REFERENCES "User"("user_id") ON DELETE SET NULL ON UPDATE CASCADE;

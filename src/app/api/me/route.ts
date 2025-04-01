@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 import { prisma } from "@/libs/prisma";
-import { ResponseUtils, ErrorInput } from "@/utils/ResponseUtils";
+import { ResponseUtils, TError } from "@/utils/ResponseUtils";
 import { validate } from "@/actions/tma";
 
 export async function POST(request: NextRequest) {
@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
 
   } catch (error) {
     console.error(error);
-    return ResponseUtils.error(error as ErrorInput);
+    return ResponseUtils.error(error as TError);
   }
 }
 

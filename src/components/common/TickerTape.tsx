@@ -3,8 +3,8 @@ import { useBinanceMiniTicker } from "@/hooks/useBinanceService";
 import { Typography } from "@/components/ui/Typography";
 import { HStack, VStack } from "@/components/ui/Stack";
 import { CryptoIcon } from "@/components/common/CryptoIcon";
-import { MiniTickerUtils } from "@/utils/MiniTickerUtils";
 import { CaretIcon } from "@/components/icons";
+import { MiniTickerUtils } from "@/utils/MiniTickerUtils";
 
 export function TickerTape() {
   const miniTicker = useBinanceMiniTicker();
@@ -14,7 +14,7 @@ export function TickerTape() {
       {Object.values(miniTicker).map((item) => {
         const ticker = MiniTickerUtils.format(item);
 
-        if (!ticker.symbol) {
+        if (!ticker || !ticker.symbol || !ticker.price || !ticker.label) {
           return null;
         }
 
@@ -23,9 +23,18 @@ export function TickerTape() {
             <CryptoIcon symbol={ticker.symbol} />
             <VStack items="start">
               <Typography size={1} color="var(--text-secondary)">{ticker.symbol}</Typography>
-              <HStack justify="start" gap={2}>
+              <HStack
+                justify="start"
+                gap={2}
+                style={{
+                  width: `${(ticker.price.length + ticker.label.length) * 7 + 20}px`,
+                }}
+              >
                 <Typography size={1} weight={700}>${ticker.price}</Typography>
-                <HStack justify="start" gap={1}>
+                <HStack
+                  justify="start"
+                  gap={1}
+                >
                   <CaretIcon
                     className={clsx("w-1.5 h-2", {
                       "rotate-180": ticker.percentage < 0,

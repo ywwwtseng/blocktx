@@ -155,3 +155,31 @@ export const dateRange: Record<string, () => DateRange> = {
     };
   }
 };
+
+export const formatDurationShort = (date: DateInput, locale: "zh-CN" | "en") => {
+  const now = systemNow();
+  const diff = now.diff(getDate(date), "minute");
+
+  const days = Math.floor(diff / 1440);
+  const hours = Math.floor((diff % 1440) / 60);
+  const mins = diff % 60;
+
+  const units = {
+    "zh-CN": { d: " 天", h: " 小时", m: " 分钟" },
+    "en": { d: "d", h: "h", m: "m" },
+  };
+
+  const unit = units[locale] || units["en"];
+
+  if (days > 0) {
+    return `${days}${unit.d}`;
+  };
+  if (hours > 0) {
+    return `${hours}${unit.h}`;
+  };
+  if (mins > 0) {
+    return `${mins}${unit.m}`;
+  };
+
+  return `0${unit.m}`;
+};

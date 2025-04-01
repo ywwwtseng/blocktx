@@ -1,10 +1,9 @@
 import {
   useBinanceKline,
   useBinanceMiniTicker,
-  TradingPairSymbol,
 } from "@/hooks/useBinanceService";
 import { KlineChart } from "@/components/common/KlineChart";
-
+import { TradingPairSymbol } from "@/types";
 export default function Analysis() {
   const miniTicker = useBinanceMiniTicker();
   const data = useBinanceKline(TradingPairSymbol.BTCUSDT);
