@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useClient } from "@/contexts/ClientContext";
 import { Typography } from "@/components/ui/Typography";
 import { HStack, VStack } from "@/components/ui/Stack";
+import logo from "@/logo.base64";
 
 export function LaunchScreen() {
   const { authorized } = useClient();
@@ -34,7 +35,7 @@ export function LaunchScreen() {
         <Image
           id="logo"
           className="rounded-md"
-          src="/logo.png"
+          src={logo}
           alt="logo"
           width={78}
           height={78}

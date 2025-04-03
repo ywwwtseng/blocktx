@@ -18,6 +18,7 @@ export async function GET(req: NextRequest, props: {params: Promise<Params>}) {
       orderBy: {
         created_at: "desc",
       },
+      take: 20,
     });
 
     return ResponseUtils.json({
