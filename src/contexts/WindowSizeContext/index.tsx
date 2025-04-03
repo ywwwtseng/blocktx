@@ -3,9 +3,9 @@
 import { createContext, useState, useEffect, useContext } from "react";
 
 const WindowSizeContext = createContext<{
-  width: number;
-  height: number;
-}>({ width: window.innerWidth, height: window.innerHeight });
+  width: number | undefined;
+  height: number | undefined;
+}>({ width: undefined, height: undefined });
 
 export function WindowSizeProvider({ children }: { children: React.ReactNode }) {
   const [size, setSize] = useState({ width: window.innerWidth, height: window.innerHeight });

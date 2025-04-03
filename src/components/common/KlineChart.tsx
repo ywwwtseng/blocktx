@@ -12,7 +12,7 @@ export function KlineChart({ data }: KlineChartProps) {
   const scale = 1;
   const chartRef = useRef<Chart>(null);
   const { width } = useWindowSize();
-  const canvasWidth = width;
+  const canvasWidth = width ?? 0;
   const canvasHeight = canvasWidth * 0.5625;
 
   useEffect(() => {
