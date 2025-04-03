@@ -13,7 +13,7 @@ import { Confirm } from '@/components/common/Confirm/Confirm';
 export default function Profile() {
   const { tonConnect, user: tgUser } = useMiniApp();
   const { user } = useClient();
-  const { push } = usePageManagement();
+  const { back } = usePageManagement();
   const rawAddress = tonConnect?.wallet?.account?.address;
 
   const address = useMemo(() => {
@@ -28,7 +28,7 @@ export default function Profile() {
 
   useEffect(() => {
     if (!tonConnect?.connected) {
-      push("/");
+      back();
     }
     
   // eslint-disable-next-line react-hooks/exhaustive-deps

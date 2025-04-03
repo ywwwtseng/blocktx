@@ -35,7 +35,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
     },
   });
   const { platform, tonConnect } = useMiniApp();
-  const { push, pathname } = usePageManagement();
+  const { push, back, pathname } = usePageManagement();
   const [openInviteFriendsBottomSheet, setOpenInviteFriendsBottomSheet] = useState(false);
   const headerHeight = 52;
   const safeAreaBottom = platform === "ios" ? 20 : 12;
@@ -68,7 +68,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           className={clsx({
             "hidden": pathname !== "/profile",
           })}
-          onClick={() => push("/")}
+          onClick={() => back()}
         >
           <ChevronLeftIcon className="w-6 h-6" />
         </BaseButton>
