@@ -20,7 +20,7 @@ const securityGroup = new aws.ec2.SecurityGroup(`${name}-sg`, {
 });
 
 const ec2 = new aws.ec2.Instance(`${name}-ec2`, {
-  ami: "ami-0fd83fbe170218bda",
+  ami: "ami-065a492fef70f84b1",
   instanceType: "t3.micro",
   keyName: keyPair.keyName,
   vpcSecurityGroupIds: [securityGroup.id],

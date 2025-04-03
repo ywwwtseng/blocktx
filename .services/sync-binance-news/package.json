@@ -1,0 +1,12 @@
+{
+  "name": "sync-binance-news",
+  "description": "Sync Binance News",
+  "type": "module",
+  "scripts": {
+    "build": "bun build ./index.js --outfile ./build/sync-binance-news.mjs --target node --minify",
+    "deploy": "scp -r ./build/sync-binance-news.mjs blocktx-ec2:~/app/sync-binance-news.mjs"
+  },
+  "dependencies": {
+    "puppeteer": "^24.5.0"
+  }
+}
