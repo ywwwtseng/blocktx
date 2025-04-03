@@ -9,7 +9,7 @@ import { I18nProvider } from "@/contexts/I18nContext";
 import { WindowSizeProvider } from "@/contexts/WindowSizeContext/dynamic";
 import { ClientProvider } from "@/contexts/ClientContext";
 import { PageManagementProvider } from "@/contexts/PageManagementContext";
-import { Layout } from "@/components/common/Layout";
+import { Layout } from "@/components/common/Layout/dynamic";
 
 import "react-toastify/dist/ReactToastify.css";
 

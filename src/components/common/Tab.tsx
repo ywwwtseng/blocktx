@@ -7,22 +7,15 @@ import { I18nTypography } from "@/components/common/I18nTypography";
 import { BaseButton } from "@/components/ui/BaseButton";
 
 interface TabProps {
-  icon: {
-    element: React.ElementType;
-    color: {
-      active: string;
-      default: string;
-    };
-  };
+  icon: React.ElementType;
   i18n: string;
   href?: string;
-  onClick?: () => void;
+  onClick?: () => void
 }
 
-export function Tab({ icon, i18n, href, onClick }: TabProps) {
+export function Tab({ icon: Icon, i18n, href, onClick }: TabProps) {
   const [isActive, setIsActive] = useState(false);
   const { pathname, push } = usePageManagement();
-  const Icon = icon.element;
 
   return (
     <BaseButton
@@ -49,11 +42,11 @@ export function Tab({ icon, i18n, href, onClick }: TabProps) {
     >
       <Icon
         className="w-6 h-6 transition-transform origin-center duration-200"
-        color={pathname === href || isActive ? icon.color.active : icon.color.default}
+        color={pathname === href || isActive ? "white" : "#7c7c7c"}
       />
       <I18nTypography
         variant="text"
-        color={pathname === href || isActive ? "white" : "#7C7C7C"}
+        color={pathname === href || isActive ? "white" : "#7c7c7c"}
         noWrap size={2}
         weight={500}
         i18n={i18n}

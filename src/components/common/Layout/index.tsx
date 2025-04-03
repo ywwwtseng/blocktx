@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import clsx from "clsx";
 import Image from "next/image";
 import { useClient } from "@/contexts/ClientContext";
@@ -8,10 +7,6 @@ import { useMiniApp } from "@/contexts/MiniAppContext";
 import { usePageManagement } from "@/contexts/PageManagementContext";
 import { useMutation } from "@/hooks/useMutation";
 import {
-  ChartIcon,
-  SmartToyIcon,
-  NewsIcon,
-  ReferralIcon,
   LanguageIcon,
   ChevronLeftIcon,
   EnIcon,
@@ -20,12 +15,13 @@ import {
 import { ConnectWalletButton } from "@/components/common/ConnectWalletButton";
 import { Avatar } from "@/components/common/Avatar/Avatar";
 import { Tab } from "@/components/common/Tab";
-import { InviteFriendsBottomSheet } from "@/components/common/InviteFriendsBottomSheet";
 import { LaunchScreen } from "@/components/common/LaunchScreen";
 import { Dropdown } from "@/components/common/Dropdown";
+import { OverlapTrigger } from '@/components/common/OverlapTrigger';
 import { HStack } from "@/components/ui/Stack";
 import { BaseButton } from "@/components/ui/BaseButton";
 import { Typography } from "@/components/ui/Typography";
+import { routes } from "@/app/_routes";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const { setLanguageCode } = useClient();
@@ -35,8 +31,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
     },
   });
   const { platform, tonConnect } = useMiniApp();
-  const { push, back, pathname } = usePageManagement();
-  const [openInviteFriendsBottomSheet, setOpenInviteFriendsBottomSheet] = useState(false);
+  const { push, back, route } = usePageManagement();
   const headerHeight = 52;
   const safeAreaBottom = platform === "ios" ? 20 : 12;
   const tabBarHeight = 60 + safeAreaBottom;
@@ -57,7 +52,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Image
           id="logo"
           className={clsx("rounded-md", {
-            "hidden": pathname === "/profile",
+            "hidden": route.type === "default",
           })}
           src="/logo.png"
           alt="logo"
@@ -66,7 +61,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         />
         <BaseButton
           className={clsx({
-            "hidden": pathname !== "/profile",
+            "hidden": route.type === "tab",
           })}
           onClick={() => back()}
         >
@@ -125,25 +120,35 @@ export function Layout({ children }: { children: React.ReactNode }) {
         className="box-border fixed left-0 right-0 bottom-0 mx-auto pt-1 border-t border-white/10 bg-[var(--background)]/50 backdrop-blur-[35px]"
       >
         <HStack justify="between" className="px-8">
-          <Tab href="/" icon={{ element: ChartIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="common.analysis" />
-          <Tab href="/trade-ai" icon={{ element: SmartToyIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="common.tradeai" />
-          <Tab href="/news" icon={{ element: NewsIcon, color: { active: "#fff", default: "#7C7C7C" } }} i18n="common.news" />
-          <Tab
-            onClick={() => {
-              setOpenInviteFriendsBottomSheet(true);
-            }}
-            icon={{ element: ReferralIcon, color: { active: "#fff", default: "#7C7C7C" } }}
-            i18n="common.invite"
-          />
+          {routes
+            .filter(route => route.type === "tab")
+            .map(route => {
+              if (route.path) {
+                return (
+                  <Tab
+                    key={route.i18n}
+                    href={route.path}
+                    i18n={route.i18n!}
+                    icon={route.icon!}
+                  />
+                  );
+                } else {
+                  return (
+                    <OverlapTrigger
+                      key={route.i18n}
+                      keepMounted
+                      modal={route.overlap!}>
+                      <Tab 
+                        i18n={route.i18n!}
+                        icon={route.icon!}
+                      />
+                    </OverlapTrigger>
+                  )
+                }
+          })}          
         </HStack>
       </HStack>
       <LaunchScreen />
-      <InviteFriendsBottomSheet
-        open={openInviteFriendsBottomSheet}
-        onClose={() => {
-          setOpenInviteFriendsBottomSheet(false);
-        }}
-      />
     </main>
   );
 }

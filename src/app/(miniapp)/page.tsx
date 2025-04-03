@@ -3,10 +3,10 @@
 import { usePageManagement } from "@/contexts/PageManagementContext";
 import { useBinanceService } from "@/hooks/useBinanceService";
 import { useClientOnce } from "@/hooks/useClientOnce";
-import Analysis from "../_pages/Analysis";
-import TradeAI from "../_pages/TradeAI";
-import News from "../_pages/News";
-import Profile from "../_pages/Profile";
+import Analysis from "../_routes/Analysis";
+import TradeAI from "../_routes/TradeAI";
+import News from "../_routes/News";
+import Profile from "../_routes/Profile";
 
 export default function MiniApp() {
   const { pathname } = usePageManagement();

@@ -1,26 +1,31 @@
 "use client";
+
 import {
   createContext,
   useContext,
   useState,
   useRef,
 } from "react";
+import { routes, Route } from "@/app/_routes";
 
 interface PageManagementContext {
   pathname: string;
   push: (pathname: string) => void;
   back: () => void;
+  route: Route;
 }
 
 export const PageManagement = createContext<PageManagementContext>({
   pathname: "",
   push: () => {},
   back: () => {},
+  route: routes[0],
 });
 
 export const PageManagementProvider = ({ children }: { children: React.ReactNode }) => {
   const lastPathnameRef = useRef<string | null>(null);
   const [pathname, setPathname] = useState(sessionStorage.getItem("pathname") || "/");
+  const route = routes.find(route => route.path === pathname)!;
 
   const push = (pathname: string) => {
     lastPathnameRef.current = sessionStorage.getItem("pathname") || "/";
@@ -33,7 +38,7 @@ export const PageManagementProvider = ({ children }: { children: React.ReactNode
     sessionStorage.setItem("pathname", lastPathnameRef.current || "/");
   };
 
-  return <PageManagement.Provider value={{ pathname, push, back }}>{children}</PageManagement.Provider>;
+  return <PageManagement.Provider value={{ pathname, push, back, route }}>{children}</PageManagement.Provider>;
 };
 
 export const usePageManagement = () => {

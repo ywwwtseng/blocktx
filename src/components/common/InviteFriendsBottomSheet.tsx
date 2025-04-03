@@ -5,6 +5,7 @@ import { I18nTypography } from "@/components/common/I18nTypography";
 import { Button } from "@/components/ui/Button";
 import { BaseButton } from "@/components/ui/BaseButton";
 import { VStack } from "@/components/ui/Stack";
+
 interface InviteFriendsBottomSheetProps {
   open: boolean;
   onClose: () => void;
