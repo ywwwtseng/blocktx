@@ -69,7 +69,7 @@ export function TickerTape() {
             
           }
 
-          .ticker-tape .ticker-content {
+          .ticker-tape .ticker-tape-list {
             display: block;
             height: 38px;
             position: absolute;
@@ -79,13 +79,13 @@ export function TickerTape() {
             align-items: center;
           }
 
-          .ticker-tape .ticker-content > * {
+          .ticker-tape .ticker-tape-list > * {
             float: left;
             width: 50%;
           }
         `}
       </style>
-      <div className="ticker-content">
+      <div className="ticker-tape-list">
         {renderItems("original")}
         {renderItems("cloned")}
       </div>

@@ -111,7 +111,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           )}
         </HStack>
       </HStack>
-      <div className="flex-1 overflow-y-auto no-scrollbar">
+      <div className="h-full">
         {children}
       </div>
       <HStack

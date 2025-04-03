@@ -5,8 +5,8 @@ import { formatDurationShort } from "@/libs/dayjs";
 import { useClient } from "@/contexts/ClientContext";
 import { useQuery } from "@/hooks/useQuery";
 import { I18nTypography } from "@/components/common/I18nTypography";
-import { TickerTape } from "@/components/common/TickerTape";
 import { TradingPairChip } from "@/components/common/TradingPairChip";
+import { TickerTape } from "@/components/common/TickerTape";
 import { HStack, VStack } from "@/components/ui/Stack";
 import { LoadingIcon } from "@/components/icons";
 
@@ -16,7 +16,7 @@ export default function News() {
     needAuthorized: true,
   });
 
-  if (isPending || !news) {
+  if (!news ||isPending) {
     return (
       <div className="flex justify-center items-center h-screen">
         <LoadingIcon />
@@ -25,9 +25,9 @@ export default function News() {
   }
 
   return (
-    <div className="h-full w-full px-4 py-2 flex flex-col">
+    <div className="animate-fade-in h-full flex flex-col">
       <TickerTape />
-      <div className="mt-1 flex-1 flex flex-col overflow-y-auto no-scrollbar">
+      <div className="flex-1 px-4 pb-2 flex flex-col overflow-y-auto no-scrollbar">
         {news.map((article: Article) => (
           <Link 
             key={article.id}
@@ -62,7 +62,6 @@ export default function News() {
               </VStack>
             </HStack>
           </Link>
-          
         ))}
       </div>
     </div>
