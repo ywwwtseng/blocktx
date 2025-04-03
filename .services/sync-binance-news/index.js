@@ -96,7 +96,9 @@ async function main() {
     const news = [
       ...(await fetchNews("en").then(assignLocale("en"))),
       ...(await fetchNews("zh-CN").then(assignLocale("zh-CN"))),
-    ];
+    ].filter((article, index, self) =>
+      index === self.findIndex((a) => a.title === article.title)
+    );
 
     await fetch("https://blocktx.vercel.app/api/news/sync", {
       method: "POST",
