@@ -1,15 +1,30 @@
 import { Chart } from "../../Chart";
 
-export const dataset = (chart: Chart, _: string, transform: { x: (value: number) => number; y: (value: number) => number }) => {
+export interface OHLC {
+  rect: number[];
+  line: {
+    p0: number[];
+    p1: number[];
+  };
+  color: string;
+}
+
+export interface DatasetIterator {
+  start: OHLC;
+  end: OHLC;
+  [Symbol.iterator](): Iterator<OHLC>;
+}
+
+export const dataset = (chart: Chart, _: string, transform: { x: (value: number) => number; y: (value: number) => number }): DatasetIterator => {
   const data = chart.data;
 
-  const transfer = (item: { [key: string]: number }) => {
-    const x0 = transform.x(item.start);
-    const y0 = transform.y(item.open);
-    const w = transform.x(item.end) - x0;
-    const h = transform.y(item.close) - y0;
+  const transfer = (item: { [key: string]: number | string }) => {
+    const x0 = transform.x(item.start as number);
+    const y0 = transform.y(item.open as number);
+    const w = transform.x(item.end as number) - x0;
+    const h = transform.y(item.close as number) - y0;
 
-    const x = transform.x(item._time);
+    const x = transform.x(item._time as number);
 
     return {
       rect: [
@@ -19,8 +34,8 @@ export const dataset = (chart: Chart, _: string, transform: { x: (value: number)
         h,
       ],
       line: {
-        p0: [x, transform.y(item.low)],
-        p1: [x, transform.y(item.high)],
+        p0: [x, transform.y(item.low as number)],
+        p1: [x, transform.y(item.high as number)],
       },
       color: h > 0 ? "#F6465D" : "#2DBC85",
     }

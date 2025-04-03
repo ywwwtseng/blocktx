@@ -1,15 +1,26 @@
 import { Chart } from "../../Chart";
 
-export const dataset = (chart: Chart, key: string, transform: { x: (value: number) => number; y: (value: number) => number }) => {
+interface Point {
+  x: number;
+  y: number;
+}
+
+export interface DatasetIterator {
+  start: Point;
+  end: Point;
+  [Symbol.iterator](): Iterator<{ current: Point; next: () => Point | null }>;
+}
+
+export const dataset = (chart: Chart, key: string, transform: { x: (value: number) => number; y: (value: number) => number }): DatasetIterator => {
   const {
     axisBottom: axisBottomSettings,
   } = chart.settings;
   // const maxTickUnit = (axisBottomSettings.interval / axisBottomSettings.tickIntervalCount) * 1.2;
   const data = chart.data;
 
-  const transfer = (item: { [key: string]: number }) => ({
-    x: transform.x(item[axisBottomSettings.key]),
-    y: transform.y(item[key]),
+  const transfer = (item: { [key: string]: number | string }) => ({
+    x: transform.x(item[axisBottomSettings.key] as number),
+    y: transform.y(item[key] as number),
   });
 
   return {

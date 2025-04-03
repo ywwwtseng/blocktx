@@ -1,9 +1,9 @@
 import { Chart } from "../../Chart";
+import { DatasetIterator } from "./dataset";
 
 const DEFAULT_SETTINGS = { gradient: true, color: "#FCD435", lineWidth: 1 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const gradient = (chart: Chart, dataset: any, color: string) => {
+const gradient = (chart: Chart, dataset: DatasetIterator, color: string) => {
   const gradient = chart.ctx.createLinearGradient(0, 0, 0, chart.innerBottom);
   gradient.addColorStop(0, color);
   gradient.addColorStop(1, `${color}00`);
@@ -29,8 +29,7 @@ const gradient = (chart: Chart, dataset: any, color: string) => {
   chart.ctx.fill();
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const render = (chart: Chart, dataset: any, settings: any = {}) => {
+export const render = (chart: Chart, dataset: DatasetIterator, settings: { color?: string; lineWidth?: number; gradient?: boolean } = {}) => {
   settings = settings || DEFAULT_SETTINGS;
   const color = settings.color || DEFAULT_SETTINGS.color;
   const lineWidth =  settings.lineWidth || DEFAULT_SETTINGS.lineWidth;

@@ -4,13 +4,10 @@ import { Chart } from "../Chart";
 
 export class Ohlc {
   chart: Chart;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  onChange: (data: any[]) => void;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  _data: Map<number, any>;
+  onChange: (data: { [key: string]: number | string }[]) => void;
+  _data: Map<number, { [key: string]: number | string }>;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  constructor(chart: Chart, { onChange = () => {}}: { onChange: (data: any[]) => void }) {
+  constructor(chart: Chart, { onChange = () => {}}: { onChange: (data: { [key: string]: number | string }[]) => void }) {
     this.chart = chart;
 
     this.onChange = onChange;
@@ -32,8 +29,7 @@ export class Ohlc {
     return [...this._data.values()];
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  add(data: any[]) {
+  add(data: { [key: string]: number | string }[]) {
     data = Array.isArray(data) ? data : [data];
 
     for (let index = 0; index < data.length; index++) {
@@ -43,12 +39,11 @@ export class Ohlc {
     this.onChange(this.data);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  format(item: any) {
+  format(item: { [key: string]: number | string }) {
     const keyX = this.key.x;
     const keyY = this.key.y;
     
-    const { time, start, end } = TimeUtils.slot(item[keyX], this.tickIntervalUnit);
+    const { time, start, end } = TimeUtils.slot(item[keyX] as number, this.tickIntervalUnit);
     let ohlc = this._data.get(time);
 
     if (!ohlc) {
@@ -72,7 +67,7 @@ export class Ohlc {
       ohlc.close = item[keyY];
     }
 
-    this._data.set(ohlc._time, ohlc);
+    this._data.set(ohlc._time as number, ohlc);
   }
 
   get oldest() {
@@ -85,15 +80,14 @@ export class Ohlc {
 
   get helpers() {
     return {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      lowHigh(data: any[]) {
-        return data.reduce((acc, item) => {
-          if (acc[0] === undefined || item.low < acc[0]) {
-            acc[0] = item.low;
+      lowHigh(data: { [key: string]: number | string }[]) {
+        return data.reduce((acc: number[], item: { [key: string]: number | string }) => {
+          if (acc[0] === undefined || item.low as number < acc[0]) {
+            acc[0] = item.low as number;
           }
       
-          if (acc[1] === undefined || item.high > acc[1]) {
-            acc[1] = item.high;
+          if (acc[1] === undefined || item.high as number > acc[1]) {
+            acc[1] = item.high as number;
           }
           return acc;
         }, []);

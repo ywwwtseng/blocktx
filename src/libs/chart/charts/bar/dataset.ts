@@ -1,16 +1,22 @@
 import { Chart } from "../../Chart";
 import { TimeUtils} from "../../utils/TimeUtils";
 
-export const dataset = (chart: Chart, key: string, transform: { x: (value: number) => number; y: (value: number) => number }) => {
+export interface DatasetIterator {
+  start: number[];
+  end: number[];
+  [Symbol.iterator](): Iterator<number[]>;
+}
+
+export const dataset = (chart: Chart, key: string, transform: { x: (value: number) => number; y: (value: number) => number }): DatasetIterator => {
   const data = chart.data;
 
-  const transfer = (item: { [key: string]: number }) => {
+  const transfer = (item: { [key: string]: number | string }) => {
     const {
       axisBottom: axisBottomSettings,
       axisBottom: { interval, tickIntervalCount }
     } = chart.settings;
-    const value = item[key];
-    const { start, end } = TimeUtils.slot(item[axisBottomSettings.key], interval / tickIntervalCount);
+    const value = item[key] as number;
+    const { start, end } = TimeUtils.slot(item[axisBottomSettings.key] as number, interval / tickIntervalCount);
     
     const x = transform.x(start);
     const h = transform.y(value);

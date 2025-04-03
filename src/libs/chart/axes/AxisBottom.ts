@@ -54,11 +54,11 @@ export class AxisBottom<T extends AxisBottomSettings> extends Axis<T> {
     return Math.floor(((x - this.benchmark.point) / this.tickSize) * this.tickInterval + (this.benchmark.value ?? 0));
   }
 
-  draw(data: { oldest?: { [key: string]: number }; latest?: { [key: string]: number } }): void {
+  draw(data: { oldest?: { [key: string]: number | string }; latest?: { [key: string]: number | string } }): void {
     this.chart.ctx.clearRect(this.left, this.top, this.width, this.height);
 
-    let oldest = data.oldest?.[this.key];
-    let latest = data.latest?.[this.key];
+    let oldest = data.oldest?.[this.key] as number;
+    let latest = data.latest?.[this.key] as number;
 
     if (!oldest || !latest) {
       const now = Date.now();

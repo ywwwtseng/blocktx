@@ -44,7 +44,7 @@ export class AxisVertical<T extends AxisVerticalSettings> extends Axis<T> {
     );
   }
 
-  draw(data: number[]): void {
+  draw(data: { [key: string]: number | string }[]): void {
     this.chart.ctx.clearRect(this.left, this.top, this.width, this.height);
 
     const lowHigh = this.chart.model.helpers.lowHigh(data);

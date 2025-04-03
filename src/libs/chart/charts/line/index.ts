@@ -1,15 +1,21 @@
 import { render } from "./render";
-import { dataset } from "./dataset";
+import { dataset, DatasetIterator } from "./dataset";
 import { Dataset } from "../../models/Dataset";
+import { Chart } from "../../Chart";
 
 class Line {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  _settings: any;
+  _settings: { color?: string; lineWidth?: number; gradient?: boolean };
   type: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  render: any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  dataset: any;
+  render: (
+    chart: Chart,
+    dataset: DatasetIterator,
+    settings: { color?: string; lineWidth?: number; gradient?: boolean }
+  ) => void;
+  dataset: (
+    chart: Chart,
+    key: string,
+    transform: { x: (value: number) => number; y: (value: number) => number }
+  ) => DatasetIterator;
   Model: typeof Dataset;
 
   constructor() {
@@ -20,14 +26,11 @@ class Line {
     this.Model = Dataset;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  settings(settings: any) {
+  settings(settings: { color?: string; lineWidth?: number; gradient?: boolean }) {
     const bar = new Line();
     bar._settings = settings;
     return bar;
   }
 }
 
-const line = new Line();
-
-export { line };
+export const line = new Line();

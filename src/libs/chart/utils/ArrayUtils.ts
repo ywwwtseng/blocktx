@@ -1,5 +1,5 @@
 export class ArrayUtils {
-  static binarySearch<T extends { [key: string]: number }>(
+  static binarySearch<T extends { [key: string]: number | string }>(
     array: T[], 
     target: number, 
     attribute: keyof T
@@ -10,7 +10,7 @@ export class ArrayUtils {
     while (left <= right) {
       const mid = Math.floor((left + right) / 2);
 
-      if (array[mid][attribute] < target) {
+      if (array[mid][attribute] as number < target) {
         left = mid + 1;
       } else {
         right = mid - 1;

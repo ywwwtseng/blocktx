@@ -5,18 +5,23 @@ import { AxisLeft, AxisLeftSettings } from "./axes/AxisLeft";
 import { Grid } from "./Grid";
 import { Dataset } from "./models/Dataset";
 import { Ohlc } from "./models/Ohlc";
+import { line } from "./charts/line";
+import { bar } from "./charts/bar";
+import { kline } from "./charts/kline";
+import { DatasetIterator as LineDatasetIterator } from "./charts/line/dataset";
+import { DatasetIterator as BarDatasetIterator } from "./charts/bar/dataset";
+import { DatasetIterator as KlineDatasetIterator } from "./charts/kline/dataset";
 
+type ChartType = typeof line | typeof bar | typeof kline;
 
 interface ChartSettings {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  type?: { Model: any; render: any; dataset: any; key: string; _settings: any; };
+  type: ChartType;
   axisRight: AxisRightSettings;
   axisLeft?: AxisLeftSettings;
   axisBottom: AxisBottomSettings;
   padding?: Partial<{ top: number; bottom: number; left: number; right: number; }>;
   theme?: { text?: string };
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  config: Array<{ type: { Model: any; render: any; dataset: any; _settings: any; }; key: string; }>;
+  config?: Array<{ type: ChartType; key: string; }>;
 }
 
 export class Chart {
@@ -25,13 +30,12 @@ export class Chart {
   height: number;
   settings: ChartSettings;
   axisRight: AxisRight<AxisRightSettings>;
-  axisLeft?: AxisLeft<AxisLeftSettings>;
   axisBottom: AxisBottom<AxisBottomSettings>;
+  axisLeft?: AxisLeft<AxisLeftSettings>;
   model: Dataset | Ohlc;
   grid: Grid;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  constructor(ctx: CanvasRenderingContext2D, settings: any) {
+  constructor(ctx: CanvasRenderingContext2D, settings: ChartSettings) {
     this.ctx = ctx;
     this.width = this.ctx.canvas.width;
     this.height = this.ctx.canvas.height;
@@ -48,7 +52,7 @@ export class Chart {
 
     this.axisBottom = new AxisBottom(this, this.settings.axisBottom);
 
-    this.model = new this.settings.config[0].type.Model(this, {
+    this.model = new this.settings.config![0].type.Model(this, {
       onChange: this.draw.bind(this),
     });
 
@@ -108,7 +112,7 @@ export class Chart {
     this.axisRight.draw(this.data);
     this.grid.draw(this.axisBottom, this.axisRight);
 
-    this.settings.config.forEach(({ type, key }) => {
+    this.settings.config!.forEach(({ type, key }) => {
       const { render, dataset } = type;
 
       let transform;
@@ -128,7 +132,7 @@ export class Chart {
       if (transform) {
         render(
           this,
-          dataset(this, key, transform),
+          dataset(this, key, transform) as LineDatasetIterator & BarDatasetIterator & KlineDatasetIterator,
           type._settings
         );
       }

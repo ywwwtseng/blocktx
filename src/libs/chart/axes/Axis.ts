@@ -1,11 +1,9 @@
 import { Chart } from "../Chart";
-import { Tick } from "../types";
 
 export type Range = [number | "auto", number | "auto"];
 
 export interface AxisSettings {
   key: string;
-  ticks: Tick[];
   range?: Range;
 }
 

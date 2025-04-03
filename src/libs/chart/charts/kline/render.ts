@@ -1,7 +1,7 @@
 import { Chart } from "../../Chart";
+import { DatasetIterator } from "./dataset";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const render = (chart: Chart, dataset: any) => {
+export const render = (chart: Chart, dataset: DatasetIterator) => {
   for (const ohlc of dataset) {
     chart.ctx.fillStyle = ohlc.color;
     chart.ctx.strokeStyle = ohlc.color;

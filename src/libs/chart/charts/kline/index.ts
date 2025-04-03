@@ -1,15 +1,21 @@
 import { render } from "./render";
-import { dataset } from "./dataset";
+import { dataset, DatasetIterator } from "./dataset";
 import { Ohlc } from "../../models/Ohlc";
+import { Chart } from "../../Chart";
 
 class KLine {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  _settings: any;
+  _settings: { color?: string };
   type: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  render: any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  dataset: any;
+  render: (
+    chart: Chart,
+    dataset: DatasetIterator,
+    settings: { color?: string }
+  ) => void;
+  dataset: (
+    chart: Chart,
+    key: string,
+    transform: { x: (value: number) => number; y: (value: number) => number }
+  ) => DatasetIterator;
   Model: typeof Ohlc;
 
   constructor() {
@@ -20,8 +26,7 @@ class KLine {
     this.Model = Ohlc;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  settings(settings: any) {
+  settings(settings: { color?: string }) {
     const kline = new KLine();
     kline._settings = settings;
     return kline;
