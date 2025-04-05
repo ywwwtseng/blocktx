@@ -1,11 +1,12 @@
 "use client";
 
-import { Fragment, ReactNode, useState, cloneElement } from "react";
+import { ReactNode, cloneElement } from "react";
 import clsx from "clsx";
-import { I18nTypography} from "@/components/common/I18nTypography";
+import { I18nTypography } from "@/components/common/I18nTypography";
+import { useAnchor } from "@/hooks/useAnchor";
 
 export interface TriggerProps {
-  onClick: (event:  React.MouseEvent<HTMLDivElement>) => void;
+  onClick: (event: MouseEvent) => void;
 }
 
 export type TriggerElement = React.ReactElement<TriggerProps>;
@@ -25,28 +26,19 @@ interface DropdownProps {
 
 
 export function Dropdown({ trigger, options, onSelect, menuProps }: DropdownProps) {
-  const [show, setShow] = useState(false);
+  const { show, close, toggle } = useAnchor({ stopEvent: true, clickAwayListener: true });
 
-  const close = () => {
-    setShow(false);
-  }
   
   return (
     <div className="relative flex">
-      {cloneElement(trigger, { onClick: () => setShow(!show) })}
+      {cloneElement(trigger, { onClick: toggle })}
       {show && (
-        <>
-          <div
-            className="flex flex-col fixed top-0 left-0 overflow-hidden w-screen h-screen bg-white/[0.06]"
-            style={{ zIndex: 40 }}
-            onClick={close}>
-          </div>
-          <div
-            role="menu"
-            aria-orientation="vertical"
-            aria-labelledby="menu-button"
-            tabIndex={-1}
-            {...menuProps}
+        <div
+          role="menu"
+          aria-orientation="vertical"
+          aria-labelledby="menu-button"
+          tabIndex={-1}
+          {...menuProps}
             className={clsx(
               "absolute right-0 bottom-0 translate-y-[calc(100%+10px)] mt-2 py-1 max-h-[200px] overflow-y-auto no-scrollbar bg-[#1D1D1D] rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50",
               !menuProps?.className?.includes("w-") && "w-52",
@@ -74,12 +66,10 @@ export function Dropdown({ trigger, options, onSelect, menuProps }: DropdownProp
                     option.label
                   )}
                 </button>
-              ))}
-            </div>
+            ))}
           </div>
-        </>
+        </div>
       )}
-      
     </div>
 
   );
