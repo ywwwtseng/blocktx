@@ -1,16 +1,11 @@
 import { Chart } from "../../Chart";
-import { TimeUtils} from "../../utils/TimeUtils";
+import { TimeUtils } from "../../utils/TimeUtils";
+import { DataIterator, Transform, RawData } from "../../types";
 
-export interface DatasetIterator {
-  start: number[];
-  end: number[];
-  [Symbol.iterator](): Iterator<number[]>;
-}
+export const iterator = (chart: Chart, key: string, transform: Transform): DataIterator<number[]> => {
+  const data = chart.data.values;
 
-export const dataset = (chart: Chart, key: string, transform: { x: (value: number) => number; y: (value: number) => number }): DatasetIterator => {
-  const data = chart.data;
-
-  const transfer = (item: { [key: string]: number | string }) => {
+  const transfer = (item: RawData) => {
     const {
       axisBottom: axisBottomSettings,
       axisBottom: { interval, tickIntervalCount }

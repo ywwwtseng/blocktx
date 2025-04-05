@@ -1,24 +1,16 @@
-import { ArrayUtils } from "./utils/ArrayUtils";
 import { AxisBottom, AxisBottomSettings } from "./axes/AxisBottom";
 import { AxisRight, AxisRightSettings } from "./axes/AxisRight";
 import { AxisLeft, AxisLeftSettings } from "./axes/AxisLeft";
 import { Grid } from "./Grid";
-import { Dataset } from "./models/Dataset";
-import { Ohlc } from "./models/Ohlc";
-import { line } from "./charts/line";
-import { bar } from "./charts/bar";
-import { kline } from "./charts/kline";
-import { DatasetIterator as LineDatasetIterator } from "./charts/line/dataset";
-import { DatasetIterator as BarDatasetIterator } from "./charts/bar/dataset";
-import { DatasetIterator as KlineDatasetIterator } from "./charts/kline/dataset";
+import { Data } from "./Data";
+import { render, ChartType } from "./charts";
 
-type ChartType = typeof line | typeof bar | typeof kline;
 
 interface ChartSettings {
   type: ChartType;
   axisRight: AxisRightSettings;
-  axisLeft?: AxisLeftSettings;
   axisBottom: AxisBottomSettings;
+  axisLeft?: AxisLeftSettings;
   padding?: Partial<{ top: number; bottom: number; left: number; right: number; }>;
   theme?: { text?: string };
   config?: Array<{ type: ChartType; key: string; }>;
@@ -29,10 +21,10 @@ export class Chart {
   width: number;
   height: number;
   settings: ChartSettings;
-  axisRight: AxisRight<AxisRightSettings>;
-  axisBottom: AxisBottom<AxisBottomSettings>;
-  axisLeft?: AxisLeft<AxisLeftSettings>;
-  model: Dataset | Ohlc;
+  axisRight: AxisRight;
+  axisBottom: AxisBottom;
+  axisLeft?: AxisLeft;
+  data: Data;
   grid: Grid;
 
   constructor(ctx: CanvasRenderingContext2D, settings: ChartSettings) {
@@ -52,7 +44,7 @@ export class Chart {
 
     this.axisBottom = new AxisBottom(this, this.settings.axisBottom);
 
-    this.model = new this.settings.config![0].type.Model(this, {
+    this.data = new Data(this, {
       onChange: this.draw.bind(this),
     });
 
@@ -102,19 +94,13 @@ export class Chart {
     };
   }
 
-  get data() {
-    const startIndex = ArrayUtils.binarySearch(this.model.data, this.axisBottom.value(this.innerLeft - 10), this.settings.axisBottom.key);
-    return this.model.data.slice(startIndex);
-  }
-
   draw() {
-    this.axisBottom.draw(this.model);
-    this.axisRight.draw(this.data);
+    this.axisBottom.draw(this.data);
+    this.axisRight.draw(this.data.values);
+
     this.grid.draw(this.axisBottom, this.axisRight);
 
     this.settings.config!.forEach(({ type, key }) => {
-      const { render, dataset } = type;
-
       let transform;
 
       if (this.axisRight.settings.key === key) {
@@ -130,16 +116,13 @@ export class Chart {
       }
 
       if (transform) {
-        render(
-          this,
-          dataset(this, key, transform) as LineDatasetIterator & BarDatasetIterator & KlineDatasetIterator,
-          type._settings
-        );
+        render(type, this, key, transform);
       }
+
     });
 
     if (this.settings.axisLeft) {
-      this.axisLeft!.draw(this.data);
+      this.axisLeft!.draw(this.data.values);
     }
 
     if (this.padding.top) {

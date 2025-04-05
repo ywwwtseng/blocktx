@@ -1,13 +1,12 @@
 import { Chart } from "../../Chart";
-import { DatasetIterator } from "./dataset";
+import { DataIterator } from "../../types";
 
-export const render = (
+export const render = <T extends DataIterator<number[]>>(
   chart: Chart,
-  dataset: DatasetIterator,
-  settings: { color?: string }
+  iterator: T
 ) => {
-  for (const item of dataset) {
-    chart.ctx.fillStyle = settings.color || "#FCD435";
+  for (const item of iterator) {
+    chart.ctx.fillStyle = "#FCD435";
     chart.ctx.fillRect(item[0], item[1], item[2], item[3]);
   }
 };

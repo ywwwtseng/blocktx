@@ -1,9 +1,10 @@
 import { Chart } from "../../Chart";
-import { DatasetIterator } from "./dataset";
+import { DataIterator, Line } from "../../types";
 
-const DEFAULT_SETTINGS = { gradient: true, color: "#FCD435", lineWidth: 1 };
+export const render = <T extends DataIterator<Line>>(chart: Chart, iterator: T) => {
+  const color = "#FCD435";
 
-const gradient = (chart: Chart, dataset: DatasetIterator, color: string) => {
+  // gradient
   const gradient = chart.ctx.createLinearGradient(0, 0, 0, chart.innerBottom);
   gradient.addColorStop(0, color);
   gradient.addColorStop(1, `${color}00`);
@@ -11,7 +12,7 @@ const gradient = (chart: Chart, dataset: DatasetIterator, color: string) => {
   chart.ctx.beginPath();
 
   let moveTo;
-  for (const point of dataset) {
+  for (const point of iterator) {
     if (!moveTo) {
       chart.ctx.moveTo(point.current.x, point.current.y);
       moveTo = point.current;
@@ -20,29 +21,20 @@ const gradient = (chart: Chart, dataset: DatasetIterator, color: string) => {
     }
   }
 
-  chart.ctx.lineTo(dataset.end.x, chart.innerBottom);
-  chart.ctx.lineTo(dataset.start.x, chart.innerBottom);
+  chart.ctx.lineTo(iterator.end.current.x, chart.innerBottom);
+  chart.ctx.lineTo(iterator.start.current.x, chart.innerBottom);
 
   chart.ctx.closePath();
 
   chart.ctx.fillStyle = gradient;
   chart.ctx.fill();
-};
 
-export const render = (chart: Chart, dataset: DatasetIterator, settings: { color?: string; lineWidth?: number; gradient?: boolean } = {}) => {
-  settings = settings || DEFAULT_SETTINGS;
-  const color = settings.color || DEFAULT_SETTINGS.color;
-  const lineWidth =  settings.lineWidth || DEFAULT_SETTINGS.lineWidth;
-
-  if (settings.gradient) {
-    gradient(chart, dataset, color);
-  }
-
+  // stroke
   chart.ctx.strokeStyle = color;
-  chart.ctx.lineWidth = lineWidth;
+  chart.ctx.lineWidth = 1.5;
 
   chart.ctx.beginPath();
-  for (const point of dataset) {
+  for (const point of iterator) {
     const next = point.next();
     if (next) {
       chart.ctx.moveTo(point.current.x, point.current.y);

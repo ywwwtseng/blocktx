@@ -1,12 +1,14 @@
 
-import { Chart } from "../Chart";
+import { Chart } from "./Chart";
+import { ArrayUtils } from "./utils/ArrayUtils";
+import { RawData } from "./types";
 
-export class Dataset {
+export class Data {
   chart: Chart;
-  onChange: (data: { [key: string]: number | string }[]) => void;
-  _data: Map<string, { [key: string]: number | string }>;
+  onChange: (data: RawData[]) => void;
+  _data: Map<string, RawData>;
 
-  constructor(chart: Chart, { onChange = () => {}}: { onChange: (data: { [key: string]: number | string }[]) => void }) {
+  constructor(chart: Chart, { onChange = () => {} }: { onChange: (data: RawData[]) => void }) {
     this.chart = chart;
     this.onChange = onChange;
     this._data = new Map();
@@ -23,7 +25,7 @@ export class Dataset {
     return [...this._data.values()];
   }
 
-  add(data: { [key: string]: number | string }[]) {
+  add(data: RawData[]) {
     data = Array.isArray(data) ? data : [data];
 
     for (let index = 0; index < data.length; index++) {
@@ -46,8 +48,8 @@ export class Dataset {
     const keyY = this.key.y;
 
     return {
-      lowHigh(data: { [key: string]: number | string }[]) {
-        return data.reduce((acc: number[], item: { [key: string]: number | string }) => {
+      lowHigh(data: RawData[]) {
+        return data.reduce((acc: number[], item: RawData) => {
           if (acc[0] === undefined || item[keyY] as number < acc[0]) {
             acc[0] = item[keyY] as number;
           }
@@ -58,5 +60,14 @@ export class Dataset {
         }, []);
       },
     }
+  }
+
+  get values() {
+    const startIndex = ArrayUtils.binarySearch(
+      this.data,
+      this.chart.axisBottom.value(this.chart.innerLeft - 10),
+      this.chart.settings.axisBottom.key
+    );
+    return this.data.slice(startIndex);
   }
 }

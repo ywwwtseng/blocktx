@@ -1,6 +1,6 @@
+import { AxisBottom } from "./axes/AxisBottom";
+import { AxisRight } from "./axes/AxisRight";
 import { Chart } from "./Chart";
-import { AxisBottom, AxisBottomSettings } from "./axes/AxisBottom";
-import { AxisRight, AxisRightSettings } from "./axes/AxisRight";
 
 export class Grid {
   private chart: Chart;
@@ -13,7 +13,7 @@ export class Grid {
     this.chart = chart;
   }
 
-  draw(axisBottom: AxisBottom<AxisBottomSettings>, axisRight: AxisRight<AxisRightSettings>) {
+  draw(axisBottom: AxisBottom, axisRight: AxisRight) {
     this.left = this.chart.innerLeft;
     this.top = 0;
     this.width = this.chart.width - axisRight.width - this.left;
@@ -35,7 +35,7 @@ export class Grid {
         return;
       }
       ctx.moveTo(tick.x, this.top);
-      ctx.lineTo(tick.x, this.height);
+      ctx.lineTo(tick.x, this.height - 1);
     });
 
     ctx.stroke();

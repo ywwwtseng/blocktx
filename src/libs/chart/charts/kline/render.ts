@@ -1,8 +1,8 @@
 import { Chart } from "../../Chart";
-import { DatasetIterator } from "./dataset";
+import { DataIterator, OHLC } from "../../types";
 
-export const render = (chart: Chart, dataset: DatasetIterator) => {
-  for (const ohlc of dataset) {
+export const render = <T extends DataIterator<OHLC>>(chart: Chart, iterator: T) => {
+  for (const ohlc of iterator) {
     chart.ctx.fillStyle = ohlc.color;
     chart.ctx.strokeStyle = ohlc.color;
     chart.ctx.lineWidth = 1;

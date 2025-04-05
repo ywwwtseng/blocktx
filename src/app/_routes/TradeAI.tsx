@@ -14,7 +14,7 @@ export default function TradeAI() {
           <I18nTypography
             size={3}
             weight={700}
-            i18n="Trade AI"
+            i18n="common.tradeai"
           />
           <HStack width="auto" justify="start" gap={1} className="bg-[var(--bg-1)] rounded-xs px-1">
             <PeopleIcon className="w-5 h-5" />

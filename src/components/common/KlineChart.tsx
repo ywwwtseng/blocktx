@@ -1,7 +1,7 @@
 import { useRef, useEffect } from "react";
 import dayjs from "dayjs";
 import { useWindowSize } from "@/contexts/WindowSizeContext";
-import { Chart, line } from "@/libs/chart";
+import { Chart } from "@/libs/chart";
 import { Kline, KlineAttributes } from "@/types";
 
 interface KlineChartProps {
@@ -17,7 +17,7 @@ export function KlineChart({ data }: KlineChartProps) {
 
   useEffect(() => {
     if (data && chartRef.current) {
-      chartRef.current.model.add(data);
+      chartRef.current.data.add(data);
     }
   }, [data]);
 
@@ -35,15 +35,15 @@ export function KlineChart({ data }: KlineChartProps) {
           const ctx = ref.getContext("2d")!;
 
           chartRef.current = new Chart(ctx, {
-            type: line,
+            type: "line",
             axisRight: {
               key: KlineAttributes.Close,
             },
             axisBottom: {
               key: KlineAttributes.Timestamp,
-              interval: 60 * 1000,
-              tickIntervalCount: 10,
-              label: (value: Date) => dayjs(value).format("HH:mm:ss"),
+              interval: 15 * 60 * 1000,
+              tickIntervalCount: 15,
+              label: (value: Date) => dayjs(value).format("HH:mm"),
             },
           });
         }

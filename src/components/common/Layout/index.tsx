@@ -25,11 +25,7 @@ import { routes } from "@/app/_routes";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const { setLanguageCode } = useClient();
-  const { mutate: updateMe } = useMutation<{ language_code: string; }, { language_code: string; }>("/me", {
-    onSuccess: (data) => {
-      setLanguageCode(data.language_code);
-    },
-  });
+  const { mutate: updateMe } = useMutation<{ language_code: string; }, { language_code: string; }>("/me");
   const { platform, tonConnect } = useMiniApp();
   const { push, back, route } = usePageManagement();
   const headerHeight = 52;

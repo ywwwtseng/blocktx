@@ -1,24 +1,10 @@
 import { Chart } from "../../Chart";
+import { DataIterator, OHLC, Transform, RawData } from "../../types";
 
-export interface OHLC {
-  rect: number[];
-  line: {
-    p0: number[];
-    p1: number[];
-  };
-  color: string;
-}
+export const iterator = (chart: Chart, _: string, transform: Transform): DataIterator<OHLC> => {
+  const data = chart.data.values;
 
-export interface DatasetIterator {
-  start: OHLC;
-  end: OHLC;
-  [Symbol.iterator](): Iterator<OHLC>;
-}
-
-export const dataset = (chart: Chart, _: string, transform: { x: (value: number) => number; y: (value: number) => number }): DatasetIterator => {
-  const data = chart.data;
-
-  const transfer = (item: { [key: string]: number | string }) => {
+  const transfer = (item: RawData) => {
     const x0 = transform.x(item.start as number);
     const y0 = transform.y(item.open as number);
     const w = transform.x(item.end as number) - x0;

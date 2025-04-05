@@ -2,10 +2,10 @@ import { Chart } from "../Chart";
 
 export type Range = [number | "auto", number | "auto"];
 
-export interface AxisSettings {
+export type AxisSettings<T = Record<string, unknown>> = T & {
   key: string;
   range?: Range;
-}
+};
 
 export class Axis<T extends AxisSettings = AxisSettings> {
   type: string;

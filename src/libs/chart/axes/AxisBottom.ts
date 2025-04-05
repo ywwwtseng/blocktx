@@ -4,14 +4,14 @@ import { CanvasUtils } from "../utils/CanvasUtils";
 import { Chart } from "../Chart";
 import { Axis, AxisSettings } from "./Axis";
 
-export interface AxisBottomSettings extends AxisSettings {
+export type AxisBottomSettings = AxisSettings<{
   height?: number;
   interval: number;
   tickIntervalCount: number;
   label: (date: Date) => string;
-}
+}>;
 
-export class AxisBottom<T extends AxisBottomSettings> extends Axis<T> {
+export class AxisBottom extends Axis<AxisBottomSettings> {
   left: number;
   height: number;
   top: number;
@@ -24,7 +24,7 @@ export class AxisBottom<T extends AxisBottomSettings> extends Axis<T> {
   tickSize: number;
   ticks: { label: string; value: number; x: number; y: number }[];
 
-  constructor(chart: Chart, settings: T) {
+  constructor(chart: Chart, settings: AxisBottomSettings) {
     super("axis_bottom", chart, settings);
 
     this.left = this.chart.innerLeft;
@@ -33,7 +33,7 @@ export class AxisBottom<T extends AxisBottomSettings> extends Axis<T> {
     this.width = this.chart.innerLeft + this.chart.innerWidth;
 
     this.benchmark = {
-      point: this.chart.innerLeft + this.chart.innerWidth - 20,
+      point: this.chart.innerLeft + this.chart.innerWidth - 40,
       value: null,
     };
 
@@ -55,7 +55,7 @@ export class AxisBottom<T extends AxisBottomSettings> extends Axis<T> {
   }
 
   draw(data: { oldest?: { [key: string]: number | string }; latest?: { [key: string]: number | string } }): void {
-    this.chart.ctx.clearRect(this.left, this.top, this.width, this.height);
+    this.chart.ctx.clearRect(this.left, this.top - 1, this.width, this.height + 1);
 
     let oldest = data.oldest?.[this.key] as number;
     let latest = data.latest?.[this.key] as number;

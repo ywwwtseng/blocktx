@@ -1,12 +1,12 @@
 import { Chart } from "../Chart";
 import { AxisVertical, AxisVerticalSettings } from "./AxisVertical";
 
-export interface AxisRightSettings extends AxisVerticalSettings {
+export type AxisRightSettings = AxisVerticalSettings<{
   key: string;
-}
+}>;
 
-export class AxisRight<T extends AxisRightSettings> extends AxisVertical<T> {
-  constructor(chart: Chart, settings: T) {
+export class AxisRight extends AxisVertical<AxisRightSettings> {
+  constructor(chart: Chart, settings: AxisRightSettings) {
     super(
       "axis_right",
       chart,

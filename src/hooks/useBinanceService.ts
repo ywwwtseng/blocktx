@@ -71,7 +71,7 @@ export const useBinanceService = create<BinanceServiceState>((set, get) => ({
           "https://www.binance.com/api/v3/uiKlines",
           {
             symbol,
-            interval: "1s",
+            interval: "1m",
             limit: 1000,
           }
         )
@@ -124,14 +124,16 @@ export const useBinanceService = create<BinanceServiceState>((set, get) => ({
           events.btcusdt.aggTrade,
           events.usdtusdt.aggTrade,
           events.btcusdt.depth,
-          events.btcusdt.kline["1s"],
+          events.btcusdt.kline["1m"],
         ],
         id: 1
       });
 
       socket.onMessage = (message: BinanceSocketEventMessage) => {
-        if (message.stream === events.btcusdt.kline["1s"]) {
+        if (message.stream === events.btcusdt.kline["1m"]) {
           const data = message.data as SocketRawKline;
+
+          console.log(data, 'data')
 
           set((state) => ({
             data: {
@@ -139,7 +141,9 @@ export const useBinanceService = create<BinanceServiceState>((set, get) => ({
               klines: {
                 ...state.data.klines,
                 [TradingPairSymbol.BTCUSDT]: [
-                  ...(state.data.klines[TradingPairSymbol.BTCUSDT] || []).slice(-500),
+                  ...(state.data.klines[TradingPairSymbol.BTCUSDT] || [])
+                    .filter((item) => item[KlineAttributes.Timestamp] !== data.k[KlineAttributes.Timestamp])
+                    .slice(-500),
                   {
                     [KlineAttributes.Timestamp]: data.k[KlineAttributes.Timestamp],
                     [KlineAttributes.Open]: data.k[KlineAttributes.Open],

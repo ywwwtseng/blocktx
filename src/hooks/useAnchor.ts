@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from "react";
 
 interface UseAnchorOptions {
   clickAwayListener?: boolean;
@@ -31,7 +31,7 @@ export function useAnchor<T>({
     setAnchor(null);
 
     if (clickAwayListener) {
-      window.removeEventListener('click', close, false);
+      window.removeEventListener("click", close, false);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -61,7 +61,7 @@ export function useAnchor<T>({
     }
 
     if (clickAwayListener) {
-      window.addEventListener('click', close, false);
+      window.addEventListener("click", close, false);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -75,7 +75,7 @@ export function useAnchor<T>({
   };
 
   const bounds = useMemo(() => {
-    if (typeof anchor === 'boolean' || anchor === null) {
+    if (typeof anchor === "boolean" || anchor === null) {
       return null;
     }
 
