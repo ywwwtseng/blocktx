@@ -1,0 +1,27 @@
+"use client";
+
+import { usePageManagement } from "../../contexts/PageManagementContext";
+import { useBinanceService } from "../../hooks/useBinanceService";
+import { useClientOnce } from "../../hooks/useClientOnce";
+import Analysis from "../_routes/Analysis";
+import TradeAI from "../_routes/TradeAI";
+import News from "../_routes/News";
+import Profile from "../_routes/Profile";
+
+export default function MiniApp() {
+  const { pathname } = usePageManagement();
+  const { init } = useBinanceService();
+
+  useClientOnce(() => {
+    init();
+  });
+
+  return (
+    <div className="flex flex-col items-center justify-center h-full">
+      {pathname === "/" && <Analysis />}
+      {pathname === "/news" && <News />}
+      {pathname === "/trade-ai" && <TradeAI />}
+      {pathname === "/profile" && <Profile />}
+    </div>
+  );
+}
