@@ -15,11 +15,11 @@ export class TimeUtils {
       }
     }
 
-    throw new Error("No match any time format.");
+    throw new Error('No match any time format.');
   }
 
-  static slot(date: Date | number, interval = this.ms("15m")) {
-    date = typeof date === "number" ? new Date(date) : date;
+  static slot(date: Date | number, interval = this.ms('15m')) {
+    date = typeof date === 'number' ? new Date(date) : date;
     const hours = date.getHours();
     const minutes = date.getMinutes();
     const seconds = date.getSeconds();

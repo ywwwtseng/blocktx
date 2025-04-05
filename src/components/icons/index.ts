@@ -1,5 +1,5 @@
 export * from "./WalletIcon";
-export * from "./ChartIcon";
+export * from "./AnalysisIcon";
 export * from "./ReferralIcon";
 export * from "./PlusIcon";
 export * from "./SmartToyIcon";
@@ -13,7 +13,6 @@ export * from "./PeopleIcon";
 export * from "./NewsIcon";
 export * from "./ProfileIcon";
 export * from "./StarIcon";
-export * from "./AIAgentIcon";
 export * from "./EthIcon";
 export * from "./SolIcon";
 export * from "./SuiIcon";

@@ -6,7 +6,7 @@ import News from "@/app/_routes/News";
 import { InviteFriendsBottomSheet } from "@/components/common/InviteFriendsBottomSheet";
 import Profile from "@/app/_routes/Profile";
 import {
-  ChartIcon,
+  AnalysisIcon,
   SmartToyIcon,
   NewsIcon,
   ReferralIcon,
@@ -24,7 +24,7 @@ export interface Route {
 export const routes: Route[] = [
   {
     type: "tab",
-    icon: ChartIcon,
+    icon: AnalysisIcon,
     i18n: "common.analysis",
     path: "/",
     page: Analysis,

@@ -25,7 +25,7 @@ export default function News() {
   }
 
   return (
-    <div className="animate-fade-in h-full flex flex-col">
+    <div className="animate-fade-in h-full w-full flex flex-col">
       <TickerTape />
       <div className="flex-1 px-4 pb-2 flex flex-col overflow-y-auto no-scrollbar">
         {news.map((article: Article) => (
