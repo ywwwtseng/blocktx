@@ -22,3 +22,4 @@ export * from "./ChevronRightIcon";
 export * from "./EnIcon";
 export * from "./TwIcon";
 export * from "./LanguageIcon";
+export * from "./BnbIcon";

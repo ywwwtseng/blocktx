@@ -10,7 +10,7 @@ export function TickerTape() {
   const miniTicker = useBinanceMiniTicker();
 
   const renderItems = (type: "original" | "cloned") => (
-    <HStack gap={8} className="pr-8">
+    <HStack gap={3} className="pr-3">
       {Object.values(miniTicker).map((item) => {
         const ticker = MiniTickerUtils.format(item);
 

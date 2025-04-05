@@ -148,6 +148,7 @@ export enum TradingPairSymbol {
   SOLUSDT = "SOLUSDT",
   ETHUSDT = "ETHUSDT",
   SUIUSDT = "SUIUSDT",
+  BNBUSDT = "BNBUSDT",
 }
 
 export enum KlineAttributes {

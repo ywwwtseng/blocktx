@@ -1,5 +1,6 @@
 import { NextRequest } from "next/server";
 import { ResponseUtils, TError } from "@/utils/ResponseUtils";
+import { TimeUtils } from "@/utils/TimeUtils";
 import { Article } from "@prisma/client";
 import { prisma } from "@/libs/prisma";
 import { send_message } from "@/actions/bot";
@@ -13,20 +14,35 @@ export async function POST(req: NextRequest) {
     await prisma.article.deleteMany({
       where: {
         created_at: {
-          lt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 30),
+          lt: new Date(Date.now() - TimeUtils.ms("14d")),
         },
       },
     });
 
     const exists = await prisma.article.findMany({
       where: {
-        link: {
-          in: rawArticles.map((article: RawArticle) => article.link),
+        OR: [
+          {
+            link: {
+              in: rawArticles.map((article: RawArticle) => article.link),
+            },
+          },
+          {
+            title: {
+              in: rawArticles.map((article: RawArticle) => article.title),
+            },
+          },
+        ],
+        created_at: {
+          gte: new Date(Date.now() - TimeUtils.ms("1d")),
         },
       },
     });
 
-    const notExists = rawArticles.filter((article: RawArticle) => !exists.some((e: Article) => e.link === article.link));
+    const notExists = rawArticles
+      .filter(
+        (article: RawArticle) => !exists.some((e: Article) => e.link === article.link || e.title === article.title)
+      );
 
     // const latestArticleEn = await prisma.article.findFirst({
     //   where: {

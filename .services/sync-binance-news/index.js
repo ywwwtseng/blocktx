@@ -29,6 +29,7 @@ async function main() {
           "SOL",
           "TON",
           "TON",
+          "BNB",
         ];
 
         const TimeUnitMsMap = new Map([
