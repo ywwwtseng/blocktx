@@ -1,14 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Article } from "@prisma/client";
-import { formatDurationShort } from "../../libs/dayjs";
-import { useClient } from "../../contexts/ClientContext";
-import { useQuery } from "../../hooks/useQuery";
-import { I18nTypography } from "../../components/common/I18nTypography";
-import { TradingPairChip } from "../../components/common/TradingPairChip";
-import { TickerTape } from "../../components/common/TickerTape";
-import { HStack, VStack } from "../../components/ui/Stack";
-import { LoadingIcon } from "../../components/icons";
+import { formatDurationShort } from "@/libs/dayjs";
+import { useClient } from "@/contexts/ClientContext";
+import { useQuery } from "@/hooks/useQuery";
+import { I18nTypography } from "@/components/common/I18nTypography";
+import { TradingPairChip } from "@/components/common/TradingPairChip";
+import { TickerTape } from "@/components/common/TickerTape";
+import { HStack, VStack } from "@/components/ui/Stack";
+import { LoadingIcon } from "@/components/icons";
+import binanceNewBase64 from "@/binance-new.base64";
 
 export default function News() {
   const { languageCode } = useClient();
@@ -38,7 +39,7 @@ export default function News() {
               {article.trading_pairs.length <= 2 && (
                 <Image
                   className="animate-fade-in min-w-[135px] w-[135px] h-[75px]"
-                  src={article.image.replace("https://blocktx.vercel.app", "")}
+                  src={binanceNewBase64}
                   alt={article.title}
                   width={135}
                   height={75}
