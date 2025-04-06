@@ -16,7 +16,7 @@ import {
 } from "../types";
 
 export const events = {
-  miniTicker: "!miniTicker@arr@3000ms",
+  miniTicker: "!miniTicker@arr@1000ms",
   usdtusdt: {
     aggTrade: "usdtusdt@aggTrade",
   },

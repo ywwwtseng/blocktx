@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import { Metadata, Viewport } from "next";
 import { Rajdhani } from "next/font/google";
 
 import "./_assets/globals.css";
@@ -12,6 +12,13 @@ const rajdhani = Rajdhani({
 export const metadata: Metadata = {
   title: "BlockTx",
   description: "A Powerful Tool for Trading and Quantitative Strategies",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 };
 
 export default function RootLayout({

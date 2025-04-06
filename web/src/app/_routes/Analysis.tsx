@@ -1,3 +1,4 @@
+import { useMiniApp } from "@/contexts/MiniAppContext";
 import { useWindowSize } from "@/contexts/WindowSizeContext";
 import { CryptoPriceChart } from "@/components/common/CryptoPriceChart";
 import { CryptoVolumeChart } from "@/components/common/CryptoVolumeChart";
@@ -11,16 +12,17 @@ import { CaretIcon } from "@/components/icons";
 import { TradingPairSymbol } from "@/types";
 
 export default function Analysis() {
+  const { platform } = useMiniApp();
   const { width, height } = useWindowSize();
 
   if (!width || !height) {
     return null;
   }
 
-  const restChartHeight = Math.floor((height - 52 - 140 - 230 - 78) / 2);
+  const restChartHeight = Math.floor((height - 52 - 140 - 230 - 58 - (platform === "ios" ? 20 : 12)) / 2);
 
   return (
-    <div className="animate-fade-in h-full px-4 pb-2 flex flex-col">
+    <div className="animate-fade-in h-full px-4 flex flex-col">
       <VStack items="start" className="py-1">
         <HStack justify="between" className="px-1">
           <BaseButton className="flex items-center gap-1">

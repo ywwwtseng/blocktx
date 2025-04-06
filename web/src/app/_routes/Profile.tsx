@@ -1,14 +1,14 @@
 import { useMemo, useEffect } from "react";
 import { Address } from "ton";
 import dayjs from "dayjs";
-import { useMiniApp } from "../../contexts/MiniAppContext";
-import { useClient } from "../../contexts/ClientContext";
-import { usePageManagement } from "../../contexts/PageManagementContext";
-import { Avatar } from "../../components/common/Avatar/Avatar";
-import { StarIcon, ChevronRightIcon } from "../../components/icons";
-import { VStack, HStack } from "../../components/ui/Stack";
-import { I18nTypography } from "../../components/common/I18nTypography";
-import { Confirm } from '../../components/common/Confirm/Confirm';
+import { useMiniApp } from "@/contexts/MiniAppContext";
+import { useClient } from "@/contexts/ClientContext";
+import { usePageManagement } from "@/contexts/PageManagementContext";
+import { Avatar } from "@/components/common/Avatar/Avatar";
+import { StarIcon, ChevronRightIcon } from "@/components/icons";
+import { VStack, HStack } from "@/components/ui/Stack";
+import { I18nTypography } from "@/components/common/I18nTypography";
+import { Confirm } from '@/components/common/Confirm/Confirm';
 
 export default function Profile() {
   const { tonConnect, user: tgUser } = useMiniApp();
