@@ -25,6 +25,12 @@ const en = {
     read_more: "Read More",
   },
 
+  analysis: {
+    fng_today: "FnG (Today)",
+    fng_yesterday: "FnG (Yesterday)",
+    fng_last_7_days: "FnG (Last 7 Days)",
+  },
+
   trade_ai: {
     label_5x_to_20x_leverage: "5x to 20x leverage",
     label_90_days_pnl: "90 Days PNL",

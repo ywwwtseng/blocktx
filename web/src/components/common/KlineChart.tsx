@@ -1,15 +1,17 @@
 import { useRef, useEffect, useState } from "react";
+import { useBinanceKline } from "@/hooks/useBinanceService";
 import clsx from 'clsx';
 import dayjs from "dayjs";
 import { useWindowSize } from "../../contexts/WindowSizeContext";
 import { Chart } from "../../libs/chart";
-import { Kline, KlineAttributes } from "../../types";
+import { TradingPairSymbol, KlineAttributes } from "../../types";
 
 interface KlineChartProps {
-  data: Kline[] | undefined;
+  symbol: TradingPairSymbol;
 }
 
-export function KlineChart({ data }: KlineChartProps) {
+export function KlineChart({ symbol }: KlineChartProps) {
+  const data = useBinanceKline(symbol);
   const [drawEnd, setDrawEnd] = useState(false);
   const chartRef = useRef<Chart>(null);
   const { width } = useWindowSize();

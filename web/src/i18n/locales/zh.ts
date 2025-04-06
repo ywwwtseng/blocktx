@@ -25,6 +25,12 @@ const zh = {
     read_more: "閱讀更多",
   },
 
+  analysis: {
+    fng_today: "FnG (今日)",
+    fng_yesterday: "FnG (昨日)",
+    fng_last_7_days: "FnG (過去7天)",
+  },
+
   trade_ai: {
     label_5x_to_20x_leverage: "5x 至 20x 槓桿",
     label_90_days_pnl: "90天盈虧",

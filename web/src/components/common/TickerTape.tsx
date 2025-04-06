@@ -14,9 +14,11 @@ export function TickerTape() {
       {Object.values(miniTicker).map((item) => {
         const ticker = MiniTickerUtils.format(item);
 
-        if (!ticker || !ticker.symbol || !ticker.price || !ticker.label) {
+        if (!ticker || !ticker.symbol || !ticker.price || !ticker.change) {
           return null;
         }
+
+        const color = ticker.percentage > 0 ? "var(--text-buy)" : "var(--text-sell)";
 
         return (
           <HStack gap={2} key={`${ticker.symbol}-${type}`}>
@@ -27,7 +29,7 @@ export function TickerTape() {
                 justify="start"
                 gap={2}
                 style={{
-                  width: `${(ticker.price.length + ticker.label.length) * 8 + 20}px`,
+                  width: `${(ticker.price.length + ticker.change.length) * 8 + 20}px`,
                 }}
               >
                 <Typography size={1} weight={700}>${ticker.price}</Typography>
@@ -39,9 +41,9 @@ export function TickerTape() {
                     className={clsx("w-1.5 h-2", {
                       "rotate-180": ticker.percentage < 0,
                     })}
-                    fill={ticker.color}
+                    fill={color}
                   />
-                  <Typography size={1} weight={700} color={ticker.color}>{ticker.label}</Typography>
+                  <Typography size={1} weight={700} color={color}>{ticker.change}</Typography>
                 </HStack>
               </HStack>
             </VStack>

@@ -1,7 +1,7 @@
 import { MiniTicker24hr } from "../types";
 
 export class MiniTickerUtils {
-  static format(miniTicker: MiniTicker24hr) {
+  static format(miniTicker: MiniTicker24hr | undefined) {
     if (!miniTicker) {
       return null;
     }
@@ -13,8 +13,7 @@ export class MiniTickerUtils {
       symbol: miniTicker.s,
       price: Number(miniTicker.c).toFixed(2),
       percentage,
-      label: `${sign}${Math.abs(percentage).toFixed(2)}%`,
-      color: sign === "+" ? "#2DBC85" : "#F6465D",
+      change: `${sign}${Math.abs(percentage).toFixed(2)}%`,
     }
   }
 }

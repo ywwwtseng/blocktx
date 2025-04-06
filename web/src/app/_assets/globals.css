@@ -7,6 +7,7 @@
   --text-secondary: #EBEBF599;
   --text-warning: #f0b90b;
   --text-buy: #2EBD85;
+  --text-sell: #F6465D;
   --bg-1: #202630;
   --bg-2:  #2525258C;
   --bg-warning: #2D2A20;
@@ -24,6 +25,7 @@
   --color-text-secondary: var(--text-secondary);
   --color-text-warning: var(--text-warning);
   --color-text-buy: var(--text-buy);
+  --color-text-sell: var(--text-sell);
   --color-bg-1: var(--bg-1);
   --color-bg-2: var(--bg-2);
   --color-bg-warning: var(--bg-warning);
