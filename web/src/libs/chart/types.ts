@@ -35,6 +35,14 @@ export interface Point {
   y: number;
 }
 
+export interface Bar {
+  x: number;
+  h: number;
+  dx: number;
+  dy: number;
+  color: string;
+}
+
 export interface Line {
   current: Point;
   next: () => Point | null;

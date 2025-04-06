@@ -1,8 +1,8 @@
 import { Chart } from "../../Chart";
 import { TimeUtils } from "../../utils/TimeUtils";
-import { DataIterator, Transform, RawData } from "../../types";
+import { DataIterator, Transform, RawData, Bar } from "../../types";
 
-export const iterator = (chart: Chart, key: string, transform: Transform): DataIterator<number[]> => {
+export const iterator = (chart: Chart, key: string, transform: Transform): DataIterator<Bar> => {
   const data = chart.data.values;
 
   const transfer = (item: RawData) => {
@@ -13,17 +13,18 @@ export const iterator = (chart: Chart, key: string, transform: Transform): DataI
     const value = item[key] as number;
     const { start, end } = TimeUtils.slot(item[axisBottomSettings.key] as number, interval / tickIntervalCount);
     
-    const x = transform.x(start);
+    const x = transform.x(start) + 0.5;
     const h = transform.y(value);
-    const dx = transform.x(end) - x;
-    const dy = chart.innerBottom - h
+    const dx = transform.x(end) - x - 0.5;
+    const dy = chart.innerBottom - h;
 
-    return [
+    return {
       x,
       h,
       dx,
       dy,
-    ]
+      color: chart.settings.color?.(item) || "#2EBD85",
+    }
   };
 
   return {

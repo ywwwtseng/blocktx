@@ -16,7 +16,6 @@ export class AxisBottom extends Axis<AxisBottomSettings> {
   tickInterval: number;
   tickIntervalCount: number;
   tickSizeUnit: number;
-  tickCount: number;
   tickSize: number;
   ticks: { label: string; value: number; x: number; y: number }[];
 
@@ -31,10 +30,13 @@ export class AxisBottom extends Axis<AxisBottomSettings> {
     this.tickInterval = settings.interval || TimeUtils.ms("15m");
     this.tickIntervalCount = settings.tickIntervalCount;
     this.tickSizeUnit = 6;
-    this.tickCount = Math.ceil(this.chart.innerWidth / (this.tickIntervalCount * this.tickSizeUnit));
     this.tickSize = this.tickIntervalCount * this.tickSizeUnit;
 
     this.ticks = [];
+  }
+
+  get tickCount() {
+    return Math.ceil(this.chart.innerWidth / (this.tickIntervalCount * this.tickSizeUnit))
   }
 
   get left() {
@@ -50,7 +52,7 @@ export class AxisBottom extends Axis<AxisBottomSettings> {
   }
 
   get height() {
-    return this.settings.height || 20;
+    return this.settings.height ?? 20;
   }
 
   x(value: number): number {
@@ -61,7 +63,8 @@ export class AxisBottom extends Axis<AxisBottomSettings> {
     return Math.floor(((x - this.benchmark.point()) / this.tickSize) * this.tickInterval + (this.benchmark.value ?? 0));
   }
 
-  draw(data: { oldest?: { [key: string]: number | string }; latest?: { [key: string]: number | string } }): void {
+  draw(): void {
+    const data = this.chart.data;
     this.chart.ctx.clearRect(this.left, this.top - 1, this.width, this.height + 1);
 
     let oldest = data.oldest?.[this.key] as number;
@@ -100,13 +103,6 @@ export class AxisBottom extends Axis<AxisBottomSettings> {
       this.benchmark.value = latest;
     }
 
-    this.chart.ctx.beginPath();
-    this.chart.ctx.strokeStyle = "#2B3139";
-    this.chart.ctx.lineWidth = 1;
-    this.chart.ctx.moveTo(this.left, this.top);
-    this.chart.ctx.lineTo(this.width, this.top);
-    this.chart.ctx.stroke();
-
     this.ticks = values.map((value) => {
       const date = new Date(value);
       return {
@@ -116,6 +112,17 @@ export class AxisBottom extends Axis<AxisBottomSettings> {
         y: this.top + this.height / 2,
       };
     });
+
+    if (this.height === 0) {
+      return;
+    }
+
+    this.chart.ctx.beginPath();
+    this.chart.ctx.strokeStyle = "#2B3139";
+    this.chart.ctx.lineWidth = 1;
+    this.chart.ctx.moveTo(this.left, this.top);
+    this.chart.ctx.lineTo(this.width, this.top);
+    this.chart.ctx.stroke();
 
     this.ticks.forEach((tick) => {
       CanvasUtils.text(this.chart.ctx)(tick.label, tick.x, tick.y, this.chart.theme.text);

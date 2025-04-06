@@ -142,6 +142,8 @@ export interface Article {
   created_at: string;
 }
 
+export type Interval = "1m" | "5m" | "15m" | "30m" | "1h" | "4h" | "1d";
+
 export enum TradingPairSymbol {
   BTCUSDT = "BTCUSDT",
   TONUSDT = "TONUSDT",
@@ -159,6 +161,7 @@ export enum KlineAttributes {
   Close = "c",
   Volume = "v",
   End = "x",
+  Quantity = "q",
 }
 
 export type RawKline = (string | number)[];
@@ -172,6 +175,7 @@ export type SocketRawKline = {
     [KlineAttributes.Low]: number;
     [KlineAttributes.Close]: number;
     [KlineAttributes.Volume]: number;
+    [KlineAttributes.Quantity]: number;
     [KlineAttributes.End]: boolean;
   };
 }
@@ -183,6 +187,7 @@ export type Kline = {
   [KlineAttributes.Low]: number;
   [KlineAttributes.Close]: number;
   [KlineAttributes.Volume]: number;
+  [KlineAttributes.Quantity]: number;
 }
 
 export interface Ticker24hr {

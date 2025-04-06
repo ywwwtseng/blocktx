@@ -1,30 +1,37 @@
 import { useRef, useEffect, useState } from "react";
-import { useBinanceKline } from "@/hooks/useBinanceService";
 import clsx from 'clsx';
 import dayjs from "dayjs";
-import { useWindowSize } from "../../contexts/WindowSizeContext";
-import { Chart } from "../../libs/chart";
-import { TradingPairSymbol, KlineAttributes } from "../../types";
+import { useBinanceKline } from "@/hooks/useBinanceService";
+import { TimeUtils } from "@/utils/TimeUtils";
+import { Chart, RawData } from "@/libs/chart";
+import { Interval, KlineAttributes } from "@/types";
 
-interface KlineChartProps {
-  symbol: TradingPairSymbol;
+interface CryptoVolumeChartProps {
+  className?: string;
+  timeFormat?: string;
+  interval: Interval;
+  width: number;
+  height: number;
 }
 
-export function KlineChart({ symbol }: KlineChartProps) {
-  const data = useBinanceKline(symbol);
+export function CryptoVolumeChart({
+  interval,
+  className,
+  timeFormat = "HH:mm",
+  width,
+  height,
+}: CryptoVolumeChartProps) {
+  const data = useBinanceKline(interval);
   const [drawEnd, setDrawEnd] = useState(false);
   const chartRef = useRef<Chart>(null);
-  const { width } = useWindowSize();
-  const canvasWidth = width ?? 0;
-  const canvasHeight = Math.floor(canvasWidth * 0.5625);
 
   useEffect(() => {
     const chart = chartRef.current;
     if (chart) {
-      chart.size(canvasWidth, canvasHeight);
+      chart.size(width, height);
       chart.draw();
     }
-  }, [canvasWidth, canvasHeight]);
+  }, [width, height]);
 
   useEffect(() => {
     const chart = chartRef.current;
@@ -35,7 +42,7 @@ export function KlineChart({ symbol }: KlineChartProps) {
 
   return (
     <canvas
-      className={clsx("border-t border-b border-[#2B3139]", {
+      className={clsx(className, {
         "opacity-0": !drawEnd,
       })}
       ref={(canvas) => {
@@ -43,17 +50,19 @@ export function KlineChart({ symbol }: KlineChartProps) {
           const ctx = canvas.getContext("2d")!;
 
           chartRef.current = new Chart(ctx, {
-            type: "line",
-            width: canvasWidth,
-            height: canvasHeight,
+            type: "bar",
+            width,
+            height,
+            color: (item: RawData) => item.c > item.o ? "#2EBD85" : "#F6465D",
             axisRight: {
-              key: KlineAttributes.Close,
+              key: KlineAttributes.Volume,
+              tickCount: 2,
             },
             axisBottom: {
               key: KlineAttributes.Timestamp,
-              interval: 15 * 60 * 1000,
+              interval: 15 * TimeUtils.ms(interval),
               tickIntervalCount: 15,
-              label: (value: Date) => dayjs(value).format("HH:mm"),
+              label: (value: Date) => dayjs(value).format(timeFormat),
             },
           });
 

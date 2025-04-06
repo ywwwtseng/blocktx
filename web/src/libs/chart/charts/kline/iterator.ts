@@ -1,16 +1,22 @@
 import { Chart } from "../../Chart";
+import { TimeUtils } from "../../utils/TimeUtils";
+import { CanvasUtils } from "../../utils/CanvasUtils";
 import { DataIterator, OHLC, Transform, RawData } from "../../types";
 
 export const iterator = (chart: Chart, _: string, transform: Transform): DataIterator<OHLC> => {
   const data = chart.data.values;
 
   const transfer = (item: RawData) => {
-    const x0 = transform.x(item.start as number);
-    const y0 = transform.y(item.open as number);
-    const w = transform.x(item.end as number) - x0;
-    const h = transform.y(item.close as number) - y0;
-
-    const x = transform.x(item._time as number);
+    const {
+      color,
+      axisBottom: axisBottomSettings,
+      axisBottom: { interval, tickIntervalCount }
+    } = chart.settings;
+    const { start, end } = TimeUtils.slot(item[axisBottomSettings.key] as number, interval / tickIntervalCount);
+    const x0 = transform.x(start) + 0.5;
+    const y0 = transform.y(item.o as number);
+    const w = transform.x(end) - x0 - 0.5;
+    const h = CanvasUtils.adjust(transform.y(item.c as number) - y0);
 
     return {
       rect: [
@@ -20,10 +26,10 @@ export const iterator = (chart: Chart, _: string, transform: Transform): DataIte
         h,
       ],
       line: {
-        p0: [x, transform.y(item.low as number)],
-        p1: [x, transform.y(item.high as number)],
+        p0: [x0 + w / 2, transform.y(item.l as number)],
+        p1: [x0 + w / 2, transform.y(item.h as number)],
       },
-      color: h > 0 ? "#F6465D" : "#2DBC85",
+      color: color?.(item) || "#2EBD85",
     }
   };
 

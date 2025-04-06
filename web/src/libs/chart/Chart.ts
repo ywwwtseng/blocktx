@@ -1,9 +1,9 @@
 import { AxisBottom, AxisBottomSettings } from "./axes/AxisBottom";
 import { AxisRight, AxisRightSettings } from "./axes/AxisRight";
-import { AxisLeft, AxisLeftSettings } from "./axes/AxisLeft";
 import { Grid } from "./Grid";
 import { Data } from "./Data";
 import { render, ChartType } from "./charts";
+import { RawData } from "./types";
 
 
 interface ChartSettings {
@@ -12,10 +12,9 @@ interface ChartSettings {
   height: number;
   axisRight: AxisRightSettings;
   axisBottom: AxisBottomSettings;
-  axisLeft?: AxisLeftSettings;
+  color?: (item: RawData) => string;
   padding?: Partial<{ top: number; bottom: number; left: number; right: number; }>;
   theme?: { text?: string };
-  config?: Array<{ type: ChartType; key: string; }>;
 }
 
 export class Chart {
@@ -23,24 +22,15 @@ export class Chart {
   settings: ChartSettings;
   axisRight: AxisRight;
   axisBottom: AxisBottom;
-  axisLeft?: AxisLeft;
   data: Data;
   grid: Grid;
   drawEnd: boolean;
 
   constructor(ctx: CanvasRenderingContext2D, settings: ChartSettings) {
     this.ctx = ctx;
+    // this.ctx.imageSmoothingEnabled = true;
     this.settings = settings;
     this.drawEnd = false;
-
-    if (!this.settings.config && this.settings.type) {
-      this.settings.config = [
-        {
-          type: this.settings.type,
-          key: this.settings.axisRight?.key,
-        },
-      ];
-    }
 
     this.size(
       this.settings.width,
@@ -54,13 +44,7 @@ export class Chart {
     });
 
     this.axisBottom = new AxisBottom(this, this.settings.axisBottom);
-
     this.axisRight = new AxisRight(this, this.settings.axisRight);
-
-    if (this.settings.axisLeft) {
-      this.axisLeft = new AxisLeft(this, this.settings.axisLeft);
-    }
-
     this.grid = new Grid(this);
   }
 
@@ -87,7 +71,7 @@ export class Chart {
   }
 
   get innerLeft() {
-    return this.settings.axisLeft ? this.settings.axisLeft.width! + this.padding.left : this.padding.left;
+    return this.padding.left;
   }
 
   get innerHeight() {
@@ -135,32 +119,13 @@ export class Chart {
       this.ctx.clearRect(this.width - this.padding.right, 0, this.padding.right, this.height);
     }
 
-    this.axisBottom.draw(this.data);
-    this.axisRight.draw(this.data.values);
-    if (this.settings.axisLeft) {
-      this.axisLeft!.draw(this.data.values);
-    }
-
+    this.axisBottom.draw();
+    this.axisRight.draw();
     this.grid.draw(this.axisBottom, this.axisRight);
 
-    this.settings.config!.forEach(({ type, key }) => {
-      let transform;
-
-      if (this.axisRight.settings.key === key) {
-        transform = {
-          x: this.axisBottom.x.bind(this.axisBottom),
-          y: this.axisRight.y.bind(this.axisRight),
-        };
-      } else if (this.axisLeft?.settings.keys.includes(key)) {
-        transform = {
-          x: this.axisBottom.x.bind(this.axisBottom),
-          y: this.axisLeft.y.bind(this.axisLeft),
-        };
-      }
-
-      if (transform) {
-        render(type, this, key, transform);
-      }
+    render(this.settings.type, this, this.settings.axisRight.key, {
+      x: this.axisBottom.x.bind(this.axisBottom),
+      y: this.axisRight.y.bind(this.axisRight),
     });
 
     if (!this.drawEnd) {

@@ -1,12 +1,12 @@
 import { Chart } from "../../Chart";
-import { DataIterator } from "../../types";
+import { DataIterator, Bar } from "../../types";
 
-export const render = <T extends DataIterator<number[]>>(
+export const render = <T extends DataIterator<Bar>>(
   chart: Chart,
   iterator: T
 ) => {
   for (const item of iterator) {
-    chart.ctx.fillStyle = "#FCD435";
-    chart.ctx.fillRect(item[0], item[1], item[2], item[3]);
+    chart.ctx.fillStyle = item.color;
+    chart.ctx.fillRect(item.x, item.h, item.dx, item.dy);
   }
 };

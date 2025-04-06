@@ -44,24 +44,6 @@ export class Data {
     return this.data[this.data.length - 1];
   }
 
-  get helpers() {
-    const keyY = this.key.y;
-
-    return {
-      lowHigh(data: RawData[]) {
-        return data.reduce((acc: number[], item: RawData) => {
-          if (acc[0] === undefined || item[keyY] as number < acc[0]) {
-            acc[0] = item[keyY] as number;
-          }
-          if (acc[1] === undefined || item[keyY] as number > acc[1]) {
-            acc[1] = item[keyY] as number;
-          }
-          return acc;
-        }, []);
-      },
-    }
-  }
-
   get values() {
     const startIndex = ArrayUtils.binarySearch(
       this.data,

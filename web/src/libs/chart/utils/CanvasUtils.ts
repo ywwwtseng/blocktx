@@ -8,4 +8,8 @@ export class CanvasUtils {
       ctx.fillText(text, x, y);
     };
   }
+
+  static adjust(value: number) {
+    return Math.sign(value) * Math.max(Math.abs(value), 1);
+  }
 }
