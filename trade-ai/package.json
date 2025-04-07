@@ -1,0 +1,10 @@
+{
+  "name": "trade-ai",
+  "version": "0.0.1",
+  "main": "index.js",
+  "description": "Trade AI",
+  "scripts": {
+    "dev": "bun --watch index.ts",
+    "start": "bun index.ts"
+  }
+}
