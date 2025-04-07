@@ -16,8 +16,8 @@ export class Data {
 
   get key() {
     return {
-      x: this.chart.axisBottom.key,
-      y: this.chart.axisRight.key,
+      x: this.chart.axisBottom.settings.key,
+      y: this.chart.axisRight.settings.key,
     };
   }
 

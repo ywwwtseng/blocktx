@@ -154,12 +154,16 @@ export enum TradingPairSymbol {
 }
 
 export enum KlineAttributes {
-  Timestamp = "t",
+  StartTime = "t",
   Open = "o",
   High = "h",
   Low = "l",
   Close = "c",
   Volume = "v",
+  CloseTime = "T",
+  NumberOfTrades = "n",
+  TakerBuyBaseAssetVolume = "V",
+  TakerBuyQuoteAssetVolume = "Q",
   End = "x",
   Quantity = "q",
 }
@@ -169,7 +173,7 @@ export type RawKline = (string | number)[];
 export type SocketRawKline = {
   e: string;
   k: {
-    [KlineAttributes.Timestamp]: number;
+    [KlineAttributes.StartTime]: number;
     [KlineAttributes.Open]: number;
     [KlineAttributes.High]: number;
     [KlineAttributes.Low]: number;
@@ -181,7 +185,7 @@ export type SocketRawKline = {
 }
 
 export type Kline = {
-  [KlineAttributes.Timestamp]: number;
+  [KlineAttributes.StartTime]: number;
   [KlineAttributes.Open]: number;
   [KlineAttributes.High]: number;
   [KlineAttributes.Low]: number;

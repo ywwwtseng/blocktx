@@ -132,7 +132,7 @@ export const useBinanceService = create<BinanceServiceState>((set, get) => ({
           klines: {
             ...state.data.klines,
             [interval]: data.map((item: RawKline) => ({
-              [KlineAttributes.Timestamp]: Number(item[0]),
+              [KlineAttributes.StartTime]: Number(item[0]),
               [KlineAttributes.Open]: Number(item[1]),
               [KlineAttributes.High]: Number(item[2]),
               [KlineAttributes.Low]: Number(item[3]),
@@ -220,9 +220,9 @@ export const useBinanceService = create<BinanceServiceState>((set, get) => ({
                   ...state.data.klines,
                   [interval]: [
                     ...(state.data.klines[interval] || [])
-                      .filter((item) => item[KlineAttributes.Timestamp] !== data.k[KlineAttributes.Timestamp]),
+                      .filter((item) => item[KlineAttributes.StartTime] !== data.k[KlineAttributes.StartTime]),
                     {
-                      [KlineAttributes.Timestamp]: Number(data.k[KlineAttributes.Timestamp]),
+                      [KlineAttributes.StartTime]: Number(data.k[KlineAttributes.StartTime]),
                       [KlineAttributes.Open]: Number(data.k[KlineAttributes.Open]),
                       [KlineAttributes.High]: Number(data.k[KlineAttributes.High]),
                       [KlineAttributes.Low]: Number(data.k[KlineAttributes.Low]),

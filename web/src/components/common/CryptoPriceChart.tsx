@@ -62,7 +62,7 @@ export function CryptoPriceChart({
               key: KlineAttributes.Close,
             },
             axisBottom: {
-              key: KlineAttributes.Timestamp,
+              key: KlineAttributes.StartTime,
               height: hideBottomAxis ? 0 : 20,
               interval: 15 * TimeUtils.ms(interval),
               tickIntervalCount: 15,

@@ -67,8 +67,8 @@ export class AxisBottom extends Axis<AxisBottomSettings> {
     const data = this.chart.data;
     this.chart.ctx.clearRect(this.left, this.top - 1, this.width, this.height + 1);
 
-    let oldest = data.oldest?.[this.key] as number;
-    let latest = data.latest?.[this.key] as number;
+    let oldest = data.oldest?.[this.settings.key] as number;
+    let latest = data.latest?.[this.settings.key] as number;
 
     if (!oldest || !latest) {
       const now = Date.now();

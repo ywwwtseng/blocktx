@@ -59,7 +59,7 @@ export function CryptoVolumeChart({
               tickCount: 3,
             },
             axisBottom: {
-              key: KlineAttributes.Timestamp,
+              key: KlineAttributes.StartTime,
               interval: 15 * TimeUtils.ms(interval),
               tickIntervalCount: 15,
               label: (value: Date) => dayjs(value).format(timeFormat),

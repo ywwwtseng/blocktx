@@ -40,7 +40,6 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
-    "@types/bun": "^1.2.5",
     "@types/dlv": "^1.1.5",
     "@types/express": "^5.0.0",
     "@types/node": "^20",
