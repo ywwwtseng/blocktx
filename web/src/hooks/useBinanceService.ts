@@ -2,8 +2,8 @@ import { useMemo } from "react";
 import numbro from "numbro";
 import { create } from "zustand";
 import { useShallow } from "zustand/react/shallow";
-import { Socket } from '../libs/socket';
-import { URLUtils } from "../utils/URLUtils";
+import { Socket } from "@/libs/socket";
+import { URLUtils } from "@/utils/URLUtils";
 import {
   TradingPairSymbol,
   MiniTicker24hr,
@@ -13,38 +13,30 @@ import {
   BinanceSocketEventMessage,
   SocketRawKline,
   Interval,
-} from "../types";
+} from "@/types";
 
 export const events = {
   miniTicker: "!miniTicker@arr@1000ms",
   usdtusdt: {
     aggTrade: "usdtusdt@aggTrade",
   },
-  btcusdt: {
-    aggTrade: "btcusdt@aggTrade",
-    depth: "btcusdt@depth",
-    kline: {
-      "1s": "btcusdt@kline_1s",
-      "1m": "btcusdt@kline_1m",
-      "5m": "btcusdt@kline_5m",
-      "15m": "btcusdt@kline_15m",
-      "30m": "btcusdt@kline_30m",
-      "1h": "btcusdt@kline_1h",
-      "4h": "btcusdt@kline_4h",
-      "1d": "btcusdt@kline_1d",
-    },
-  }
+  aggTrade: (symbol: TradingPairSymbol | "usdtusdt") => `${symbol.toLowerCase()}@aggTrade`,
+  depth: (symbol: TradingPairSymbol | "usdtusdt") => `${symbol.toLowerCase()}@depth`,
+  kline: (symbol: TradingPairSymbol | "usdtusdt", interval: Interval) => `${symbol.toLowerCase()}@kline_${interval}`,
 }
 
 type BinanceServiceState = {
   data: {
-    selected: TradingPairSymbol;
+    selectedSymbol: TradingPairSymbol;
+    isLoading: boolean;
     miniTicker: Partial<Record<TradingPairSymbol, MiniTicker24hr>>;
     klines: Partial<Record<Interval, Kline[]>>;
   };
   socket: Socket<BinanceSocketEventMessage> | null;
+  setSelectedSymbol: (symbol: TradingPairSymbol) => Promise<void>;
   klines: {
-    history: (interval: Interval) => Promise<void>;
+    history: (interval: Interval, symbol: TradingPairSymbol) => Promise<void>;
+    all: (symbol: TradingPairSymbol) => Promise<void>;
   },
   products: {
     receive: () => Promise<void>;
@@ -54,11 +46,43 @@ type BinanceServiceState = {
 
 export const useBinanceService = create<BinanceServiceState>((set, get) => ({
   data: {
-    selected: TradingPairSymbol.BTCUSDT,
+    selectedSymbol: TradingPairSymbol.BTCUSDT,
+    isLoading: false,
     miniTicker: {},
     klines: {},
   },
   socket: null,
+  setSelectedSymbol: async (symbol: TradingPairSymbol) => {
+    get().socket?.send({
+      method: "UNSUBSCRIBE",
+      params: [
+        events.aggTrade(get().data.selectedSymbol),
+        events.depth(get().data.selectedSymbol),
+        events.kline(get().data.selectedSymbol, "1m"),
+        events.kline(get().data.selectedSymbol, "4h"),
+      ],
+      id: 1
+    });
+
+    set((state) => ({
+      data: {
+        ...state.data,
+        selectedSymbol: symbol,
+      },
+    }));
+
+    await get().klines.all(symbol);
+
+    get().socket?.send({
+      method: "SUBSCRIBE",
+      params: [
+        events.aggTrade(symbol),
+        events.depth(symbol),
+        events.kline(symbol, "1m"),
+        events.kline(symbol, "4h"),
+      ],
+    });
+  },
   products: {
     receive: async () => {
       const response = await fetch("https://www.binance.com/bapi/asset/v2/public/asset-service/product/get-products");
@@ -68,12 +92,12 @@ export const useBinanceService = create<BinanceServiceState>((set, get) => ({
     },
   },
   klines: {
-    history: async (interval: Interval) => {
+    history: async (interval: Interval, symbol: TradingPairSymbol) => {
       const response = await fetch(
         URLUtils.stringifyUrl(
           "https://www.binance.com/api/v3/uiKlines",
           {
-            symbol: get().data.selected,
+            symbol,
             interval,
             limit: 1000,
           }
@@ -119,6 +143,16 @@ export const useBinanceService = create<BinanceServiceState>((set, get) => ({
           },
         },
       }));
+    },
+    all: async (symbol: TradingPairSymbol) => {
+      set({ data: { ...get().data, isLoading: true } });
+
+      await Promise.all([
+        get().klines.history("1m", symbol),
+        get().klines.history("4h", symbol),
+      ]);
+
+      set({ data: { ...get().data, isLoading: false } });
     }
   },
   init: () => {
@@ -126,31 +160,26 @@ export const useBinanceService = create<BinanceServiceState>((set, get) => ({
       url: "wss://stream.binance.com/stream",
     });
 
-    get().products.receive();
-
-    window.addEventListener("visibilitychange", () => {
+    window.addEventListener("visibilitychange", async () => {
       if (document.visibilityState !== "hidden") {
-        get().products.receive();
+        await get().klines.all(get().data.selectedSymbol);
       }
     });
 
     socket.onOpen = async () => {
       set({ socket });
 
-      await Promise.all([
-        get().klines.history("1m"),
-        get().klines.history("4h"),
-      ]);
+      await get().klines.all(get().data.selectedSymbol);
 
       socket.send({
         method: "SUBSCRIBE",
         params: [
           events.miniTicker,
-          events.btcusdt.aggTrade,
-          events.usdtusdt.aggTrade,
-          events.btcusdt.depth,
-          events.btcusdt.kline["1m"],
-          events.btcusdt.kline["4h"],
+          events.aggTrade("usdtusdt"),
+          events.aggTrade(get().data.selectedSymbol),
+          events.depth(get().data.selectedSymbol),
+          events.kline(get().data.selectedSymbol, "1m"),
+          events.kline(get().data.selectedSymbol, "4h"),
         ],
         id: 1
       });
@@ -178,10 +207,10 @@ export const useBinanceService = create<BinanceServiceState>((set, get) => ({
           return;
         }
 
-        const intervals = Object.keys(events.btcusdt.kline) as Interval[];
+        const intervals: Interval[] = ["1m", "4h"];
 
         for (const interval of intervals) {
-          if (message.stream === events.btcusdt.kline[interval]) {
+          if (message.stream === events.kline(get().data.selectedSymbol, interval)) {
             const data = message.data as SocketRawKline;
 
             set((state) => ({
@@ -266,4 +295,16 @@ export const useBinanceKlineVolume = () => {
 
 export const useBinanceMiniTicker = () => {
   return useBinanceService(useShallow((state) => state.data.miniTicker));
+};
+
+export const useBinanceIsLoading = () => {
+  return useBinanceService(useShallow((state) => state.data.isLoading));
+};
+
+export const useBinanceSelectedSymbol = () => {
+  return useBinanceService(useShallow((state) => state.data.selectedSymbol));
+};
+
+export const useBinanceSetSelectedSymbol = () => {
+  return useBinanceService(useShallow((state) => state.setSelectedSymbol));
 };

@@ -2,26 +2,26 @@
 
 import clsx from "clsx";
 import Image from "next/image";
-import { useClient } from "../../../contexts/ClientContext";
-import { useMiniApp } from "../../../contexts/MiniAppContext";
-import { usePageManagement } from "../../../contexts/PageManagementContext";
-import { useMutation } from "../../../hooks/useMutation";
+import { useClient } from "@/contexts/ClientContext";
+import { useMiniApp } from "@/contexts/MiniAppContext";
+import { usePageManagement } from "@/contexts/PageManagementContext";
+import { useMutation } from "@/hooks/useMutation";
 import {
   LanguageIcon,
   ChevronLeftIcon,
   EnIcon,
   TwIcon,
-} from "../../icons";
-import { ConnectWalletButton } from "../ConnectWalletButton";
-import { Avatar } from "../Avatar/Avatar";
-import { Tab } from "../Tab";
-import { LaunchScreen } from "../LaunchScreen";
-import { Dropdown } from "../Dropdown";
-import { OverlapTrigger } from '../OverlapTrigger';
-import { HStack } from "../../ui/Stack";
-import { BaseButton } from "../../ui/BaseButton";
-import { Typography } from "../../ui/Typography";
-import { routes } from "../../../app/_routes";
+} from "@/components/icons";
+import { ConnectWalletButton } from "@/components/common/ConnectWalletButton";
+import { Avatar } from "@/components/common/Avatar/Avatar";
+import { Tab } from "@/components/common/Tab";
+import { LaunchScreen } from "@/components/common/LaunchScreen";
+import { Dropdown } from "@/components/common/Dropdown";
+import { OverlapTrigger } from '@/components/common/OverlapTrigger';
+import { HStack } from "@/components/ui/Stack";
+import { BaseButton } from "@/components/ui/BaseButton";
+import { Typography } from "@/components/ui/Typography";
+import { routes } from "@/app/_routes";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const { setLanguageCode } = useClient();
@@ -66,7 +66,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <HStack width="auto" gap={2}>
           <Dropdown
             menuProps={{
-              className: "w-[140px]",
+              className: "max-h-[200px] mt-2",
             }}
             trigger={
               <BaseButton className="border-primary">

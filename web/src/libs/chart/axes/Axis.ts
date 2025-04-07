@@ -25,20 +25,4 @@ export class Axis<T extends AxisSettings = AxisSettings> {
   get range(): Range {
     return this.settings.range || ["auto", "auto"];
   }
-
-  low(value: number): number {
-    if (typeof this.range[0] === "number") {
-      return this.range[0];
-    }
-
-    return value;
-  }
-
-  high(value: number): number {
-    if (typeof this.range[1] === "number") {
-      return this.range[1];
-    }
-
-    return value;
-  }
 }

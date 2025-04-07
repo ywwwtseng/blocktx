@@ -1,4 +1,4 @@
-import { CanvasUtils} from "../utils/CanvasUtils";
+import { CanvasUtils } from "../utils/CanvasUtils";
 import { ArrayUtils } from "../utils/ArrayUtils";
 import { Chart } from "../Chart";
 import { Axis, AxisSettings } from "./Axis";
@@ -15,13 +15,12 @@ export type AxisRightSettings<T = Record<string, unknown>> = AxisSettings<T & {
 export class AxisRight<T extends AxisRightSettings = AxisRightSettings> extends Axis<T> {
   benchmark: { point: () => number; value: number | null };
   ticks: Tick[];
-  tickInterval!: number;
   tickCount: number;
   spacing: number;
   
   constructor(chart: Chart, settings: T) {
     super("axis_right", chart, settings);
-    this.tickCount = settings.tickCount ?? 4;
+    this.tickCount = settings.tickCount ?? 5;
     this.spacing = settings.spacing ?? 10;
     this.benchmark = {
       point: () => this.chart.innerBottom - this.spacing,
@@ -47,9 +46,47 @@ export class AxisRight<T extends AxisRightSettings = AxisRightSettings> extends 
     return this.chart.height - this.chart.padding.bottom;
   }
 
-  get tickSize(): number {
-    return Math.abs(Math.floor((this.benchmark.point() - this.top - this.spacing * 2) / this.tickCount));
+  get lowHigh(): number[] {
+    return ArrayUtils.lowHigh(
+      this.chart.data.values,
+      this.chart.settings.type === "kline" ? ["l", "h"] : this.chart.data.key.y
+    );
   }
+
+  get grid(): number {
+    const diff = this.lowHigh[1] - this.lowHigh[0];
+
+    if (diff < 2) {
+      return diff / this.tickCount;
+    }
+
+    return (this.lowHigh[1] / 50);
+  }
+
+  get low(): number {
+    if (this.chart.settings.type === "bar") {
+      return 0;
+    }
+
+    return Math.floor(this.lowHigh[0] / this.grid) * this.grid;
+  }
+
+  get high(): number {
+    return Math.ceil(this.lowHigh[1] / this.grid) * this.grid;
+  }
+
+  get tickSize(): number {
+    return Math.abs(Math.floor((this.benchmark.point() - this.top - this.spacing * 2) / (this.tickCount - 1)));
+  }
+
+  get tickInterval(): number {
+    if (this.grid > 1) {
+      return Math.ceil((this.high - this.low) / (this.tickCount - 1));
+    }
+
+    return (this.high - this.low) / (this.tickCount - 1);
+  }
+  
 
   y(value: number): number {
     return Math.min(
@@ -61,16 +98,7 @@ export class AxisRight<T extends AxisRightSettings = AxisRightSettings> extends 
   draw(): void {
     this.chart.ctx.clearRect(this.left - 1, this.top, this.width + 1, this.height);
 
-    const lowHigh = ArrayUtils.lowHigh(
-      this.chart.data.values,
-      this.chart.settings.type === "kline" ? ["l", "h"] : this.chart.data.key.y
-    );
-
-    const grid = 20;
-
-    const low = Math.floor(lowHigh[0] / grid) * grid;
-    const high = Math.ceil(lowHigh[1] / grid) * grid;
-
+    this.chart.ctx.beginPath();
     this.chart.ctx.beginPath();
     this.chart.ctx.strokeStyle = "#2B3139";
     this.chart.ctx.lineWidth = 1;
@@ -96,21 +124,22 @@ export class AxisRight<T extends AxisRightSettings = AxisRightSettings> extends 
       );
     }
 
-    if (this.chart.settings.type === "bar" || low === 0) {
+    if (this.chart.settings.type === "bar" || this.low === 0) {
       this.benchmark.point = () =>this.chart.axisBottom.top;
       this.benchmark.value = 0;
     } else {
-      this.benchmark.value = low;
+      this.benchmark.value = this.low;
     }
-
-    this.tickInterval = Math.ceil((high - low) / this.tickCount);
     
     const ticks: Tick[] = [];
 
-    for (let index = 0; index <= this.tickCount; index++) {
-      const value = low + this.tickInterval * index;
+    for (let index = 0; index < this.tickCount; index++) {
+      const value = this.grid > 1 
+        ? Math.floor(this.benchmark.value + this.tickInterval * index)
+        : this.benchmark.value + this.tickInterval * index;
+
       const tick: Tick = {
-        label: value,
+        label: CanvasUtils.numeric(value),
         value,
         x: this.left + this.width / 2,
         y: this.y(value),

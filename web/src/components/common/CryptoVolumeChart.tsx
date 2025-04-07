@@ -56,7 +56,7 @@ export function CryptoVolumeChart({
             color: (item: RawData) => item.c > item.o ? "#2EBD85" : "#F6465D",
             axisRight: {
               key: KlineAttributes.Volume,
-              tickCount: 2,
+              tickCount: 3,
             },
             axisBottom: {
               key: KlineAttributes.Timestamp,

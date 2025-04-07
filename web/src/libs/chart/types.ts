@@ -11,7 +11,7 @@ export interface Bounds {
 }
 
 export interface Tick {
-  label: number;
+  label: string;
   value: number;
   x: number;
   y: number;

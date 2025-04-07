@@ -12,4 +12,20 @@ export class CanvasUtils {
   static adjust(value: number) {
     return Math.sign(value) * Math.max(Math.abs(value), 1);
   }
+
+  static numeric(value: number): string {
+    if (value === 0) {
+      return "0";
+    }
+
+    if (value > 1e6) {
+      return `${Math.floor(value / 1e6)}M`;
+    }
+
+    if (value % 1 === 0) {
+      return value.toString();
+    }
+
+    return value.toFixed(2);
+  }
 }

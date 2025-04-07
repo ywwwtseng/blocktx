@@ -21,11 +21,12 @@ interface DropdownProps {
   menuProps?: React.HTMLAttributes<HTMLDivElement>;
   options: DropdownOption[];
   onSelect?: (key: string) => void;
+  spacing?: number;
 }
 
 
 
-export function Dropdown({ trigger, options, onSelect, menuProps }: DropdownProps) {
+export function Dropdown({ trigger, options, onSelect, menuProps, spacing = 10 }: DropdownProps) {
   const { show, close, toggle } = useAnchor({ stopEvent: true, clickAwayListener: true });
 
   
@@ -39,11 +40,14 @@ export function Dropdown({ trigger, options, onSelect, menuProps }: DropdownProp
           aria-labelledby="menu-button"
           tabIndex={-1}
           {...menuProps}
-            className={clsx(
-              "absolute right-0 bottom-0 translate-y-[calc(100%+10px)] mt-2 py-1 max-h-[200px] overflow-y-auto no-scrollbar bg-[#1D1D1D] rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50",
-              !menuProps?.className?.includes("w-") && "w-52",
-              menuProps?.className
-            )}
+          className={clsx(
+            "absolute right-0 bottom-0 py-1 overflow-y-auto no-scrollbar bg-[#1D1D1D] rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50",
+            menuProps?.className
+          )}
+          style={{
+            width: "fit-content",
+            transform: `translateY(calc(100% + ${spacing}px))`,
+          }}
           >
             <div
               className="py-1"
