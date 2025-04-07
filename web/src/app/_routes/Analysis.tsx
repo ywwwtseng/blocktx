@@ -1,3 +1,4 @@
+import { useState, useRef } from "react";
 import { useMiniApp } from "@/contexts/MiniAppContext";
 import { useWindowSize } from "@/contexts/WindowSizeContext";
 import {
@@ -18,11 +19,21 @@ import { CaretIcon, LoadingIcon } from "@/components/icons";
 import { TradingPairSymbol } from "@/types";
 
 export default function Analysis() {
+  const [drawEnd, setDrawEnd] = useState(false);
+  const drawEndChartCount = useRef(0);
   const { platform } = useMiniApp();
   const { width, height } = useWindowSize();
   const isLoading = useBinanceIsLoading();
   const selectedSymbol = useBinanceSelectedSymbol();
   const setSelectedSymbol = useBinanceSetSelectedSymbol();
+
+  const onDrawEnd = () => {
+    drawEndChartCount.current++;
+    if (drawEndChartCount.current === 4) {
+      setDrawEnd(true);
+    }
+  }
+
   if (!width || !height) {
     return null;
   }
@@ -67,6 +78,7 @@ export default function Analysis() {
         type="kline"
         width={width}
         height={230}
+        onDrawEnd={onDrawEnd}
       />
       <CryptoVolumeChart
         className="border-b border-[#2B3139]"
@@ -74,6 +86,7 @@ export default function Analysis() {
         timeFormat="MM/DD"
         width={width}
         height={restChartHeight}
+        onDrawEnd={onDrawEnd}
       />
       <HStack>
         <CryptoPriceChart
@@ -81,15 +94,17 @@ export default function Analysis() {
           interval="1m"
           width={width / 2}
           height={restChartHeight}
+          onDrawEnd={onDrawEnd}
         />
         <CryptoVolumeChart
           className="border-b border-l border-[#2B3139]"
           interval="1m"
           width={width / 2}
           height={restChartHeight}
+          onDrawEnd={onDrawEnd}
         />
       </HStack>
-      {isLoading && (
+      {(!drawEnd || isLoading) && (
         <div className="absolute inset-0 flex justify-center items-center">
           <LoadingIcon />
         </div>

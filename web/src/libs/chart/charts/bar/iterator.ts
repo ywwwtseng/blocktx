@@ -2,9 +2,7 @@ import { Chart } from "../../Chart";
 import { TimeUtils } from "../../utils/TimeUtils";
 import { DataIterator, Transform, RawData, Bar } from "../../types";
 
-export const iterator = (chart: Chart, key: string, transform: Transform): DataIterator<Bar> => {
-  const data = chart.data.values;
-
+export const iterator = (chart: Chart, key: string, data: RawData[], transform: Transform): DataIterator<Bar> => {
   const transfer = (item: RawData) => {
     const {
       axisBottom: axisBottomSettings,

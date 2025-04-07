@@ -1,12 +1,11 @@
 import { Chart } from "../../Chart";
 import { DataIterator, Line, Transform, RawData } from "../../types";
 
-export const iterator = (chart: Chart, key: string, transform: Transform): DataIterator<Line> => {
+export const iterator = (chart: Chart, key: string, data: RawData[], transform: Transform): DataIterator<Line> => {
   const {
     axisBottom: axisBottomSettings,
   } = chart.settings;
   // const maxTickUnit = (axisBottomSettings.interval / axisBottomSettings.tickIntervalCount) * 1.2;
-  const data = chart.data.values;
 
   const transfer = (item: RawData) => ({
     x: transform.x(item[axisBottomSettings.key] as number),

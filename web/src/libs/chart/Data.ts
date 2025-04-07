@@ -7,11 +7,13 @@ export class Data {
   chart: Chart;
   onChange: (data: RawData[]) => void;
   _data: Map<string, RawData>;
+  data: RawData[];
 
   constructor(chart: Chart, { onChange = () => {} }: { onChange: (data: RawData[]) => void }) {
     this.chart = chart;
     this.onChange = onChange;
     this._data = new Map();
+    this.data = [];
   }
 
   get key() {
@@ -21,10 +23,6 @@ export class Data {
     };
   }
 
-  get data() {
-    return [...this._data.values()];
-  }
-
   add(data: RawData[]) {
     data = Array.isArray(data) ? data : [data];
 
@@ -32,6 +30,8 @@ export class Data {
       const item = data[index];
       this._data.set(item[this.key.x] as string, item);
     }
+
+    this.data = [...this._data.values()];
 
     this.onChange(this.data);
   }

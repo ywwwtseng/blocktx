@@ -3,9 +3,7 @@ import { TimeUtils } from "../../utils/TimeUtils";
 import { CanvasUtils } from "../../utils/CanvasUtils";
 import { DataIterator, OHLC, Transform, RawData } from "../../types";
 
-export const iterator = (chart: Chart, _: string, transform: Transform): DataIterator<OHLC> => {
-  const data = chart.data.values;
-
+export const iterator = (chart: Chart, _: string, data: RawData[], transform: Transform): DataIterator<OHLC> => {
   const transfer = (item: RawData) => {
     const {
       color,

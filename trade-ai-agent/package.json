@@ -1,5 +1,5 @@
 {
-  "name": "trade-ai",
+  "name": "trade-ai-agent",
   "version": "0.0.1",
   "main": "index.js",
   "description": "Trade AI",

@@ -14,6 +14,7 @@ interface CryptoPriceChartProps {
   width: number;
   height: number;
   hideBottomAxis?: boolean;
+  onDrawEnd?: () => void;
 }
 
 export function CryptoPriceChart({
@@ -24,6 +25,7 @@ export function CryptoPriceChart({
   width,
   height,
   hideBottomAxis = false,
+  onDrawEnd,
 }: CryptoPriceChartProps) {
   const data = useBinanceKline(interval);
   const [drawEnd, setDrawEnd] = useState(false);
@@ -46,7 +48,7 @@ export function CryptoPriceChart({
 
   return (
     <canvas
-      className={clsx(className, {
+      className={clsx("transition-opacity duration-230", className, {
         "opacity-0": !drawEnd,
       })}
       ref={(canvas) => {
@@ -71,6 +73,7 @@ export function CryptoPriceChart({
           });
 
           chartRef.current.onDrawEnd = () => {
+            onDrawEnd?.();
             setDrawEnd(true);
           };
         }

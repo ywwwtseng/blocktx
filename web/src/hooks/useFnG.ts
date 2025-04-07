@@ -13,5 +13,8 @@ export function useFnG() {
         last7Days: Math.floor(data.data.slice(2).reduce((acc: number, cur: { value: string }) => acc + Number(cur.value), 0) / data.data.slice(2).length),
       };
     },
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: true,
   });
 }

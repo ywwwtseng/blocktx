@@ -25,6 +25,7 @@ export class Chart {
   data: Data;
   grid: Grid;
   drawEnd: boolean;
+  inited: boolean;
 
   constructor(ctx: CanvasRenderingContext2D, settings: ChartSettings) {
     this.ctx = ctx;
@@ -46,6 +47,8 @@ export class Chart {
     this.axisBottom = new AxisBottom(this, this.settings.axisBottom);
     this.axisRight = new AxisRight(this, this.settings.axisRight);
     this.grid = new Grid(this);
+
+    this.inited = false;
   }
 
   get width() {
@@ -102,8 +105,15 @@ export class Chart {
 
   onDrawEnd() {}
 
+  init() {
+    this.axisBottom.draw();
+    this.axisRight.draw();
+    this.grid.draw(this.axisBottom, this.axisRight);
+  }
+
   draw() {
-    if (this.data.values.length === 0) {
+    const data = this.data.values;
+    if (data.length === 0) {
       return;
     }
 
@@ -119,18 +129,20 @@ export class Chart {
       this.ctx.clearRect(this.width - this.padding.right, 0, this.padding.right, this.height);
     }
 
-    this.axisBottom.draw();
-    this.axisRight.draw();
-    this.grid.draw(this.axisBottom, this.axisRight);
+    this.init();
 
-    render(this.settings.type, this, this.settings.axisRight.key, {
-      x: this.axisBottom.x.bind(this.axisBottom),
-      y: this.axisRight.y.bind(this.axisRight),
-    });
+    if (this.inited) {
+      render(this.settings.type, this, this.settings.axisRight.key, data, {
+        x: this.axisBottom.x.bind(this.axisBottom),
+        y: this.axisRight.y.bind(this.axisRight),
+      });
 
-    if (!this.drawEnd) {
-      this.drawEnd = true;
-      this.onDrawEnd();
+      if (!this.drawEnd) {
+        this.drawEnd = true;
+        this.onDrawEnd();
+      }
     }
+
+    this.inited = true;
   }
 }

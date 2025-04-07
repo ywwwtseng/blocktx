@@ -26,6 +26,6 @@ export class CanvasUtils {
       return value.toString();
     }
 
-    return value.toFixed(2);
+    return value.toFixed(3);
   }
 }

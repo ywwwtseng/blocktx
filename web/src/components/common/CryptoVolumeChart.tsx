@@ -12,6 +12,7 @@ interface CryptoVolumeChartProps {
   interval: Interval;
   width: number;
   height: number;
+  onDrawEnd?: () => void;
 }
 
 export function CryptoVolumeChart({
@@ -20,6 +21,7 @@ export function CryptoVolumeChart({
   timeFormat = "HH:mm",
   width,
   height,
+  onDrawEnd,
 }: CryptoVolumeChartProps) {
   const data = useBinanceKline(interval);
   const [drawEnd, setDrawEnd] = useState(false);
@@ -42,7 +44,7 @@ export function CryptoVolumeChart({
 
   return (
     <canvas
-      className={clsx(className, {
+      className={clsx("transition-opacity duration-230", className, {
         "opacity-0": !drawEnd,
       })}
       ref={(canvas) => {
@@ -67,6 +69,7 @@ export function CryptoVolumeChart({
           });
 
           chartRef.current.onDrawEnd = () => {
+            onDrawEnd?.();
             setDrawEnd(true);
           };
         }
