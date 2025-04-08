@@ -1,5 +1,6 @@
 import { env } from "bun";
-import * as service from "./services";
+import { bot_send_photo } from "telegram-bot";
+import * as services from "./services";
 import * as models from "./models";
 import * as utils from "./utils";
 
@@ -10,8 +11,8 @@ if (!env.POSTGRES_URL || !env.TELEGRAM_BOT_TOKEN) {
 async function main() {
   // AI Agent - Perception/Observer
   const [kines, fng] = await Promise.all([
-    service.kines("BTCUSDT", "4h", 12),
-    service.fng()
+    services.kines("BTCUSDT", "4h", 12),
+    services.fng()
   ]);
 
   const analysis = utils.analyze(kines);
@@ -29,7 +30,10 @@ async function main() {
       });
 
       if (analysis.message) {
-        await service.bot_send({
+        await bot_send_photo({
+          token: env.TELEGRAM_BOT_TOKEN!,
+          chat_id: "5699547696",
+          photo_url: "https://blocktx.vercel.app/photo.png",
           message: `💥 Event\n${analysis.message}\n\nPrice: ${analysis.price}\nFnG: ${fng}`,
         });
       }
@@ -37,6 +41,13 @@ async function main() {
       console.log(event);
     } catch {
     }
+
+    await bot_send_photo({
+      token: env.TELEGRAM_BOT_TOKEN!,
+      chat_id: "5699547696",
+      photo_url: "https://blocktx.vercel.app/photo.png",
+      message: `Trade AI Agent is running`,
+    });
   }
 
   // if (

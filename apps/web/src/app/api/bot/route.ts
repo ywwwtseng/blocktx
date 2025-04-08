@@ -1,5 +1,5 @@
-import { ResponseUtils, TError } from "../../../utils/ResponseUtils";
-import { locales } from "../../../i18n";
+import { ResponseUtils, TError } from "@/utils/ResponseUtils";
+import { locales } from "@/i18n";
 
 export async function POST(req: Request) {
   try {

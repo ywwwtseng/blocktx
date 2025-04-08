@@ -1,0 +1,6 @@
+{
+  "name": "telegram-bot",
+  "dependencies": {
+    "object": "workspace:*"
+  }
+}

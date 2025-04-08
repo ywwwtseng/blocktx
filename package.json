@@ -1,0 +1,8 @@
+{
+  "private": true,
+  "name": "blocktx-monorepo",
+  "scripts": {
+    "build": "bun run build --workspaces"
+  },
+  "workspaces": ["apps/*", "packages/*"]
+}
