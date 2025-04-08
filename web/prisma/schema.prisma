@@ -85,10 +85,21 @@ model Article {
   description   String              @db.VarChar(4096)
   link          String              @unique @db.VarChar(255)
   image         String              @db.VarChar(255)
-  created_at    DateTime            @default(now())
-  updated_at    DateTime            @updatedAt
   trading_pairs String[]            @db.VarChar(255) @default([])
-
   locale        String              @db.VarChar(10)
   sentiment     Int?                @db.Integer
+
+  created_at    DateTime            @default(now())
+  updated_at    DateTime            @updatedAt
+}
+
+model Event {
+  id            String              @id @default(uuid())
+  type          String              @db.VarChar(50)
+  trading_pair  String              @db.VarChar(10)
+  fng           Int                 @db.Integer
+  details       Json?               @db.Json
+
+  created_at    DateTime            @default(now())
+  updated_at    DateTime            @updatedAt
 }

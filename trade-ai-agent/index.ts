@@ -1,73 +1,33 @@
-type RawData = (number | string)[];
-type Kine = {
-  open_time: number;
-  close_time: number;
-  change_percentage: number;
-  volume: number;
-}
+import * as service from "./services";
+import * as models from "./models";
+import * as utils from "./utils";
 
 async function main() {
-  const fetchKines = async (
-    symbol: "BTCUSDT",
-    interval: "1m" | "5m" | "15m" | "30m" | "1h" | "4h" | "1d",
-    limit = 1000
-  ) => {
-    const response = await fetch(
-      `https://www.binance.com/api/v3/uiKlines?symbol=${symbol}&interval=${interval}&limit=${limit}`
-    );
-
-    const data = await response.json();
-
-    return data.map((kine: RawData) => {
-      const [openTime, open, high, low, close, volume, closeTime, quoteVolume, trades, takerBuyBaseVolume, takerBuyQuoteVolume, ignore] = kine;
-      return {
-        open_time: openTime,
-        close_time: closeTime,
-        change_percentage: Number(((Number(close) - Number(open)) / Number(close)).toFixed(4)) * 100,
-        volume: Number(volume),
-      };
-    });
-  };
-  
   // AI Agent - Perception/Observer
-  const kines = await fetchKines("BTCUSDT", "4h", 12);
-  const lastKline = kines[kines.length - 1];
-  const nearly6Kines = kines.slice(-6);
+  const [kines, fng] = await Promise.all([
+    service.kines("BTCUSDT", "4h", 12),
+    service.fng()
+  ]);
 
-  const lastKlineOpenTime = lastKline.open_time;
+  const analysis = utils.analyze(kines);
 
-  if (nearly6Kines.filter((kine: Kine) => kine.change_percentage < 0).length >= 5) {
-    // BTCUSDT Continuously Dropped in the Past 24 Hours
-    // BTCUSDT 在过去的 24 小时内连续下跌
-
-    await fetch("https://blocktx.vercel.app/api/alert/sync", { 
-      method: "POST",
-      body: JSON.stringify({
-        data: {
-          id: lastKlineOpenTime,
-          type: "continuous-drop",
-          created_at: new Date().toISOString(),
-          trading_pairs: ["BTCUSDT"],
+  if (analysis.type !== "none") {
+    try {
+      const event = await models.event.create({
+        id: `klines-analysis-${analysis.symbol.toLowerCase()}-${analysis.close_time}`,
+        type: analysis.type,
+        trading_pair: analysis.symbol,
+        fng,
+        details: {
+          data: kines,
         },
-      }),
-    });
-  } else if (nearly6Kines.filter((kine: Kine) => kine.change_percentage > 0).length >= 5) {
-    // BTCUSDT Continuously Raised in the Past 24 Hours
-    // BTCUSDT 在过去的 24 小时内连续上涨
+      });
 
-    await fetch("https://blocktx.vercel.app/api/alert/sync", { 
-      method: "POST",
-      body: JSON.stringify({
-        data: {
-          id: lastKlineOpenTime,
-          type: "continuous-raise",
-          created_at: new Date().toISOString(),
-          trading_pairs: ["BTCUSDT"],
-        },
-      }),
-    });
+      console.log(event);
+    } catch {
+    }
   }
-  // // // FnG < 35, 6%, 3%
+
   // if (
   //   // last kine change_percentage < -2
   //   lastKine.change_percentage < -2
@@ -85,6 +45,7 @@ async function main() {
   //   console.log("find fisrt raise kline, or end, 20x contract: usd 100");
   // }
 
+  // // FnG < 35, 6%, 3%
   // // lose 80%
   // console.log("50x contract: usd 20");
   // // lose 130%

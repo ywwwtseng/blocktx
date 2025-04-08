@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
-import { prisma } from "../../../libs/prisma";
-import { ResponseUtils, TError } from "../../../utils/ResponseUtils";
-import { validate } from "../../../actions/tma";
+import { prisma } from "@/libs/prisma";
+import { ResponseUtils, TError } from "@/utils/ResponseUtils";
+import { validate } from "@/actions/tma";
 
 export async function POST(request: NextRequest) {
   try {
