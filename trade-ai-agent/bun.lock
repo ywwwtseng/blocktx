@@ -3,7 +3,7 @@
   "workspaces": {
     "": {
       "name": "trade-ai-agent",
-      "dependencies": {
+      "devDependencies": {
         "@types/bun": "^1.2.8",
       },
     },

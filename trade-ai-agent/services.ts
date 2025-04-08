@@ -1,3 +1,4 @@
+import { env } from "bun";
 import { RawData } from "./types";
 
 export const kines = async (
@@ -17,6 +18,7 @@ export const kines = async (
       symbol,
       open_time: openTime,
       close_time: closeTime,
+      price: close,
       change_percentage: Number(((Number(close) - Number(open)) / Number(close)).toFixed(4)) * 100,
       volume: Number(volume),
     };
@@ -28,3 +30,26 @@ export const fng = async () => {
   const data = await response.json();
   return data.data[0].value;
 };
+
+export async function bot_send({
+  message,
+}: {
+  message: string;
+}) {
+  const res = await fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendPhoto`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      chat_id: "5699547696",
+      photo: "https://blocktx.vercel.app/photo.png",
+      caption: message,
+      parse_mode: "Markdown",
+    }),
+  });
+
+  const data = await res.json();
+
+  return data;
+}

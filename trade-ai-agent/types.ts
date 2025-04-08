@@ -6,4 +6,5 @@ export type Kine = {
   close_time: number;
   change_percentage: number;
   volume: number;
+  price: string;
 }

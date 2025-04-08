@@ -2,12 +2,15 @@
   "name": "trade-ai-agent",
   "version": "0.0.1",
   "main": "index.js",
+  "devDependencies": {
+    "@types/bun": "^1.2.8"
+  },
   "description": "Trade AI",
   "scripts": {
     "dev": "bun --watch index.ts",
-    "start": "bun index.ts"
-  },
-  "dependencies": {
-    "@types/bun": "^1.2.8"
+    "start": "bun index.ts",
+    "build": "bun build ./index.ts --outfile ./build/index.js --minify --target bun",
+    "sync:env": "scp ./.env blocktx-ec2:~/app/trade-ai-agent/.env",
+    "deploy": "scp -r ./build/* blocktx-ec2:~/app/trade-ai-agent"
   }
 }

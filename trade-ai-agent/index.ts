@@ -1,6 +1,11 @@
+import { env } from "bun";
 import * as service from "./services";
 import * as models from "./models";
 import * as utils from "./utils";
+
+if (!env.POSTGRES_URL || !env.TELEGRAM_BOT_TOKEN) {
+  throw new Error("POSTGRES_URL or TELEGRAM_BOT_TOKEN is not set");
+}
 
 async function main() {
   // AI Agent - Perception/Observer
@@ -22,6 +27,12 @@ async function main() {
           data: kines,
         },
       });
+
+      if (analysis.message) {
+        await service.bot_send({
+          message: `💥 Event\n${analysis.message}\n\nPrice: ${analysis.price}\nFnG: ${fng}`,
+        });
+      }
 
       console.log(event);
     } catch {
