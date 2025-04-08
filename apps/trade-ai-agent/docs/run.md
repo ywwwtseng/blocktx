@@ -1,5 +1,6 @@
 # Run
 
 ```bash
-pm2 start ~/app/trade-ai-agent/index.js --interpreter bun --cron-restart="*/13 * * * *" --name "trade-ai-agent"
+cd app/trade-ai-agent
+pm2 start ./index.js --interpreter bun --cron-restart="*/13 * * * *" --name "trade-ai-agent"
 ```

@@ -3,10 +3,15 @@
   "description": "Sync Binance News",
   "type": "module",
   "scripts": {
-    "build": "bun build ./index.js --outfile ./build/sync-binance-news.mjs --target node --minify",
-    "deploy": "scp -r ./build/sync-binance-news.mjs blocktx-ec2:~/app/sync-binance-news.mjs"
+    "dev": "bun --watch index.js",
+    "start": "bun index.js",
+    "build": "bun build ./index.js --outfile ./build/index.mjs --target node --minify",
+    "sync:env": "scp ./.env blocktx-ec2:~/app/sync-binance-news/.env",
+    "deploy": "scp -r ./build/* blocktx-ec2:~/app/sync-binance-news"
   },
   "dependencies": {
+    "dotenv": "^16.4.7",
+    "postgres": "^3.4.5",
     "puppeteer": "^24.5.0",
     "typescript": "^5.8.3"
   }

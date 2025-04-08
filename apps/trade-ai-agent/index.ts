@@ -41,13 +41,6 @@ async function main() {
       console.log(event);
     } catch {
     }
-
-    await bot_send_photo({
-      token: env.TELEGRAM_BOT_TOKEN!,
-      chat_id: "5699547696",
-      photo_url: "https://blocktx.vercel.app/photo.png",
-      message: `Trade AI Agent is running`,
-    });
   }
 
   // if (

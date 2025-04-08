@@ -1,124 +1,97 @@
-import puppeteer from "puppeteer";
+import "dotenv/config";
+import postgres from "postgres";
+import * as services from "./services.js";
+import { bot_send_photo } from "telegram-bot";
+
+if (!process.env.TELEGRAM_BOT_TOKEN || !process.env.POSTGRES_URL) {
+  throw new Error("TELEGRAM_BOT_TOKEN or POSTGRES_URL is not set");
+}
 
 async function main() {
-  let browser;
-  let page;
+  const sql = postgres(process.env.POSTGRES_URL, { ssl: "verify-full" });
+  const news = await services.news();
 
-  try {
-    browser = await puppeteer.launch({
-      headless: true,
-      args: [
-        "--no-sandbox",
-        "--disable-setuid-sandbox",
-        "--disable-dev-shm-usage",
-        "--disable-accelerated-2d-canvas",
-        "--disable-gpu",
-      ],
-    });
+  const links = news.map((article) => article.link);
+  const titles = news.map((article) => article.title);
 
-    page = await browser.newPage();
-    
-    const fetchNews = async (locale) => {
-      await page.goto(`https://www.binance.com/${locale}/square/news/all`);
-      await page.waitForSelector("h3");
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      return await page.$$eval("h3", elements => {
-        const tradingPairs = [
-          "BTC",
-          "ETH",
-          "SOL",
-          "TON",
-          "TON",
-          "BNB",
-        ];
+  const exists = await sql`
+    SELECT *
+    FROM "Article"
+    WHERE (
+        "link" IN ${ sql(links) }
+        OR "title" IN ${ sql(titles) }
+    )
+    AND "created_at" >= NOW() - INTERVAL '1 day';
+  `;
 
-        const TimeUnitMsMap = new Map([
-          [/^(\d+)\s*(d|D|天)$/, (match) => parseInt(match[1], 10) * 24 * 60 * 60 * 1000],
-          [/^(\d+)\s*(h|H|小时)$/, (match) => parseInt(match[1], 10) * 60 * 60 * 1000],
-          [/^(\d+)\s*(m|M|分钟)$/, (match) => parseInt(match[1], 10) * 60 * 1000],
-          [/^(\d+)\s*(s|S|秒)$/, (match) => parseInt(match[1], 10) * 1000],
-        ]);
-        
-        const ms = (input) => {
-          for (const [regex, calc] of TimeUnitMsMap) {
-            const match = regex.exec(input);
-        
-            if (match) {
-              return calc(match);
-            }
-          }
-        
-          return 0;
-        };
-
-        const uniq = (arr) => [...new Set(arr)];
-
-        return elements.map((h3, index) => {
-          const a = h3.closest("a");
-
-          if (!a) {
-            return null;
-          }
-
-          const article = a.parentElement;
-          const divs = article?.querySelectorAll("div") || [];
-          const info = Array.from(divs)
-            .map(div => ({
-              divText: div.innerText,
-              divHTML: div.outerHTML,
-            }));
-
-          const created_at = new Date(Date.now() - ms(info[0].divText) + index * 1000).toISOString();
-
-          const related_trading_pairs = info.find(item => item.divHTML.includes("trading-pairs"))?.divText;
-
-          const title = a?.querySelector("h3")?.innerText;
-          const link = a.href;
-          const description = a?.querySelector("div")?.innerText;
-
-          return {
-            title,
-            link,
-            description,
-            created_at,
-            trading_pairs: uniq(tradingPairs.filter(pair => related_trading_pairs?.includes(pair))),
-          };
-        }).filter(Boolean);
-      });
-    }
-
-    const assignLocale = (locale) => async (news) => {
-      return news.map(item => ({
-        ...item,
-        locale,
-      }));
-    };
-
-    const news = [
-      ...(await fetchNews("en").then(assignLocale("en"))),
-      ...(await fetchNews("zh-CN").then(assignLocale("zh-CN"))),
-    ].filter((article, index, self) =>
-      index === self.findIndex((a) => a.title === article.title)
+  const notExists = news
+    .filter(
+      (article) => !exists.some((e) => e.link === article.link || e.title === article.title)
     );
 
-    await fetch("https://blocktx.vercel.app/api/news/sync", {
-      method: "POST",
-      body: JSON.stringify({
-        data: news,
-      }),
-    });
+  const data = [
+    ...notExists
+      .filter((article) => article.locale === "en")
+      .reverse()
+      .map((article) => ({
+      // .map((article: RawArticle, index: number) => ({
+        ...article,
+        id: article.link,
+        description: article.description.slice(0, 4096),
+        image: `https://blocktx.vercel.app/binance-0.webp`,
+        // image: `https://blocktx.vercel.app/crypto-${(startImageIndexEn + index) % 20}.webp`,
+        created_at: new Date(article.created_at),
+        updated_at: new Date(article.created_at),
+        ...(article.trading_pairs.length > 0 ? { trading_pairs: article.trading_pairs } : {}),
+      })),
+    ...notExists
+      .filter((article) => article.locale === "zh-CN")
+      .reverse()
+      .map((article) => ({
+      // .map((article: RawArticle, index: number) => ({
+        ...article,
+        id: article.link,
+        description: article.description.slice(0, 4096),
+        image: `https://blocktx.vercel.app/binance-0.webp`,
+        // image: `https://blocktx.vercel.app/crypto-${(startImageIndexZh + index) % 20}.webp`,
+        created_at: new Date(article.created_at),
+        updated_at: new Date(article.created_at),
+        ...(article.trading_pairs.length > 0 ? { trading_pairs: article.trading_pairs } : {}),
+      })),
+  ];
 
-  } catch (error) {
-    console.error(error);
-  } finally {
-    if (page) {
-      await page.close();
-    }
+  if (data.length > 0) {
+    await sql`
+      INSERT INTO "Article" ${sql(data)}
+    `;
 
-    if (browser) {
-      await browser.close();
+    for (const article of data) {
+      if (new Date(article.created_at) > new Date(Date.now() - 1000 * 60 * 15)) {
+        const relatedTradingPairs = article.trading_pairs.length > 0 ? `【${article.trading_pairs.join(", ")}】` : "";
+        const description = article.description.length > 200 ? `${article.description.slice(0, 200)}...` : article.description;
+
+        await bot_send_photo({
+          token: process.env.TELEGRAM_BOT_TOKEN,
+          chat_id: "5699547696",
+          message: `${relatedTradingPairs}${article.title}\n\n${description}`,
+          photo_url: article.image,
+          link: article.link,
+          reply_markup: {
+            inline_keyboard: [
+              [
+                {
+                  text: article.locale === "zh-CN" ? "阅读更多" : "Read More",
+                  url: article.link,
+                },
+              ]
+            ],
+          },
+        });
+      }
     }
   }
+
+  sql.end();
 }
 
 main();

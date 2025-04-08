@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
-import { prisma } from "../../../../libs/prisma";
-import { ResponseUtils, TError } from "../../../../utils/ResponseUtils";
+import { TimeUtils } from "@/utils/TimeUtils";
+import { prisma } from "@/libs/prisma";
+import { ResponseUtils, TError } from "@/utils/ResponseUtils";
 
 interface Params {
   locale: string;
@@ -8,6 +9,14 @@ interface Params {
 
 export async function GET(req: NextRequest, props: {params: Promise<Params>}) {
   try {
+    await prisma.article.deleteMany({
+      where: {
+        created_at: {
+          lt: new Date(Date.now() - TimeUtils.ms("14d")),
+        },
+      },
+    });
+
     const params = await props.params;
     const locale = params.locale === "zh-CN" ? "zh-CN" : "en";
 

@@ -2,9 +2,6 @@
   "name": "trade-ai-agent",
   "version": "0.0.1",
   "main": "index.js",
-  "dependencies": {
-     "telegram-bot": "workspace:*"
-  },
   "devDependencies": {
     "@types/bun": "^1.2.8"
   },
