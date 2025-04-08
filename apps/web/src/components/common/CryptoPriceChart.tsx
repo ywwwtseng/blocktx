@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect } from "react";
 import clsx from 'clsx';
 import dayjs from "dayjs";
 import { useBinanceKline } from "@/hooks/useBinanceService";
@@ -8,6 +8,7 @@ import { Interval, KlineAttributes } from "@/types";
 
 interface CryptoPriceChartProps {
   className?: string;
+  hidden?: boolean;
   timeFormat?: string;
   type?: "kline" | "line";
   interval: Interval;
@@ -19,6 +20,7 @@ interface CryptoPriceChartProps {
 
 export function CryptoPriceChart({
   interval,
+  hidden = false,
   className,
   type = "line",
   timeFormat = "HH:mm",
@@ -28,7 +30,6 @@ export function CryptoPriceChart({
   onDrawEnd,
 }: CryptoPriceChartProps) {
   const data = useBinanceKline(interval);
-  const [drawEnd, setDrawEnd] = useState(false);
   const chartRef = useRef<Chart>(null);
 
   useEffect(() => {
@@ -49,7 +50,7 @@ export function CryptoPriceChart({
   return (
     <canvas
       className={clsx("transition-opacity duration-230", className, {
-        "opacity-0": !drawEnd,
+        "opacity-0": hidden,
       })}
       ref={(canvas) => {
         if (canvas && !chartRef.current) {
@@ -74,7 +75,6 @@ export function CryptoPriceChart({
 
           chartRef.current.onDrawEnd = () => {
             onDrawEnd?.();
-            setDrawEnd(true);
           };
         }
       }}

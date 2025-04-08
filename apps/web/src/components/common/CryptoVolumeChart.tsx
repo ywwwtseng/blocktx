@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect } from "react";
 import clsx from 'clsx';
 import dayjs from "dayjs";
 import { useBinanceKline } from "@/hooks/useBinanceService";
@@ -8,6 +8,7 @@ import { Interval, KlineAttributes } from "@/types";
 
 interface CryptoVolumeChartProps {
   className?: string;
+  hidden?: boolean;
   timeFormat?: string;
   interval: Interval;
   width: number;
@@ -17,6 +18,7 @@ interface CryptoVolumeChartProps {
 
 export function CryptoVolumeChart({
   interval,
+  hidden = false,
   className,
   timeFormat = "HH:mm",
   width,
@@ -24,7 +26,6 @@ export function CryptoVolumeChart({
   onDrawEnd,
 }: CryptoVolumeChartProps) {
   const data = useBinanceKline(interval);
-  const [drawEnd, setDrawEnd] = useState(false);
   const chartRef = useRef<Chart>(null);
 
   useEffect(() => {
@@ -45,7 +46,7 @@ export function CryptoVolumeChart({
   return (
     <canvas
       className={clsx("transition-opacity duration-230", className, {
-        "opacity-0": !drawEnd,
+        "opacity-0": hidden,
       })}
       ref={(canvas) => {
         if (canvas && !chartRef.current) {
@@ -70,7 +71,6 @@ export function CryptoVolumeChart({
 
           chartRef.current.onDrawEnd = () => {
             onDrawEnd?.();
-            setDrawEnd(true);
           };
         }
       }}

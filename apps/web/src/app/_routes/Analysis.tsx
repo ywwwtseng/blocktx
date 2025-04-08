@@ -73,6 +73,7 @@ export default function Analysis() {
       </VStack>
       <CryptoPriceChart
         className="border-t border-b border-[#2B3139]"
+        hidden={!drawEnd}
         hideBottomAxis
         interval="4h"
         type="kline"
@@ -82,6 +83,7 @@ export default function Analysis() {
       />
       <CryptoVolumeChart
         className="border-b border-[#2B3139]"
+        hidden={!drawEnd}
         interval="4h"
         timeFormat="MM/DD"
         width={width}
@@ -91,6 +93,7 @@ export default function Analysis() {
       <HStack>
         <CryptoPriceChart
           className="border-b border-[#2B3139]"
+          hidden={!drawEnd}
           interval="1m"
           width={width / 2}
           height={restChartHeight}
@@ -98,6 +101,7 @@ export default function Analysis() {
         />
         <CryptoVolumeChart
           className="border-b border-l border-[#2B3139]"
+          hidden={!drawEnd}
           interval="1m"
           width={width / 2}
           height={restChartHeight}
