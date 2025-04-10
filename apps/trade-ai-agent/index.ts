@@ -9,38 +9,46 @@ if (!env.POSTGRES_URL || !env.TELEGRAM_BOT_TOKEN) {
 }
 
 async function main() {
-  // AI Agent - Perception/Observer
-  const [kines, fng] = await Promise.all([
-    services.kines("BTCUSDT", "4h", 12),
-    services.fng()
-  ]);
+  const kines4h = await services.kines("BTCUSDT", "4h", 12);
 
-  const analysis = utils.analyze(kines);
+  const analysis4h = utils.analyze(kines4h);
 
-  if (analysis.type !== "none") {
-    try {
-      const event = await models.event.create({
-        id: `klines-analysis-${analysis.symbol.toLowerCase()}-${analysis.close_time}`,
-        type: analysis.type,
-        trading_pair: analysis.symbol,
-        fng,
-        details: {
-          data: kines,
-        },
+  if (analysis4h.type === "none") {
+    return;
+  }
+
+  const kines1h = await services.kines("BTCUSDT", "1h", 12);
+
+  const analysis1h = utils.analyze(kines1h);
+
+  if (analysis1h.type === "none") {
+    return;
+  }
+
+  const fng = await services.fng();
+
+  try {
+    const event = await models.event.create({
+      id: `klines-analysis-${analysis1h.symbol.toLowerCase()}-${analysis1h.close_time}`,
+      type: analysis1h.type,
+      trading_pair: analysis1h.symbol,
+      fng,
+      details: {
+        data: kines1h,
+      },
+    });
+
+    if (analysis1h.message) {
+      await bot_send_photo({
+        token: env.TELEGRAM_BOT_TOKEN!,
+        chat_id: "5699547696",
+        photo_url: "https://blocktx.vercel.app/photo.png",
+        message: `💥 Event\n${analysis1h.message}\n\nPrice: ${analysis1h.price}\nFnG: ${fng}`,
       });
-
-      if (analysis.message) {
-        await bot_send_photo({
-          token: env.TELEGRAM_BOT_TOKEN!,
-          chat_id: "5699547696",
-          photo_url: "https://blocktx.vercel.app/photo.png",
-          message: `💥 Event\n${analysis.message}\n\nPrice: ${analysis.price}\nFnG: ${fng}`,
-        });
-      }
-
-      console.log(event);
-    } catch {
     }
+
+    console.log(event);
+  } catch {
   }
 
   // if (
