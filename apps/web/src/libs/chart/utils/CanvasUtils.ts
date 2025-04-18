@@ -26,6 +26,10 @@ export class CanvasUtils {
       return value.toString();
     }
 
+    if (value > 1000) {
+      return value.toFixed(1);
+    }
+
     return value.toFixed(3);
   }
 }

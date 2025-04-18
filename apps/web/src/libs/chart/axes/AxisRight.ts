@@ -56,11 +56,7 @@ export class AxisRight<T extends AxisRightSettings = AxisRightSettings> extends 
   get grid(): number {
     const diff = this.lowHigh[1] - this.lowHigh[0];
 
-    if (diff < 2) {
-      return diff / this.tickCount;
-    }
-
-    return (this.lowHigh[1] / 50);
+    return diff / this.tickCount;
   }
 
   get low(): number {
