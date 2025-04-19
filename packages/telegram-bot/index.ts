@@ -1,4 +1,4 @@
-import { prune } from "object";
+import { prune } from "js/libs/object";
 import { delay } from "delay";
 
 export const MAX_MESSAGES_PER_MINUTE = 24;
