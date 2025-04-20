@@ -1,7 +1,7 @@
 import "dotenv/config";
 import postgres from "postgres";
+import { sendPhoto } from "@libs/telegram-bot";
 import * as services from "./services.js";
-import { bot_send_photo } from "telegram-bot";
 
 if (!process.env.TELEGRAM_BOT_TOKEN || !process.env.POSTGRES_URL) {
   throw new Error("TELEGRAM_BOT_TOKEN or POSTGRES_URL is not set");
@@ -70,7 +70,7 @@ async function main() {
         const relatedTradingPairs = article.trading_pairs.length > 0 ? `【${article.trading_pairs.join(", ")}】` : "";
         const description = article.description.length > 200 ? `${article.description.slice(0, 200)}...` : article.description;
 
-        await bot_send_photo({
+        await sendPhoto({
           token: process.env.TELEGRAM_BOT_TOKEN,
           chat_id: "5699547696",
           message: `${relatedTradingPairs}${article.title}\n\n${description}`,

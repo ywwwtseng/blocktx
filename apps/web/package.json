@@ -25,7 +25,6 @@
     "dlv": "^1.1.3",
     "express": "^4.21.2",
     "gsap": "^3.12.7",
-    "js": "github:ywwwtseng/js",
     "next": "15.2.3",
     "node-telegram-bot-api": "^0.66.0",
     "numbro": "^2.5.0",

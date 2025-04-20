@@ -1,8 +1,8 @@
 "use client";
 
 import { PropsWithChildren } from "react";
-import { HStack, VStack } from "../ui/Stack";
-import { I18nTypography, I18nTypographyProps } from "./I18nTypography";
+import { HStack, VStack } from "@/components/ui/Stack";
+import { I18nTypography, I18nTypographyProps } from "@/components/common/I18nTypography";
 
 interface RootProps extends PropsWithChildren {
   close?: (event?: React.MouseEvent<HTMLDivElement>) => void;

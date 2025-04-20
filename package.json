@@ -4,5 +4,8 @@
   "scripts": {
     "build": "bun run build --workspaces"
   },
-  "workspaces": ["apps/*", "packages/*"]
+  "workspaces": ["apps/*", "packages/*"],
+  "dependencies": {
+    "@libs": "github:ywwwtseng/libs"
+  }
 }

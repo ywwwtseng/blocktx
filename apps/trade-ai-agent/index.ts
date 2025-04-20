@@ -1,5 +1,5 @@
 import { env } from "bun";
-import { bot_send_photo } from "telegram-bot";
+import { sendPhoto } from "@libs/telegram-bot";
 import * as services from "./services";
 import * as models from "./models";
 import * as utils from "./utils";
@@ -39,7 +39,7 @@ async function main() {
     });
 
     if (analysis1h.message) {
-      await bot_send_photo({
+      await sendPhoto({
         token: env.TELEGRAM_BOT_TOKEN!,
         chat_id: "5699547696",
         photo_url: "https://blocktx.vercel.app/photo.png",
