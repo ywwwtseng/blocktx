@@ -8,8 +8,8 @@ export const iterator = (chart: Chart, key: string, data: RawData[], transform: 
   // const maxTickUnit = (axisBottomSettings.interval / axisBottomSettings.tickIntervalCount) * 1.2;
 
   const transfer = (item: RawData) => ({
-    x: transform.x(item[axisBottomSettings.key] as number),
-    y: transform.y(item[key] as number),
+    x: Number(transform.x(item[axisBottomSettings.key] as number).toFixed(2)),
+    y: Number(transform.y(item[key] as number).toFixed(2)),
   });
 
   return {
