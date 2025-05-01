@@ -1,9 +1,11 @@
+"use client";
+
 import { useMemo, useEffect } from "react";
+import { useRouter } from 'next/navigation';
 import { Address } from "ton";
 import dayjs from "dayjs";
 import { useMiniApp } from "@/contexts/MiniAppContext";
 import { useClient } from "@/contexts/ClientContext";
-import { usePageManagement } from "@/contexts/PageManagementContext";
 import { Avatar } from "@/components/common/Avatar/Avatar";
 import { StarIcon, ChevronRightIcon } from "@/components/icons";
 import { VStack, HStack } from "@/components/ui/Stack";
@@ -13,7 +15,7 @@ import { Confirm } from '@/components/common/Confirm/Confirm';
 export default function Profile() {
   const { tonConnect, user: tgUser } = useMiniApp();
   const { user } = useClient();
-  const { back } = usePageManagement();
+  const router = useRouter();
   const rawAddress = tonConnect?.wallet?.account?.address;
 
   const address = useMemo(() => {
@@ -28,7 +30,7 @@ export default function Profile() {
 
   useEffect(() => {
     if (!tonConnect?.connected) {
-      back();
+      router.back();
     }
     
   // eslint-disable-next-line react-hooks/exhaustive-deps

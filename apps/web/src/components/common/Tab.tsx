@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 import { postEvent } from "@telegram-apps/sdk-react";
-import { usePageManagement } from "../../contexts/PageManagementContext";
+import { usePathname, useRouter } from "next/navigation";
+import { useClientOnce } from "@/hooks/useClientOnce";
+
 import { I18nTypography } from "./I18nTypography";
 import { BaseButton } from "../ui/BaseButton";
 
@@ -15,7 +17,14 @@ interface TabProps {
 
 export function Tab({ icon: Icon, i18n, href, onClick }: TabProps) {
   const [isActive, setIsActive] = useState(false);
-  const { pathname, push } = usePageManagement();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  useClientOnce(() => {
+    if (href) {
+      router.prefetch(href);
+    }
+  });
 
   return (
     <BaseButton
@@ -34,7 +43,7 @@ export function Tab({ icon: Icon, i18n, href, onClick }: TabProps) {
         }, 200);
 
         if (href) {
-          push(href);
+          router.push(href);
         } else {
           onClick?.();
         }

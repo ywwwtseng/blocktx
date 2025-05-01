@@ -1,3 +1,5 @@
+"use client";
+
 import { createContext, ReactNode, useContext } from "react";
 import { translation } from "../i18n";
 import { useClient } from "./ClientContext";

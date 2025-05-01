@@ -1,16 +1,12 @@
 "use client";
 
-import Analysis from "./Analysis";
-import TradeAI from "./TradeAI";
-import News from "./News";
-import { InviteFriendsBottomSheet } from "../../components/common/InviteFriendsBottomSheet";
-import Profile from "./Profile";
+import { InviteFriendsBottomSheet } from "@/components/common/InviteFriendsBottomSheet";
 import {
   AnalysisIcon,
   SmartToyIcon,
   NewsIcon,
   ReferralIcon,
-} from "../../components/icons";
+} from "@/components/icons";
 
 export interface Route {
   type: "default" | "tab" | "overlap";
@@ -27,21 +23,18 @@ export const routes: Route[] = [
     icon: AnalysisIcon,
     i18n: "common.analysis",
     path: "/",
-    page: Analysis,
   },
   {
     type: "tab",
     icon: SmartToyIcon,
     i18n: "common.tradeai",
     path: "/trade-ai",
-    page: TradeAI,
   },
   {
     type: "tab",
     icon: NewsIcon,
     i18n: "common.news",
     path: "/news",
-    page: News,
   },
   {
     type: "tab",
@@ -52,6 +45,5 @@ export const routes: Route[] = [
   {
     type: "default",
     path: "/profile",
-    page: Profile,
   },
 ];

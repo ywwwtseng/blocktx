@@ -1,7 +1,9 @@
-import { HStack, VStack } from "../../components/ui/Stack";
-import { I18nTypography } from "../../components/common/I18nTypography";
-import { PeopleIcon, SmartToyIcon } from "../../components/icons";
-import { Button } from "../../components/ui/Button";
+"use client";
+
+import { HStack, VStack } from "@/components/ui/Stack";
+import { I18nTypography } from "@/components/common/I18nTypography";
+import { PeopleIcon, SmartToyIcon } from "@/components/icons";
+import { Button } from "@/components/ui/Button";
 
 export default function TradeAI() {
   return (

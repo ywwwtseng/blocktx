@@ -2,10 +2,13 @@
 
 import clsx from "clsx";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useClient } from "@/contexts/ClientContext";
 import { useMiniApp } from "@/contexts/MiniAppContext";
-import { usePageManagement } from "@/contexts/PageManagementContext";
+import { useBinanceService } from "@/hooks/useBinanceService";
+import { useClientOnce } from "@/hooks/useClientOnce";
 import { useMutation } from "@/hooks/useMutation";
+import { useRoute } from "@/hooks/useRoute";
 import {
   LanguageIcon,
   ChevronLeftIcon,
@@ -17,7 +20,7 @@ import { Avatar } from "@/components/common/Avatar/Avatar";
 import { Tab } from "@/components/common/Tab";
 import { LaunchScreen } from "@/components/common/LaunchScreen";
 import { Dropdown } from "@/components/common/Dropdown";
-import { OverlapTrigger } from '@/components/common/OverlapTrigger';
+import { OverlapTrigger } from "@/components/common/OverlapTrigger";
 import { HStack } from "@/components/ui/Stack";
 import { BaseButton } from "@/components/ui/BaseButton";
 import { Typography } from "@/components/ui/Typography";
@@ -25,12 +28,19 @@ import { routes } from "@/app/_routes";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const { setLanguageCode } = useClient();
+  const router = useRouter();
+  const route = useRoute();
   const { mutate: updateMe } = useMutation<{ language_code: string; }, { language_code: string; }>("/me");
   const { platform, tonConnect } = useMiniApp();
-  const { push, back, route } = usePageManagement();
+  const { init } = useBinanceService();
   const headerHeight = 52;
   const safeAreaBottom = platform === "ios" ? 20 : 12;
   const tabBarHeight = 60 + safeAreaBottom;
+
+
+  useClientOnce(() => {
+    init();
+  });
 
   return (
     <main
@@ -59,7 +69,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           className={clsx({
             "hidden": route.type === "tab",
           })}
-          onClick={() => back()}
+          onClick={() => router.back()}
         >
           <ChevronLeftIcon className="w-6 h-6" />
         </BaseButton>
@@ -99,7 +109,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             }}
           />
           {tonConnect?.connected ? (
-            <BaseButton onClick={() => push("/profile")}>
+            <BaseButton onClick={() => router.push("/profile")}>
               <Avatar size={36} />
             </BaseButton>
           ) : (
@@ -107,7 +117,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           )}
         </HStack>
       </HStack>
-      <div className="h-full">
+      <div className="h-full flex flex-col items-center justify-center">
         {children}
       </div>
       <HStack

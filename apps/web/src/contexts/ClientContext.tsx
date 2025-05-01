@@ -1,3 +1,5 @@
+"use client";
+
 import { createContext, useMemo, useState, useCallback, ReactNode, useContext } from "react";
 import { useMiniApp } from "./MiniAppContext";
 import { useClientOnce } from "../hooks/useClientOnce";

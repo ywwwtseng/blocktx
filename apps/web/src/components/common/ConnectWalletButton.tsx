@@ -1,12 +1,12 @@
 import clsx from "clsx";
-import { usePageManagement } from "../../contexts/PageManagementContext";
+import { useRouter } from 'next/navigation';
 import { useMiniApp } from "../../contexts/MiniAppContext";
 import { BaseButton } from "../ui/BaseButton";
 import { WalletIcon } from "../icons";
 
 export function ConnectWalletButton() {
   const { tonConnect } = useMiniApp();
-  const { push } = usePageManagement();
+  const router = useRouter();
 
   if (!tonConnect) {
     return null;
@@ -22,7 +22,7 @@ export function ConnectWalletButton() {
         if (!tonConnect.connected) {
           tonConnect.connect();
         } else {
-          push("/profile");
+          router.push("/profile");
         }
       }}
     >
