@@ -1,7 +1,8 @@
 import { Chart } from "../../Chart";
-import { DataIterator, Line } from "../../types";
+import { CanvasUtils } from "../../utils/CanvasUtils";
+import { DataIterator, Point } from "../../types";
 
-export const render = <T extends DataIterator<Line>>(chart: Chart, iterator: T) => {
+export const render = <T extends DataIterator<Point>>(chart: Chart, iterator: T) => {
   const color = "#FCD435";
 
   // gradient
@@ -14,38 +15,48 @@ export const render = <T extends DataIterator<Line>>(chart: Chart, iterator: T) 
   let moveTo;
   for (const point of iterator) {
     if (!moveTo) {
-      chart.ctx.moveTo(point.current.x, point.current.y);
-      moveTo = point.current;
+      chart.ctx.moveTo(point.x, point.y);
+      moveTo = point;
     } else {
-      chart.ctx.lineTo(point.current.x, point.current.y);
+      chart.ctx.lineTo(point.x, point.y);
     }
   }
 
-  chart.ctx.lineTo(iterator.end.current.x, chart.innerBottom);
-  chart.ctx.lineTo(iterator.start.current.x, chart.innerBottom);
+  chart.ctx.lineTo(iterator.end.x, chart.innerBottom);
+  chart.ctx.lineTo(iterator.start.x, chart.innerBottom);
 
   chart.ctx.closePath();
 
   chart.ctx.fillStyle = gradient;
   chart.ctx.fill();
 
-  // stroke
+
   chart.ctx.strokeStyle = color;
-  chart.ctx.lineWidth = 1;
+  chart.ctx.lineWidth = 2;
+  CanvasUtils.strokeInPixel(chart.ctx, () => {
+    chart.ctx.beginPath();
 
-  chart.ctx.beginPath();
-  for (const point of iterator) {
-    const next = point.next();
+    let moveTo;
 
-    if (next) {
-      chart.ctx.moveTo(point.current.x, point.current.y);
-      chart.ctx.lineTo(next.x, next.y);
+    for (const point of iterator) {
+      if (!moveTo) {
+        chart.ctx.moveTo(point.x, point.y);
+        moveTo = point;
+      } else {
+        chart.ctx.lineTo(point.x, point.y);
+      }
     }
+
+    chart.ctx.stroke();
+  })
+
+  
+  
+  {
+    
   }
 
-  chart.ctx.lineCap = "round";
-  chart.ctx.lineJoin = "round";
   
-  chart.ctx.closePath();
-  chart.ctx.stroke();
+
+  
 };

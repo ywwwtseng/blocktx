@@ -32,4 +32,13 @@ export class CanvasUtils {
 
     return value.toFixed(3);
   }
+
+  static strokeInPixel(ctx: CanvasRenderingContext2D, drawFunction: () => void): void  {
+    ctx.save();
+    if (ctx.lineWidth % 2) {
+      ctx.translate(0.5, 0.5);
+    }
+    drawFunction();
+    ctx.restore();
+  }
 }

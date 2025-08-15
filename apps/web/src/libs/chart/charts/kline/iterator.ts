@@ -11,9 +11,9 @@ export const iterator = (chart: Chart, _: string, data: RawData[], transform: Tr
       axisBottom: { interval, tickIntervalCount }
     } = chart.settings;
     const { start, end } = TimeUtils.slot(item[axisBottomSettings.key] as number, interval / tickIntervalCount);
-    const x0 = transform.x(start) + 0.5;
+    const x0 = transform.x(start) + 1;
     const y0 = transform.y(item.o as number);
-    const w = transform.x(end) - x0 - 0.5;
+    const w = transform.x(end) - x0 - 1;
     const h = CanvasUtils.adjust(transform.y(item.c as number) - y0);
 
     return {

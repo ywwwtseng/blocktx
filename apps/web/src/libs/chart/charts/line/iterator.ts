@@ -1,33 +1,23 @@
 import { Chart } from "../../Chart";
-import { DataIterator, Line, Transform, RawData } from "../../types";
+import { DataIterator, Point, Transform, RawData } from "../../types";
 
-export const iterator = (chart: Chart, key: string, data: RawData[], transform: Transform): DataIterator<Line> => {
+export const iterator = (chart: Chart, key: string, data: RawData[], transform: Transform): DataIterator<Point> => {
   const {
     axisBottom: axisBottomSettings,
   } = chart.settings;
   // const maxTickUnit = (axisBottomSettings.interval / axisBottomSettings.tickIntervalCount) * 1.2;
 
   const transfer = (item: RawData) => ({
-    x: Number(transform.x(item[axisBottomSettings.key] as number).toFixed(2)),
-    y: Number(transform.y(item[key] as number).toFixed(2)),
+    x: Math.floor(transform.x(Number(item[axisBottomSettings.key]))),
+    y: Math.floor(transform.y(Number(item[key]))),
   });
 
   return {
     get start() {
-      return {
-        current: transfer(data[0]),
-        next: () => {
-          const nextPoint = data[1];
-          if (!nextPoint) return null;
-          return transfer(nextPoint);
-        }
-      };
+      return transfer(data[0]);
     },
     get end() {
-      return {
-        current: transfer(data[data.length - 1]),
-        next: () => null,
-      };
+      return transfer(data[data.length - 1]);
     },
     [Symbol.iterator]() {
       let i = 0;
@@ -39,17 +29,7 @@ export const iterator = (chart: Chart, key: string, data: RawData[], transform: 
 
           return { 
             done: false,
-            value: {
-              current: transfer(item),
-              next: () => {
-                const nextPoint = data[i];
-                if (!nextPoint) return null;
-                // if (nextPoint[axisBottomSettings.key] - item[axisBottomSettings.key] >= maxTickUnit) {
-                //   return;
-                // }
-                return transfer(nextPoint);
-              } 
-            }
+            value: transfer(item)
           };
         }
       };

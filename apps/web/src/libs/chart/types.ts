@@ -43,11 +43,6 @@ export interface Bar {
   color: string;
 }
 
-export interface Line {
-  current: Point;
-  next: () => Point | null;
-}
-
 export type DataIterator<T> = {
   start: T;
   end: T;
